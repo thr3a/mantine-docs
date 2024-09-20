@@ -1,0 +1,67 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Mantine repository
+        uses: actions/checkout@v3
+        with:
+          repository: mantinedev/mantine
+          path: /app
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22"
+          cache: yarn
+
+      - name: Install dependencies
+        working-directory: /app
+        run: yarn install
+
+      - name: Setup project
+        working-directory: /app
+        run: npm run setup
+
+      - name: Build all
+        working-directory: /app
+        run: npm run build all
+
+      - name: Remove unnecessary directories
+        working-directory: /app/apps/mantine.dev
+        run: find ./src/pages -mindepth 1 -maxdepth 1 ! -name core -exec rm -rf {} +
+
+      - name: Copy convert.ts
+        run: cp ${{ github.workspace }}/convert.ts /app/apps/mantine/apps/mantine.dev/src/convert.ts
+
+      - name: Copy hoge.ts
+        run: cp ${{ github.workspace }}/hoge.ts /app/apps/mantine.dev/src/pages/hoge.ts
+
+      - name: Install additional dependencies
+        working-directory: /app/apps/mantine.dev
+        run: yarn add astro @astrojs/check @astrojs/mdx remark-stringify
+
+      - name: Copy astro.config.mjs
+        run: cp ${{ github.workspace }}/astro.config.mjs /app/apps/mantine.dev/astro.config.mjs
+
+      - name: Build Astro
+        working-directory: /app/apps/mantine.dev
+        run: npx astro build
+
+      - name: Copy output to dist
+        run: cp -r /app/apps/mantine.dev/out/* ${{ github.workspace }}/dist/
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add dist
+          git commit -m "Update dist directory" || echo "No changes to commit"
+          git push
