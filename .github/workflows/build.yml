@@ -49,12 +49,16 @@ jobs:
       - name: Copy hoge.ts
         run: cp ${{ github.workspace }}/hoge.ts ${{ github.workspace }}/mantine/apps/mantine.dev/src/pages/hoge.ts
 
+      - name: Copy astro.config.mjs
+        run: cp ${{ github.workspace }}/astro.config.mjs ${{ github.workspace }}/mantine/apps/mantine.dev/astro.config.mjs
+
+      - name: Execute convert.ts
+        working-directory: ${{ github.workspace }}/mantine/apps/mantine.dev
+        run: node --import tsx src/convert.ts
+
       - name: Install additional dependencies
         working-directory: ${{ github.workspace }}/mantine/apps/mantine.dev
         run: yarn add astro @astrojs/check @astrojs/mdx remark-stringify
-
-      - name: Copy astro.config.mjs
-        run: cp ${{ github.workspace }}/astro.config.mjs ${{ github.workspace }}/mantine/apps/mantine.dev/astro.config.mjs
 
       - name: Build Astro
         working-directory: ${{ github.workspace }}/mantine/apps/mantine.dev
