@@ -52,13 +52,13 @@ jobs:
       - name: Copy astro.config.mjs
         run: cp ${{ github.workspace }}/astro.config.mjs ${{ github.workspace }}/mantine/apps/mantine.dev/astro.config.mjs
 
-      - name: Execute convert.ts
-        working-directory: ${{ github.workspace }}/mantine/apps/mantine.dev
-        run: node --import tsx src/convert.ts
-
       - name: Install additional dependencies
         working-directory: ${{ github.workspace }}/mantine/apps/mantine.dev
         run: yarn add astro @astrojs/check @astrojs/mdx remark-stringify
+
+      - name: Execute convert.ts
+        working-directory: ${{ github.workspace }}/mantine/apps/mantine.dev
+        run: node --import tsx src/convert.ts
 
       - name: Build Astro
         working-directory: ${{ github.workspace }}/mantine/apps/mantine.dev
