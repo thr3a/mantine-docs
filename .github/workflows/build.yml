@@ -63,8 +63,20 @@ jobs:
         working-directory: ${{ github.workspace }}/mantine/apps/mantine.dev
         run: npx astro build
 
-      - name: Copy build output to dist
-        run: cp -r ${{ github.workspace }}/mantine/apps/mantine.dev/out/* ${{ github.workspace }}/dist/
+      - name: Convert HTML to Markdown
+        working-directory: ${{ github.workspace }}/mantine/apps/mantine.dev/out
+        run: |
+          find . -type f -name "*.html" | while read -r file; do
+            dir_name=$(basename "$(dirname "$file")")
+            yarn run turndown "$file" "${dir_name}.md"
+          done
+
+      - name: Combine all markdown files
+        working-directory: ${{ github.workspace }}/mantine/apps/mantine.dev/out
+        run: cat *.md > all.md
+
+      - name: Copy markdown files to dist
+        run: cp -r ${{ github.workspace }}/mantine/apps/mantine.dev/out/*.md ${{ github.workspace }}/dist/
 
       - name: Commit and push changes
         run: |
