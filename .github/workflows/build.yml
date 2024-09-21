@@ -26,6 +26,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "22"
+          cache: "yarn"
+          cache-dependency-path: ${{ github.workspace }}/mantine/yarn.lock
 
       - name: Install dependencies
         working-directory: ${{ github.workspace }}/mantine
@@ -51,7 +53,7 @@ jobs:
 
       - name: Install additional dependencies
         working-directory: ${{ github.workspace }}/mantine/apps/mantine.dev
-        run: yarn add astro @astrojs/check @astrojs/mdx remark-stringify
+        run: yarn add astro @astrojs/check @astrojs/mdx remark-stringify @commenthol/turndown-cli
 
       - name: Execute convert.ts
         working-directory: ${{ github.workspace }}/mantine/apps/mantine.dev
