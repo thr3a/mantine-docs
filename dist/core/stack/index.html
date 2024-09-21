@@ -1,0 +1,20 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>Stack</code> is a vertical flex container. If you need a horizontal flex container, use Group
+component instead. If you need to have full control over flex container properties, use Flex component.</p>
+<pre><code>
+import { Stack, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Stack
+      h={300}
+      bg=&quot;var(--mantine-color-body)&quot;
+      {{props}}
+    &gt;
+      &lt;Button variant=&quot;default&quot;&gt;1&lt;/Button&gt;
+      &lt;Button variant=&quot;default&quot;&gt;2&lt;/Button&gt;
+      &lt;Button variant=&quot;default&quot;&gt;3&lt;/Button&gt;
+    &lt;/Stack&gt;
+  );
+}
+</code></pre>

@@ -1,0 +1,120 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Text size=&quot;xs&quot;&gt;Extra small text&lt;/Text&gt;
+      &lt;Text size=&quot;sm&quot;&gt;Small text&lt;/Text&gt;
+      &lt;Text size=&quot;md&quot;&gt;Default text&lt;/Text&gt;
+      &lt;Text size=&quot;lg&quot;&gt;Large text&lt;/Text&gt;
+      &lt;Text size=&quot;xl&quot;&gt;Extra large text&lt;/Text&gt;
+      &lt;Text fw={500}&gt;Semibold&lt;/Text&gt;
+      &lt;Text fw={700}&gt;Bold&lt;/Text&gt;
+      &lt;Text fs=&quot;italic&quot;&gt;Italic&lt;/Text&gt;
+      &lt;Text td=&quot;underline&quot;&gt;Underlined&lt;/Text&gt;
+      &lt;Text td=&quot;line-through&quot;&gt;Strikethrough&lt;/Text&gt;
+      &lt;Text c=&quot;dimmed&quot;&gt;Dimmed text&lt;/Text&gt;
+      &lt;Text c=&quot;blue&quot;&gt;Blue text&lt;/Text&gt;
+      &lt;Text c=&quot;teal.4&quot;&gt;Teal 4 text&lt;/Text&gt;
+      &lt;Text tt=&quot;uppercase&quot;&gt;Uppercase&lt;/Text&gt;
+      &lt;Text tt=&quot;capitalize&quot;&gt;capitalized text&lt;/Text&gt;
+      &lt;Text ta=&quot;center&quot;&gt;Aligned to center&lt;/Text&gt;
+      &lt;Text ta=&quot;right&quot;&gt;Aligned to right&lt;/Text&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<pre><code>(props) => `
+import { Text } from '@mantine/core';
+
+function Demo() {
+  return (
+    <Text
+      size="xl"
+      fw={900}
+      variant="gradient"
+      gradient={{ from: '${props.gradientFrom}', to: '${props.gradientTo}', deg: ${props.gradientDegree} }}
+    >
+      Gradient Text
+    </Text>
+  );
+}
+`</code></pre>
+<h2 id="truncate">Truncate</h2>
+<p>Set <code>truncate</code> prop to add <code>text-overflow: ellipsis</code> styles:</p>
+<pre><code>
+import { Text, Box } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Box w={300}&gt;
+      &lt;Text{{props}}&gt;
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde provident eos fugiat id
+        necessitatibus magni ducimus molestias. Placeat, consequatur. Quisquam, quae magnam
+        perspiciatis excepturi iste sint itaque sunt laborum. Nihil?
+      &lt;/Text&gt;
+    &lt;/Box&gt;
+  );
+}
+</code></pre>
+<h2 id="line-clamp">Line clamp</h2>
+<p>Specify maximum number of lines with <code>lineClamp</code> prop. This option uses -webkit-line-clamp
+CSS property (caniuse). Note that <code>padding-bottom</code> cannot be set on text element:</p>
+<pre><code>
+import { Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Text{{props}}&gt;
+      {/* Text content */}
+    &lt;/Text&gt;
+  );
+}
+</code></pre>
+<p>Line clamp can also be used with any children (not only strings), for example with TypographyStylesProvider:</p>
+<pre><code>
+import { TypographyStylesProvider, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Text lineClamp={3} component=&quot;div&quot;&gt;
+      &lt;TypographyStylesProvider&gt;
+        &lt;h3&gt;Line clamp with TypographyStylesProvider&lt;/h3&gt;
+        &lt;p&gt;
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt nulla quam aut sed
+          corporis voluptates praesentium inventore, sapiente ex tempore sit consequatur debitis
+          non! Illo cum ipsa reiciendis quidem facere, deserunt eos totam impedit. Vel ab, ipsum
+          veniam aperiam odit molestiae incidunt minus, sint eos iusto earum quaerat vitae
+          perspiciatis.
+        &lt;/p&gt;
+      &lt;/TypographyStylesProvider&gt;
+    &lt;/Text&gt;
+  );
+}
+</code></pre>
+<h2 id="inherit-styles">Inherit styles</h2>
+<p>Text always applies font-size, font-family and line-height styles,
+but in some cases this is not a desired behavior. To force Text to inherit parent
+styles set <code>inherit</code> prop. For example, highlight part of Title:</p>
+<pre><code>
+import { Text, Title } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Title order={3}&gt;Title in which you want to &lt;Text span c=&quot;blue&quot; inherit&gt;highlight&lt;/Text&gt; something&lt;/Title&gt;;
+}
+</code></pre>
+<h2 id="span-prop">span prop</h2>
+<p>Use <code>span</code> prop as a shorthand for <code>component=&quot;span&quot;</code>:</p>
+<pre><code class="language-tsx">import { Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Text span&gt;Same as below&lt;/Text&gt;
+      &lt;Text component=&quot;span&quot;&gt;Same as above&lt;/Text&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>

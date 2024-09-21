@@ -1,0 +1,99 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>SimpleGrid</code> is a responsive grid system with equal-width columns.
+It uses CSS grid layout. If you need to set different widths for columns, use
+Grid component instead.</p>
+<pre><code>
+import { SimpleGrid } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;SimpleGrid{{props}}&gt;
+      &lt;div&gt;1&lt;/div&gt;
+      &lt;div&gt;2&lt;/div&gt;
+      &lt;div&gt;3&lt;/div&gt;
+      &lt;div&gt;4&lt;/div&gt;
+      &lt;div&gt;5&lt;/div&gt;
+    &lt;/SimpleGrid&gt;
+  )
+}
+</code></pre>
+<h2 id="spacing-and-verticalspacing-props">spacing and verticalSpacing props</h2>
+<p><code>spacing</code> prop is used both for horizontal and vertical spacing if <code>verticalSpacing</code> is not set:</p>
+<pre><code class="language-tsx">import { SimpleGrid } from &#39;@mantine/core&#39;;
+
+// `spacing` is used for both horizontal and vertical spacing
+const Spacing = () =&gt; &lt;SimpleGrid spacing=&quot;xl&quot; /&gt;;
+
+// `spacing` is used for horizontal spacing, `verticalSpacing` for vertical
+const VerticalSpacing = () =&gt; (
+  &lt;SimpleGrid spacing=&quot;xl&quot; verticalSpacing=&quot;lg&quot; /&gt;
+);
+</code></pre>
+<h2 id="responsive-props">Responsive props</h2>
+<p><code>cols</code>, <code>spacing</code> and <code>verticalSpacing</code> props support object notation for responsive values,
+it works the same way as style props: the object may have <code>base</code>, <code>xs</code>,
+<code>sm</code>, <code>md</code>, <code>lg</code> and <code>xl</code> key, and values from those keys will be applied according to current
+viewport width.</p>
+<p>In the following example, <code>cols={{ base: 1, sm: 2, lg: 5 }}</code> means:</p>
+<ul>
+<li>1 column if viewport width is less than <code>sm</code> breakpoint</li>
+<li>2 columns if viewport width is between <code>sm</code> and <code>lg</code> breakpoints</li>
+<li>5 columns if viewport width is greater than <code>lg</code> breakpoint</li>
+</ul>
+<p>Same logic applies to <code>spacing</code> and <code>verticalSpacing</code> props.</p>
+<pre><code>
+import { SimpleGrid } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;SimpleGrid
+      cols={{ base: 1, sm: 2, lg: 5 }}
+      spacing={{ base: 10, sm: &#39;xl&#39; }}
+      verticalSpacing={{ base: &#39;md&#39;, sm: &#39;xl&#39; }}
+    &gt;
+      &lt;div&gt;1&lt;/div&gt;
+      &lt;div&gt;2&lt;/div&gt;
+      &lt;div&gt;3&lt;/div&gt;
+      &lt;div&gt;4&lt;/div&gt;
+      &lt;div&gt;5&lt;/div&gt;
+    &lt;/SimpleGrid&gt;
+  );
+}
+</code></pre>
+<h2 id="container-queries">Container queries</h2>
+<p>To use container queries
+instead of media queries, set <code>type=&quot;container&quot;</code>. With container queries, grid columns and spacing
+will be adjusted based on the container width, not the viewport width.</p>
+<p>Note that, when using container queries, <code>cols</code>, <code>spacing</code> and <code>verticalSpacing</code> props cannot
+reference <code>theme.breakpoints</code> values in keys. In is required to use exact px or em values.</p>
+<p>To see how the grid changes, resize the root element of the demo
+with the resize handle located at the bottom right corner of the demo:</p>
+<pre><code>
+import { SimpleGrid } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    // Wrapper div is added for demonstration purposes only,
+    // it is not required in real projects
+    &lt;div style={{ resize: &#39;horizontal&#39;, overflow: &#39;hidden&#39;, maxWidth: &#39;100%&#39; }}&gt;
+      &lt;SimpleGrid
+        type=&quot;container&quot;
+        cols={{ base: 1, &#39;300px&#39;: 2, &#39;500px&#39;: 5 }}
+        spacing={{ base: 10, &#39;300px&#39;: &#39;xl&#39; }}
+      &gt;
+        &lt;div&gt;1&lt;/div&gt;
+        &lt;div&gt;2&lt;/div&gt;
+        &lt;div&gt;3&lt;/div&gt;
+        &lt;div&gt;4&lt;/div&gt;
+        &lt;div&gt;5&lt;/div&gt;
+      &lt;/SimpleGrid&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h2 id="browser-support">Browser support</h2>
+<p><code>SimpleGrid</code> uses CSS Grid Layout, it is supported in all modern browsers.
+If you need to support older browsers, use Grid (flexbox based) component instead.</p>
+<p>When <code>type=&quot;container&quot;</code> is set, <code>SimpleGrid</code> uses container queries.
+Since February 2023, container queries are supported in all modern browsers. If you need to support older browsers,
+do not use container queries option.</p>

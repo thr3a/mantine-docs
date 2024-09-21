@@ -1,0 +1,175 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { FileInput } from &#39;@mantine/core&#39;;
+
+
+function Demo() {
+  return (
+    &lt;FileInput
+      {{props}}
+      placeholder=&quot;Input placeholder&quot;
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<p>When <code>multiple</code> is <code>false</code>:</p>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { FileInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState&lt;File | null&gt;(null);
+  return &lt;FileInput value={value} onChange={setValue} /&gt;;
+}
+</code></pre>
+<p>When <code>multiple</code> is <code>true</code>:</p>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { FileInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState&lt;File[]&gt;([]);
+  return &lt;FileInput multiple value={value} onChange={setValue} /&gt;;
+}
+</code></pre>
+<h2 id="multiple">Multiple</h2>
+<p>Set <code>multiple</code> to allow user to pick more than one file:</p>
+<pre><code>
+import { FileInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;FileInput label=&quot;Upload files&quot; placeholder=&quot;Upload files&quot; multiple /&gt;;
+}
+</code></pre>
+<h2 id="accept">Accept</h2>
+<p>Set <code>accept</code> prop to restrict files selection to specific mime types:</p>
+<pre><code>
+import { FileInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;FileInput accept=&quot;image/png,image/jpeg&quot; label=&quot;Upload files&quot; placeholder=&quot;Upload files&quot; /&gt;
+  );
+}
+</code></pre>
+<h2 id="clearable">Clearable</h2>
+<p>Set <code>clearable</code> prop to display clear button in the right section of the input
+when file is selected. Note that if you define custom right section, clear button
+will not be rendered.</p>
+<pre><code>
+import { FileInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;FileInput clearable label=&quot;Upload files&quot; placeholder=&quot;Upload files&quot; /&gt;;
+}
+</code></pre>
+<h2 id="custom-value-component">Custom value component</h2>
+<pre><code>
+import { FileInput, FileInputProps, Pill } from &#39;@mantine/core&#39;;
+
+const ValueComponent: FileInputProps[&#39;valueComponent&#39;] = ({ value }) =&gt; {
+  if (value === null) {
+    return null;
+  }
+
+  if (Array.isArray(value)) {
+    return (
+      &lt;Pill.Group&gt;
+        {value.map((file, index) =&gt; (
+          &lt;Pill key={index}&gt;{file.name}&lt;/Pill&gt;
+        ))}
+      &lt;/Pill.Group&gt;
+    );
+  }
+
+  return &lt;Pill&gt;{value.name}&lt;/Pill&gt;;
+};
+
+function Demo() {
+  return (
+    &lt;FileInput
+      label=&quot;Upload files&quot;
+      placeholder=&quot;Upload files&quot;
+      multiple
+      valueComponent={ValueComponent}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="error-state">Error state</h2>
+<pre><code>
+import { FileInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;FileInput label=&quot;Boolean error&quot; placeholder=&quot;Boolean error&quot; error /&gt;
+      &lt;FileInput
+        mt=&quot;md&quot;
+        label=&quot;With error message&quot;
+        placeholder=&quot;With error message&quot;
+        error=&quot;Invalid name&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled-state">Disabled state</h2>
+<pre><code>
+import { FileInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;FileInput disabled label=&quot;Disabled input&quot; placeholder=&quot;Disabled input&quot; /&gt;;
+}
+</code></pre>
+<pre><code>
+import { FileInput, rem } from &#39;@mantine/core&#39;;
+import { IconFileCv } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  const icon = &lt;IconFileCv style={{ width: rem(18), height: rem(18) }} stroke={1.5} /&gt;;
+
+  return (
+    &lt;&gt;
+      &lt;FileInput
+        leftSection={icon}
+        label=&quot;Attach your CV&quot;
+        placeholder=&quot;Your CV&quot;
+        leftSectionPointerEvents=&quot;none&quot;
+      /&gt;
+      &lt;FileInput
+        rightSection={icon}
+        label=&quot;Attach your CV&quot;
+        placeholder=&quot;Your CV&quot;
+        rightSectionPointerEvents=&quot;none&quot;
+        mt=&quot;md&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { IconAt } from &#39;@tabler/icons-react&#39;;
+import { FileInput, rem } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;FileInput
+      label=&quot;Label&quot;
+      placeholder=&quot;FileInput&quot;
+      description=&quot;Description&quot;
+      error=&quot;Error&quot;
+      withAsterisk
+      leftSection={&lt;IconAt style={{ width: rem(18), height: rem(18) }} /&gt;}
+      {{props}}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="fileinputprops-type">FileInputProps type</h2>
+<p><code>FileInputProps</code> type is a generic interface which accepts a single type argument:
+<code>multiple</code> value.</p>
+<pre><code class="language-tsx">import type { FileInputProps } from &#39;@mantine/core&#39;;
+
+type SingleInputProps = FileInputProps&lt;false&gt;;
+type MultipleInputProps = FileInputProps&lt;true&gt;;
+</code></pre>

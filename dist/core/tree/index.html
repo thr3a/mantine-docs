@@ -1,0 +1,339 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>Tree</code> component is used to display hierarchical data. <code>Tree</code> component
+has minimal styling by default, you can customize styles with Styles API.</p>
+<pre><code>
+import { Tree } from &#39;@mantine/core&#39;;
+import { data } from &#39;./data&#39;;
+
+function Demo() {
+  return &lt;Tree data={data} /&gt;;
+}
+</code></pre>
+<h2 id="data-prop">Data prop</h2>
+<p>Data passed to the <code>data</code> prop should follow these rules:</p>
+<ul>
+<li>Data must be an array</li>
+<li>Each item in the array represents a node in the tree</li>
+<li>Each node must be an object with <code>value</code> and <code>label</code> keys</li>
+<li>Each node can have <code>children</code> key with an array of child nodes</li>
+<li>The <code>value</code> of each node must be unique</li>
+</ul>
+<p>Valid data example:</p>
+<pre><code class="language-tsx">// ✅ Valid data, all values are unique
+const data = [
+  {
+    value: &#39;src&#39;,
+    label: &#39;src&#39;,
+    children: [
+      { value: &#39;src/components&#39;, label: &#39;components&#39; },
+      { value: &#39;src/hooks&#39;, label: &#39;hooks&#39; },
+    ],
+  },
+  { value: &#39;package.json&#39;, label: &#39;package.json&#39; },
+];
+</code></pre>
+<p>Invalid data example:</p>
+<pre><code class="language-tsx">// ❌ Invalid data, values are not unique (components is used twice)
+const data = [
+  {
+    value: &#39;src&#39;,
+    label: &#39;src&#39;,
+    children: [{ value: &#39;components&#39;, label: &#39;components&#39; }],
+  },
+  { value: &#39;components&#39;, label: &#39;components&#39; },
+];
+</code></pre>
+<h2 id="data-type">Data type</h2>
+<p>You can import <code>TreeNodeData</code> type to define data type for your tree:</p>
+<pre><code class="language-tsx">import { TreeNodeData } from &#39;@mantine/core&#39;;
+
+const data: TreeNodeData[] = [
+  {
+    value: &#39;src&#39;,
+    label: &#39;src&#39;,
+    children: [
+      { value: &#39;src/components&#39;, label: &#39;components&#39; },
+      { value: &#39;src/hooks&#39;, label: &#39;hooks&#39; },
+    ],
+  },
+  { value: &#39;package.json&#39;, label: &#39;package.json&#39; },
+];
+</code></pre>
+<h2 id="rendernode">renderNode</h2>
+<p>Use <code>renderNode</code> prop to customize node rendering.
+<code>renderNode</code> function receives an object with the following properties as a single argument:</p>
+<pre><code class="language-tsx">export interface RenderTreeNodePayload {
+  /** Node level in the tree */
+  level: number;
+
+  /** `true` if the node is expanded, applicable only for nodes with `children` */
+  expanded: boolean;
+
+  /** `true` if the node has non-empty `children` array */
+  hasChildren: boolean;
+
+  /** `true` if the node is selected */
+  selected: boolean;
+
+  /** Node data from the `data` prop of `Tree` */
+  node: TreeNodeData;
+
+  /** Tree controller instance, return value of `useTree` hook */
+  tree: TreeController;
+
+  /** Props to spread into the root node element */
+  elementProps: {
+    className: string;
+    style: React.CSSProperties;
+    onClick: (event: React.MouseEvent) =&gt; void;
+    &#39;data-selected&#39;: boolean | undefined;
+    &#39;data-value&#39;: string;
+    &#39;data-hovered&#39;: boolean | undefined;
+  };
+}
+</code></pre>
+<pre><code>
+import { IconChevronDown } from &#39;@tabler/icons-react&#39;;
+import { Group, Tree } from &#39;@mantine/core&#39;;
+import { data } from &#39;./data&#39;;
+
+function Demo() {
+  return (
+    &lt;Tree
+      data={data}
+      levelOffset={23}
+      renderNode={({ node, expanded, hasChildren, elementProps }) =&gt; (
+        &lt;Group gap={5} {...elementProps}&gt;
+          {hasChildren &amp;&amp; (
+            &lt;IconChevronDown
+              size={18}
+              style={{ transform: expanded ? &#39;rotate(180deg)&#39; : &#39;rotate(0deg)&#39; }}
+            /&gt;
+          )}
+
+          &lt;span&gt;{node.label}&lt;/span&gt;
+        &lt;/Group&gt;
+      )}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="usetree-hook">useTree hook</h2>
+<p><code>useTree</code> hook can be used to control selected and expanded state of the tree.</p>
+<p>The hook accepts an object with the following properties:</p>
+<pre><code class="language-tsx">export interface UseTreeInput {
+  /** Initial expanded state of all nodes */
+  initialExpandedState?: TreeExpandedState;
+
+  /** Initial selected state of nodes */
+  initialSelectedState?: string[];
+
+  /** Initial checked state of nodes */
+  initialCheckedState?: string[];
+
+  /** Determines whether multiple node can be selected at a time */
+  multiple?: boolean;
+}
+</code></pre>
+<p>And returns an object with the following properties:</p>
+<pre><code class="language-tsx">export interface UseTreeReturnType {
+  /** Determines whether multiple node can be selected at a time */
+  multiple: boolean;
+
+  /** A record of `node.value` and boolean values that represent nodes expanded state */
+  expandedState: TreeExpandedState;
+
+  /** An array of selected nodes values */
+  selectedState: string[];
+
+  /** An array of checked nodes values */
+  checkedState: string[];
+
+  /** A value of the node that was last clicked
+   * Anchor node is used to determine range of selected nodes for multiple selection
+   */
+  anchorNode: string | null;
+
+  /** Initializes tree state based on provided data, called automatically by the Tree component */
+  initialize: (data: TreeNodeData[]) =&gt; void;
+
+  /** Toggles expanded state of the node with provided value */
+  toggleExpanded: (value: string) =&gt; void;
+
+  /** Collapses node with provided value */
+  collapse: (value: string) =&gt; void;
+
+  /** Expands node with provided value */
+  expand: (value: string) =&gt; void;
+
+  /** Expands all nodes */
+  expandAllNodes: () =&gt; void;
+
+  /** Collapses all nodes */
+  collapseAllNodes: () =&gt; void;
+
+  /** Sets expanded state */
+  setExpandedState: React.Dispatch&lt;
+    React.SetStateAction&lt;TreeExpandedState&gt;
+  &gt;;
+
+  /** Toggles selected state of the node with provided value */
+  toggleSelected: (value: string) =&gt; void;
+
+  /** Selects node with provided value */
+  select: (value: string) =&gt; void;
+
+  /** Deselects node with provided value */
+  deselect: (value: string) =&gt; void;
+
+  /** Clears selected state */
+  clearSelected: () =&gt; void;
+
+  /** Sets selected state */
+  setSelectedState: React.Dispatch&lt;React.SetStateAction&lt;string[]&gt;&gt;;
+
+  /** A value of the node that is currently hovered */
+  hoveredNode: string | null;
+
+  /** Sets hovered node */
+  setHoveredNode: React.Dispatch&lt;React.SetStateAction&lt;string | null&gt;&gt;;
+
+  /** Checks node with provided value */
+  checkNode: (value: string) =&gt; void;
+
+  /** Unchecks node with provided value */
+  uncheckNode: (value: string) =&gt; void;
+
+  /** Returns all checked nodes with status */
+  getCheckedNodes: () =&gt; CheckedNodeStatus[];
+
+  /** Returns `true` if node with provided value is checked */
+  isNodeChecked: (value: string) =&gt; boolean;
+
+  /** Returns `true` if node with provided value is indeterminate */
+  isNodeIndeterminate: (value: string) =&gt; boolean;
+}
+</code></pre>
+<p>You can pass the value returned by the <code>useTree</code> hook to the <code>tree</code> prop of the <code>Tree</code> component
+to control tree state:</p>
+<pre><code>
+import { Button, Group, Tree, useTree } from &#39;@mantine/core&#39;;
+import { data } from &#39;./data&#39;;
+
+function Demo() {
+  const tree = useTree();
+
+  return (
+    &lt;&gt;
+      &lt;Tree data={data} tree={tree} /&gt;
+      &lt;Group mt=&quot;md&quot;&gt;
+        &lt;Button onClick={() =&gt; tree.expandAllNodes()}&gt;Expand all&lt;/Button&gt;
+        &lt;Button onClick={() =&gt; tree.collapseAllNodes()}&gt;Collapse all&lt;/Button&gt;
+      &lt;/Group&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="checked-state">Checked state</h2>
+<p><code>Tree</code> can be used to display checked state with checkboxes.
+To implement checked state, you need to render <code>Checkbox.Indicator</code> in the <code>renderNode</code> function:</p>
+<pre><code>
+import { IconChevronDown } from &#39;@tabler/icons-react&#39;;
+import { Checkbox, Group, RenderTreeNodePayload, Tree } from &#39;@mantine/core&#39;;
+import { data } from &#39;./data&#39;;
+
+const renderTreeNode = ({
+  node,
+  expanded,
+  hasChildren,
+  elementProps,
+  tree,
+}: RenderTreeNodePayload) =&gt; {
+  const checked = tree.isNodeChecked(node.value);
+  const indeterminate = tree.isNodeIndeterminate(node.value);
+
+  return (
+    &lt;Group gap=&quot;xs&quot; {...elementProps}&gt;
+      &lt;Checkbox.Indicator
+        checked={checked}
+        indeterminate={indeterminate}
+        onClick={() =&gt; (!checked ? tree.checkNode(node.value) : tree.uncheckNode(node.value))}
+      /&gt;
+
+      &lt;Group gap={5} onClick={() =&gt; tree.toggleExpanded(node.value)}&gt;
+        &lt;span&gt;{node.label}&lt;/span&gt;
+
+        {hasChildren &amp;&amp; (
+          &lt;IconChevronDown
+            size={14}
+            style={{ transform: expanded ? &#39;rotate(180deg)&#39; : &#39;rotate(0deg)&#39; }}
+          /&gt;
+        )}
+      &lt;/Group&gt;
+    &lt;/Group&gt;
+  );
+};
+
+function Demo() {
+  return &lt;Tree data={data} levelOffset={23} expandOnClick={false} renderNode={renderTreeNode} /&gt;;
+}
+</code></pre>
+<h2 id="example-files-tree">Example: files tree</h2>
+<pre><code>
+import { IconFolder, IconFolderOpen } from &#39;@tabler/icons-react&#39;;
+import { Group, RenderTreeNodePayload, Tree } from &#39;@mantine/core&#39;;
+import { CssIcon, NpmIcon, TypeScriptCircleIcon } from &#39;@mantinex/dev-icons&#39;;
+import { data, dataCode } from &#39;./data&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+interface FileIconProps {
+  name: string;
+  isFolder: boolean;
+  expanded: boolean;
+}
+
+function FileIcon({ name, isFolder, expanded }: FileIconProps) {
+  if (name.endsWith(&#39;package.json&#39;)) {
+    return &lt;NpmIcon size={14} /&gt;;
+  }
+
+  if (name.endsWith(&#39;.ts&#39;) || name.endsWith(&#39;.tsx&#39;) || name.endsWith(&#39;tsconfig.json&#39;)) {
+    return &lt;TypeScriptCircleIcon size={14} /&gt;;
+  }
+
+  if (name.endsWith(&#39;.css&#39;)) {
+    return &lt;CssIcon size={14} /&gt;;
+  }
+
+  if (isFolder) {
+    return expanded ? (
+      &lt;IconFolderOpen color=&quot;var(--mantine-color-yellow-9)&quot; size={14} stroke={2.5} /&gt;
+    ) : (
+      &lt;IconFolder color=&quot;var(--mantine-color-yellow-9)&quot; size={14} stroke={2.5} /&gt;
+    );
+  }
+
+  return null;
+}
+
+function Leaf({ node, expanded, hasChildren, elementProps }: RenderTreeNodePayload) {
+  return (
+    &lt;Group gap={5} {...elementProps}&gt;
+      &lt;FileIcon name={node.value} isFolder={hasChildren} expanded={expanded} /&gt;
+      &lt;span&gt;{node.label}&lt;/span&gt;
+    &lt;/Group&gt;
+  );
+}
+
+function Demo() {
+  return (
+    &lt;Tree
+      classNames={classes}
+      selectOnClick
+      clearSelectionOnOutsideClick
+      data={data}
+      renderNode={(payload) =&gt; &lt;Leaf {...payload} /&gt;}
+    /&gt;
+  );
+}
+</code></pre>

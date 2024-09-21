@@ -1,0 +1,92 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Indicator, Avatar } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Indicator{{props}}&gt;
+      &lt;Avatar
+        size=&quot;lg&quot;
+        radius=&quot;sm&quot;
+        src=&quot;https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png&quot;
+      /&gt;
+    &lt;/Indicator&gt;
+  );
+}
+</code></pre>
+<h2 id="inline">Inline</h2>
+<p>When the target element has a fixed width, set <code>inline</code> prop to add <code>display: inline-block;</code> styles to
+Indicator container. Alternatively, you can set width and height with <code>style</code> prop if you still want the root
+element to keep <code>display: block</code>.</p>
+<pre><code>
+import { Avatar, Indicator } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Indicator inline label=&quot;New&quot; size={16}&gt;
+      &lt;Avatar
+        size=&quot;lg&quot;
+        radius=&quot;sm&quot;
+        src=&quot;https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png&quot;
+      /&gt;
+    &lt;/Indicator&gt;
+  );
+}
+</code></pre>
+<h2 id="offset">Offset</h2>
+<p>Set <code>offset</code> to change indicator position. It is useful when Indicator component is
+used with children that have border-radius:</p>
+<pre><code>
+import { Avatar, Indicator } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Indicator inline size={16} offset={7} position=&quot;bottom-end&quot; color=&quot;red&quot; withBorder&gt;
+      &lt;Avatar
+        size=&quot;lg&quot;
+        radius=&quot;xl&quot;
+        src=&quot;https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png&quot;
+      /&gt;
+    &lt;/Indicator&gt;
+  );
+}
+</code></pre>
+<h2 id="processing-animation">Processing animation</h2>
+<pre><code>
+import { Avatar, Indicator } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Indicator inline processing color=&quot;red&quot; size={12}&gt;
+      &lt;Avatar
+        size=&quot;lg&quot;
+        radius=&quot;sm&quot;
+        src=&quot;https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-4.png&quot;
+      /&gt;
+    &lt;/Indicator&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled">Disabled</h2>
+<p>Set <code>disabled</code> to hide the indicator:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Avatar, Indicator, Button, Stack } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [visible, { toggle }] = useDisclosure();
+
+  return (
+    &lt;Stack align=&quot;center&quot;&gt;
+      &lt;Indicator inline disabled={!visible} color=&quot;red&quot; size={12}&gt;
+        &lt;Avatar
+          size=&quot;lg&quot;
+          radius=&quot;sm&quot;
+          src=&quot;https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png&quot;
+        /&gt;
+      &lt;/Indicator&gt;
+      &lt;Button onClick={toggle}&gt;Toggle indicator&lt;/Button&gt;
+    &lt;/Stack&gt;
+  );
+}
+</code></pre>

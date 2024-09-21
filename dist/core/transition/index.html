@@ -1,0 +1,108 @@
+<!DOCTYPE html><h2 id="premade-transitions">Premade transitions</h2>
+<p>Mantine includes several premade transitions:</p>
+<pre><code></code></pre>
+<p>To use one of them set <code>transition</code> property to one of these values:</p>
+<pre><code class="language-tsx">import { Transition } from &#39;@mantine/core&#39;;
+
+function Demo({ opened }: { opened: boolean }) {
+  return (
+    &lt;Transition
+      mounted={opened}
+      transition=&quot;fade&quot;
+      duration={400}
+      timingFunction=&quot;ease&quot;
+    &gt;
+      {(styles) =&gt; &lt;div style={styles}&gt;Your modal&lt;/div&gt;}
+    &lt;/Transition&gt;
+  );
+}
+</code></pre>
+<h2 id="custom-transitions">Custom transitions</h2>
+<p>You can create your own transition. <code>transition</code> is an object with 4 properties:</p>
+<ul>
+<li><code>in</code> – styles for mounted state</li>
+<li><code>out</code> – styles for unmounted state</li>
+<li><code>common</code> (optional) – styles for both mounted and unmounted states</li>
+<li><code>transitionProperty</code> – properties which participate in transition</li>
+</ul>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { useClickOutside } from &#39;@mantine/hooks&#39;;
+import { Transition, Paper, Button, Box } from &#39;@mantine/core&#39;;
+
+const scaleY = {
+  in: { opacity: 1, transform: &#39;scaleY(1)&#39; },
+  out: { opacity: 0, transform: &#39;scaleY(0)&#39; },
+  common: { transformOrigin: &#39;top&#39; },
+  transitionProperty: &#39;transform, opacity&#39;,
+};
+
+function Demo() {
+  const [opened, setOpened] = useState(false);
+  const clickOutsideRef = useClickOutside(() =&gt; setOpened(false));
+
+  return (
+    &lt;Box
+      maw={200}
+      pos=&quot;relative&quot;
+      style={{ display: &#39;flex&#39;, justifyContent: &#39;center&#39;, margin: &#39;auto&#39; }}
+    &gt;
+      &lt;Button onClick={() =&gt; setOpened(true)}&gt;Open dropdown&lt;/Button&gt;
+      &lt;Transition
+        mounted={opened}
+        transition={scaleY}
+        duration={200}
+        timingFunction=&quot;ease&quot;
+        keepMounted
+      &gt;
+        {(transitionStyle) =&gt; (
+          &lt;Paper
+            shadow=&quot;md&quot;
+            p=&quot;xl&quot;
+            h={120}
+            pos=&quot;absolute&quot;
+            top={0}
+            left={0}
+            right={0}
+            ref={clickOutsideRef}
+            style={{ ...transitionStyle, zIndex: 1 }}
+          &gt;
+            Dropdown
+          &lt;/Paper&gt;
+        )}
+      &lt;/Transition&gt;
+    &lt;/Box&gt;
+  );
+}</code></pre>
+<h2 id="enter-and-exit-delay">Enter and exit delay</h2>
+<p>Use <code>enterDelay</code> and <code>exitDelay</code> props to delay transition start. Values are in milliseconds:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Button, Flex, Paper, Transition } from &#39;@mantine/core&#39;;
+
+export function Demo() {
+  const [opened, setOpened] = useState(false);
+
+  return (
+    &lt;Flex maw={200} pos=&quot;relative&quot; justify=&quot;center&quot; m=&quot;auto&quot;&gt;
+      &lt;Button onClick={() =&gt; setOpened(true)}&gt;Open dropdown&lt;/Button&gt;
+
+      &lt;Transition mounted={opened} transition=&quot;pop&quot; enterDelay={500} exitDelay={300}&gt;
+        {(transitionStyle) =&gt; (
+          &lt;Paper
+            shadow=&quot;md&quot;
+            p=&quot;xl&quot;
+            h={120}
+            pos=&quot;absolute&quot;
+            inset={0}
+            bottom=&quot;auto&quot;
+            onClick={() =&gt; setOpened(false)}
+            style={{ ...transitionStyle, zIndex: 1 }}
+          &gt;
+            Click to close
+          &lt;/Paper&gt;
+        )}
+      &lt;/Transition&gt;
+    &lt;/Flex&gt;
+  );
+}</code></pre>

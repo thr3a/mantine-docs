@@ -1,0 +1,43 @@
+<!DOCTYPE html><link rel="stylesheet" href="/_astro/flex.QoGUOpM-.css"><h2 id="usage">Usage</h2>
+<pre><code>
+import { Flex, Button } from &#39;@mantine/core&#39;;
+
+
+function Demo() {
+  return (
+    &lt;Flex
+      mih={50}
+      bg=&quot;rgba(0, 0, 0, .3)&quot;
+      {{props}}
+    &gt;
+      &lt;Button&gt;Button 1&lt;/Button&gt;
+      &lt;Button&gt;Button 2&lt;/Button&gt;
+      &lt;Button&gt;Button 3&lt;/Button&gt;
+    &lt;/Flex&gt;
+  );
+}
+</code></pre>
+<h2 id="supported-props">Supported props</h2>
+<h2 id="responsive-props">Responsive props</h2>
+<p><code>Flex</code> component props can have responsive values the same way as other style props:</p>
+<pre><code>
+import { Flex, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Flex
+      direction={{ base: &#39;column&#39;, sm: &#39;row&#39; }}
+      gap={{ base: &#39;sm&#39;, sm: &#39;lg&#39; }}
+      justify={{ sm: &#39;center&#39; }}
+    &gt;
+      &lt;Button&gt;Button 1&lt;/Button&gt;
+      &lt;Button&gt;Button 2&lt;/Button&gt;
+      &lt;Button&gt;Button 3&lt;/Button&gt;
+    &lt;/Flex&gt;
+  );
+}
+</code></pre>
+<h2 id="difference-from-group-and-stack">Difference from Group and Stack</h2>
+<p><code>Flex</code> component is an alternative to Group and Stack.
+<code>Flex</code> is more flexible, it allows creating both horizontal and vertical flexbox layouts, but requires more configuration.
+Unlike Group and Stack <code>Flex</code> is polymorphic and supports responsive props.</p>

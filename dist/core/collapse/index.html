@@ -1,0 +1,50 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Button, Group, Text, Collapse, Box } from &#39;@mantine/core&#39;;
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+
+function Demo() {
+  const [opened, { toggle }] = useDisclosure(false);
+
+  return (
+    &lt;Box maw={400} mx=&quot;auto&quot;&gt;
+      &lt;Group justify=&quot;center&quot; mb={5}&gt;
+        &lt;Button onClick={toggle}&gt;Toggle content&lt;/Button&gt;
+      &lt;/Group&gt;
+
+      &lt;Collapse in={opened}&gt;
+        &lt;Text&gt;{/* ... content */}&lt;/Text&gt;
+      &lt;/Collapse&gt;
+    &lt;/Box&gt;
+  );
+}
+</code></pre>
+<h2 id="change-transition">Change transition</h2>
+<p>Set following props to control transition:</p>
+<ul>
+<li><code>transitionDuration</code> – duration in ms</li>
+<li><code>transitionTimingFunction</code> – timing function (ease, linear, etc.), defaults to <code>ease</code></li>
+<li><code>onTransitionEnd</code> – called when transition ends (both open and close)</li>
+</ul>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Button, Group, Text, Collapse, Box } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { toggle }] = useDisclosure(false);
+
+  return (
+    &lt;Box maw={400} mx=&quot;auto&quot;&gt;
+      &lt;Group justify=&quot;center&quot; mb={5}&gt;
+        &lt;Button onClick={toggle}&gt;Toggle with linear transition&lt;/Button&gt;
+      &lt;/Group&gt;
+
+      &lt;Collapse in={opened} transitionDuration={1000} transitionTimingFunction=&quot;linear&quot;&gt;
+        &lt;Text&gt;{/* ...content */}&lt;/Text&gt;
+      &lt;/Collapse&gt;
+    &lt;/Box&gt;
+  );
+}
+</code></pre>
+<h2 id="nested-collapse-components">Nested Collapse components</h2>
+<pre><code></code></pre>

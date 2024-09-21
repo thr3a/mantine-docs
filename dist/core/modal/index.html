@@ -1,0 +1,481 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Modal, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Modal opened={opened} onClose={close} title=&quot;Authentication&quot;&gt;
+        {/* Modal content */}
+      &lt;/Modal&gt;
+
+      &lt;Button onClick={open}&gt;Open modal&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="center-modal-vertically">Center modal vertically</h2>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Modal, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Modal opened={opened} onClose={close} title=&quot;Authentication&quot; centered&gt;
+        {/* Modal content */}
+      &lt;/Modal&gt;
+
+      &lt;Button onClick={open}&gt;Open centered Modal&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="remove-header">Remove header</h2>
+<p>To remove header set <code>withCloseButton={false}</code>:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Modal, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Modal opened={opened} onClose={close} withCloseButton={false}&gt;
+        Modal without header, press escape or click on overlay to close
+      &lt;/Modal&gt;
+
+      &lt;Button onClick={open}&gt;Open Modal&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+
+</code></pre>
+<h2 id="change-size">Change size</h2>
+<p>You can change modal width by setting <code>size</code> prop to predefined size or any valid width, for example, <code>55%</code> or <code>50rem</code>.
+<code>Modal</code> width cannot exceed <code>100vw</code>.</p>
+<pre><code></code></pre>
+<h2 id="size-auto">Size auto</h2>
+<p><code>Modal</code> with <code>size=&quot;auto&quot;</code> will have width to fit its content:</p>
+<pre><code>
+import { useDisclosure, useCounter } from &#39;@mantine/hooks&#39;;
+import { Modal, Button, Group, Text, Badge } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { close, open }] = useDisclosure(false);
+  const [count, { increment, decrement }] = useCounter(3, { min: 0 });
+
+  const badges = Array(count)
+    .fill(0)
+    .map((_, index) =&gt; &lt;Badge key={index}&gt;Badge {index}&lt;/Badge&gt;);
+
+  return (
+    &lt;&gt;
+      &lt;Modal opened={opened} onClose={close} size=&quot;auto&quot; title=&quot;Modal size auto&quot;&gt;
+        &lt;Text&gt;Modal with size auto will fits its content&lt;/Text&gt;
+
+        &lt;Group wrap=&quot;nowrap&quot; mt=&quot;md&quot;&gt;
+          {badges}
+        &lt;/Group&gt;
+
+        &lt;Group mt=&quot;xl&quot;&gt;
+          &lt;Button onClick={increment}&gt;Add badge&lt;/Button&gt;
+          &lt;Button onClick={decrement}&gt;Remove badge&lt;/Button&gt;
+        &lt;/Group&gt;
+      &lt;/Modal&gt;
+
+      &lt;Button onClick={open}&gt;Open modal&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="fullscreen">Fullscreen</h2>
+<p>Fullscreen modal will take the entire screen, it is usually better to change transition to <code>fade</code>
+when <code>fullScreen</code> prop is set:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Modal, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Modal
+        opened={opened}
+        onClose={close}
+        title=&quot;This is a fullscreen modal&quot;
+        fullScreen
+        radius={0}
+        transitionProps={{ transition: &#39;fade&#39;, duration: 200 }}
+      &gt;
+        {/* Modal content */}
+      &lt;/Modal&gt;
+
+      &lt;Button onClick={open}&gt;Open Modal&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<p>To switch Modal to fullscreen on devices with small screens only use use-media-query hook.
+<code>size</code> prop is ignored if <code>fullScreen</code> prop is set:</p>
+<pre><code>
+import { useDisclosure, useMediaQuery } from &#39;@mantine/hooks&#39;;
+import { Modal, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+  const isMobile = useMediaQuery(&#39;(max-width: 50em)&#39;);
+
+  return (
+    &lt;&gt;
+      &lt;Modal
+        opened={opened}
+        onClose={close}
+        title=&quot;This is a fullscreen modal&quot;
+        fullScreen={isMobile}
+        transitionProps={{ transition: &#39;fade&#39;, duration: 200 }}
+      &gt;
+        The Modal will be full screen only on mobile
+      &lt;/Modal&gt;
+
+      &lt;Button onClick={open}&gt;Open Modal&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="customize-overlay">Customize overlay</h2>
+<p><code>Modal</code> uses Overlay component, you can set any props that Overlay
+supports with <code>overlayProps</code>:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Modal, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Modal
+        opened={opened}
+        onClose={close}
+        title=&quot;Authentication&quot;
+        overlayProps={{
+          backgroundOpacity: 0.55,
+          blur: 3,
+        }}
+      &gt;
+        {/* Modal content */}
+      &lt;/Modal&gt;
+
+      &lt;Button onClick={open}&gt;Open modal&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="modal-with-scroll">Modal with scroll</h2>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Modal, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  const content = Array(100)
+    .fill(0)
+    .map((_, index) =&gt; &lt;p key={index}&gt;Modal with scroll&lt;/p&gt;);
+
+  return (
+    &lt;&gt;
+      &lt;Modal opened={opened} onClose={close} title=&quot;Header is sticky&quot;&gt;
+        {content}
+      &lt;/Modal&gt;
+
+      &lt;Button onClick={open}&gt;Open modal&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="usage-with-scrollarea">Usage with ScrollArea</h2>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Modal, Button, ScrollArea } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  const content = Array(100)
+    .fill(0)
+    .map((_, index) =&gt; &lt;p key={index}&gt;Modal with scroll&lt;/p&gt;);
+
+  return (
+    &lt;&gt;
+      &lt;Modal
+        opened={opened}
+        onClose={close}
+        title=&quot;Header is sticky&quot;
+        scrollAreaComponent={ScrollArea.Autosize}
+      &gt;
+        {content}
+      &lt;/Modal&gt;
+
+      &lt;Button onClick={open}&gt;Open modal&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="change-offsets">Change offsets</h2>
+<p>Use <code>xOffset</code>/<code>yOffset</code> to configure horizontal/vertical content offsets:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Modal, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Modal opened={opened} onClose={close} title=&quot;Authentication&quot; yOffset=&quot;1vh&quot; xOffset={0}&gt;
+        {/* Modal content */}
+      &lt;/Modal&gt;
+
+      &lt;Button onClick={open}&gt;Open modal&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="change-transitions">Change transitions</h2>
+<p><code>Modal</code> is built with Transition component. Use <code>transitionProps</code>
+prop to customize any Transition properties:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Modal, Group, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [noTransitionOpened, setNoTransitionOpened] = useState(false);
+  const [slowTransitionOpened, setSlowTransitionOpened] = useState(false);
+
+  return (
+    &lt;&gt;
+      &lt;Modal
+        opened={slowTransitionOpened}
+        onClose={() =&gt; setSlowTransitionOpened(false)}
+        title=&quot;Please consider this&quot;
+        transitionProps={{ transition: &#39;rotate-left&#39; }}
+      &gt;
+        rotate-left transition
+      &lt;/Modal&gt;
+
+      &lt;Modal
+        opened={noTransitionOpened}
+        onClose={() =&gt; setNoTransitionOpened(false)}
+        title=&quot;Please consider this&quot;
+        transitionProps={{ transition: &#39;fade&#39;, duration: 600, timingFunction: &#39;linear&#39; }}
+      &gt;
+        fade transition 600ms linear transition
+      &lt;/Modal&gt;
+
+      &lt;Group justify=&quot;center&quot;&gt;
+        &lt;Button onClick={() =&gt; setSlowTransitionOpened(true)} variant=&quot;default&quot;&gt;
+          Rotate left transition
+        &lt;/Button&gt;
+        &lt;Button onClick={() =&gt; setNoTransitionOpened(true)} variant=&quot;default&quot;&gt;
+          Fade transition
+        &lt;/Button&gt;
+      &lt;/Group&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="initial-focus">Initial focus</h2>
+<p>Modal uses FocusTrap to trap focus. Add <code>data-autofocus</code>
+attribute to the element that should receive initial focus.</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Modal, Button, TextInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Modal opened={opened} onClose={close} title=&quot;Focus demo&quot;&gt;
+        &lt;TextInput label=&quot;First input&quot; placeholder=&quot;First input&quot; /&gt;
+        &lt;TextInput
+          data-autofocus
+          label=&quot;Input with initial focus&quot;
+          placeholder=&quot;It has data-autofocus attribute&quot;
+          mt=&quot;md&quot;
+        /&gt;
+      &lt;/Modal&gt;
+
+      &lt;Button onClick={open}&gt;Open modal&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<p>If you do not want to focus any elements when the modal is opened, use <code>FocusTrap.InitialFocus</code>
+component to create a visually hidden element that will receive initial focus:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Modal, Button, TextInput, FocusTrap } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Modal opened={opened} onClose={close} title=&quot;Focus demo&quot;&gt;
+        &lt;FocusTrap.InitialFocus /&gt;
+        &lt;TextInput label=&quot;First input&quot; placeholder=&quot;First input&quot; /&gt;
+        &lt;TextInput
+          data-autofocus
+          label=&quot;Input with initial focus&quot;
+          placeholder=&quot;It has data-autofocus attribute&quot;
+          mt=&quot;md&quot;
+        /&gt;
+      &lt;/Modal&gt;
+
+      &lt;Button onClick={open}&gt;Open modal&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<p>If you do not add <code>data-autofocus</code> attribute and do not use <code>FocusTrap.InitialFocus</code>,
+modal will focus the first focusable element inside it which is usually the close button.</p>
+<h2 id="control-behavior">Control behavior</h2>
+<p>The following props can be used to control <code>Modal</code> behavior.
+In most cases, it is not recommended to turn these features off –
+it will make the component less accessible.</p>
+<ul>
+<li><code>trapFocus</code> – determines whether focus should be trapped inside modal</li>
+<li><code>closeOnEscape</code> – determines whether the modal should be closed when <code>Escape</code> key is pressed</li>
+<li><code>closeOnClickOutside</code> – determines whether the modal should be closed when user clicks on the overlay</li>
+<li><code>returnFocus</code> – determines whether focus should be returned to the element that was focused before the modal was opened</li>
+</ul>
+<h2 id="react-remove-scroll-settings">react-remove-scroll settings</h2>
+<p><code>Modal</code> uses react-remove-scroll
+package to lock scroll. You can pass props down to the <code>RemoveScroll</code> component
+with <code>removeScrollProps</code>:</p>
+<pre><code class="language-tsx">import { Modal } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Modal
+      removeScrollProps={{ allowPinchZoom: true }}
+      opened
+      onClose={() =&gt; {}}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="change-close-icon">Change close icon</h2>
+<p>Use <code>closeButtonProps</code> to customize close button:</p>
+<pre><code>
+import { IconXboxX } from &#39;@tabler/icons-react&#39;;
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Modal, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Modal
+        opened={opened}
+        onClose={close}
+        title=&quot;Authentication&quot;
+        closeButtonProps={{
+          icon: &lt;IconXboxX size={20} stroke={1.5} /&gt;,
+        }}
+      &gt;
+        {/* Modal content */}
+      &lt;/Modal&gt;
+
+      &lt;Button onClick={open}&gt;Open modal&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="compound-components">Compound components</h2>
+<p>You can use the following compound components to have full control over the <code>Modal</code> rendering:</p>
+<ul>
+<li><code>Modal.Root</code> – context provider</li>
+<li><code>Modal.Overlay</code> – render Overlay</li>
+<li><code>Modal.Content</code> – main modal element, should include all modal content</li>
+<li><code>Modal.Header</code> – sticky header, usually contains <code>Modal.Title</code> and <code>Modal.CloseButton</code></li>
+<li><code>Modal.Title</code> – <code>h2</code> element, <code>aria-labelledby</code> of <code>Modal.Content</code> is pointing to this element, usually is rendered inside <code>Modal.Header</code></li>
+<li><code>Modal.CloseButton</code> – close button, usually rendered inside <code>Modal.Header</code></li>
+<li><code>Modal.Body</code> – a place for main content, <code>aria-describedby</code> of <code>Modal.Content</code> is pointing to this element</li>
+</ul>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Modal, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Modal.Root opened={opened} onClose={close}&gt;
+        &lt;Modal.Overlay /&gt;
+        &lt;Modal.Content&gt;
+          &lt;Modal.Header&gt;
+            &lt;Modal.Title&gt;Modal title&lt;/Modal.Title&gt;
+            &lt;Modal.CloseButton /&gt;
+          &lt;/Modal.Header&gt;
+          &lt;Modal.Body&gt;Modal content&lt;/Modal.Body&gt;
+        &lt;/Modal.Content&gt;
+      &lt;/Modal.Root&gt;
+
+      &lt;Button onClick={open}&gt;Open modal&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="fixed-elements-offset">Fixed elements offset</h2>
+<p><code>Modal</code> component uses react-remove-scroll
+package to lock scroll. To properly size these <code>elements</code> add a <code>className</code> to them (documentation):</p>
+<pre><code class="language-tsx">import { RemoveScroll } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;div className={RemoveScroll.classNames.fullWidth}&gt;
+        width: 100%
+      &lt;/div&gt;
+      &lt;div className={RemoveScroll.classNames.zeroRight}&gt;
+        right: 0
+      &lt;/div&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p><code>Modal</code> component follows WAI-ARIA recommendations on accessibility.</p>
+<p>Set <code>title</code> props to make component accessible, will add <code>aria-labelledby</code> to the content element:</p>
+<pre><code class="language-tsx">import { Modal } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Modal title=&quot;Modal label&quot; opened onClose={() =&gt; {}} /&gt;;
+}
+</code></pre>
+<p>To set close button <code>aria-label</code> use <code>closeButtonProps</code>:</p>
+<pre><code class="language-tsx">import { Modal } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Modal
+      closeButtonProps={{ &#39;aria-label&#39;: &#39;Close modal&#39; }}
+      opened
+      onClose={() =&gt; {}}
+    /&gt;
+  );
+}
+</code></pre>

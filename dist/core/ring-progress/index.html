@@ -1,0 +1,135 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p>Set <code>sections</code> prop to an array of:</p>
+<ul>
+<li><code>value</code> – number between 0 and 100 – amount of space filled by segment</li>
+<li><code>color</code> – segment color from theme or any other css color value</li>
+</ul>
+<pre><code>
+import { RingProgress, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;RingProgress
+      label={
+        &lt;Text size=&quot;xs&quot; ta=&quot;center&quot;&gt;
+          Application data usage
+        &lt;/Text&gt;
+      }
+      sections={[
+        { value: 40, color: &#39;cyan&#39; },
+        { value: 15, color: &#39;orange&#39; },
+        { value: 15, color: &#39;grape&#39; },
+      ]}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="size-thickness--rounded-caps">Size, thickness &amp; rounded caps</h2>
+<p>Use <code>size</code>, <code>thickness</code> &amp; <code>roundCaps</code> props to configure RingProgress, size and thickness values:</p>
+<pre><code>
+import { RingProgress } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;RingProgress
+      {{props}}
+      sections={[
+        { value: 40, color: &#39;cyan&#39; },
+        { value: 15, color: &#39;orange&#39; },
+        { value: 15, color: &#39;grape&#39; },
+      ]}
+    /&gt;
+  )
+}
+</code></pre>
+<h2 id="sections-tooltips">Sections tooltips</h2>
+<p>Add <code>tooltip</code> property to section to display floating Tooltip when user hovers over it:</p>
+<pre><code>
+import { RingProgress, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;RingProgress
+      size={170}
+      thickness={16}
+      label={
+        &lt;Text size=&quot;xs&quot; ta=&quot;center&quot; px=&quot;xs&quot; style={{ pointerEvents: &#39;none&#39; }}&gt;
+          Hover sections to see tooltips
+        &lt;/Text&gt;
+      }
+      sections={[
+        { value: 40, color: &#39;cyan&#39;, tooltip: &#39;Documents – 40 Gb&#39; },
+        { value: 25, color: &#39;orange&#39;, tooltip: &#39;Apps – 25 Gb&#39; },
+        { value: 15, color: &#39;grape&#39;, tooltip: &#39;Other – 15 Gb&#39; },
+      ]}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="root-color">Root color</h2>
+<p>Use <code>rootColor</code> property to change the root color:</p>
+<pre><code>
+import { RingProgress } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;RingProgress sections={[{ value: 40, color: &#39;yellow&#39; }]} rootColor=&quot;red&quot; /&gt;;
+}
+</code></pre>
+<h2 id="sections-props">Sections props</h2>
+<p>You can add any additional props to sections:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { RingProgress, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [hovered, setHovered] = useState(-1);
+  const reset = () =&gt; setHovered(-1);
+  return (
+    &lt;&gt;
+      &lt;RingProgress
+        onMouseLeave={() =&gt; setHovered(-1)}
+        size={140}
+        sections={[
+          { value: 40, color: &#39;cyan&#39;, onMouseEnter: () =&gt; setHovered(0), onMouseLeave: reset },
+          { value: 20, color: &#39;blue&#39;, onMouseEnter: () =&gt; setHovered(1), onMouseLeave: reset },
+          { value: 15, color: &#39;indigo&#39;, onMouseEnter: () =&gt; setHovered(2), onMouseLeave: reset },
+        ]}
+      /&gt;
+      &lt;Text&gt;Hovered section: {hovered === -1 ? &#39;none&#39; : hovered}&lt;/Text&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="customize-label">Customize label</h2>
+<p>You can add any React node as label, e.g. Text component with some additional styles
+or ThemeIcon:</p>
+<pre><code>
+import { ActionIcon, RingProgress, Text, Center, rem } from &#39;@mantine/core&#39;;
+import { IconCheck } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;RingProgress
+        sections={[{ value: 40, color: &#39;blue&#39; }]}
+        label={
+          &lt;Text c=&quot;blue&quot; fw={700} ta=&quot;center&quot; size=&quot;xl&quot;&gt;
+            40%
+          &lt;/Text&gt;
+        }
+      /&gt;
+
+      &lt;RingProgress
+        sections={[{ value: 100, color: &#39;teal&#39; }]}
+        label={
+          &lt;Center&gt;
+            &lt;ActionIcon color=&quot;teal&quot; variant=&quot;light&quot; radius=&quot;xl&quot; size=&quot;xl&quot;&gt;
+              &lt;IconCheck style={{ width: rem(22), height: rem(22) }} /&gt;
+            &lt;/ActionIcon&gt;
+          &lt;/Center&gt;
+        }
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>

@@ -1,0 +1,255 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { NativeSelect } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;NativeSelect{{props}} data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;]} /&gt;;
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { NativeSelect } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState(&#39;&#39;);
+
+  return (
+    &lt;NativeSelect
+      value={value}
+      onChange={(event) =&gt; setValue(event.currentTarget.value)}
+      data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Svelte&#39;, &#39;Vue&#39;]}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="adding-options">Adding options</h2>
+<p><code>NativeSelect</code> allows passing options in two ways:</p>
+<ul>
+<li><code>data</code> prop array</li>
+<li><code>children</code> prop with <code>option</code> components</li>
+</ul>
+<p>Note that if <code>children</code> is used, <code>data</code> will be ignored.</p>
+<h3 id="data-prop">data prop</h3>
+<p><code>data</code> prop accepts values in one of the following formats:</p>
+<ol>
+<li>Array of strings:</li>
+</ol>
+<pre><code class="language-tsx">import { NativeSelect } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;NativeSelect data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Svelte&#39;, &#39;Vue&#39;]} /&gt;
+  );
+}
+</code></pre>
+<ol start="2">
+<li>Array of objects with <code>label</code>, <code>value</code> and <code>disabled</code> keys:</li>
+</ol>
+<pre><code class="language-tsx">import { NativeSelect } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;NativeSelect
+      data={[
+        { label: &#39;React&#39;, value: &#39;react&#39; },
+        { label: &#39;Angular&#39;, value: &#39;angular&#39; },
+        { label: &#39;Svelte&#39;, value: &#39;svelte&#39;, disabled: true },
+        { label: &#39;Vue&#39;, value: &#39;vue&#39; },
+      ]}
+    /&gt;
+  );
+}
+</code></pre>
+<ol start="3">
+<li>Array of grouped options (string format):</li>
+</ol>
+<pre><code class="language-tsx">import { NativeSelect } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;NativeSelect
+      data={[
+        {
+          group: &#39;Frontend libraries&#39;,
+          items: [&#39;React&#39;, &#39;Angular&#39;, &#39;Svelte&#39;, &#39;Vue&#39;],
+        },
+        {
+          group: &#39;Backend libraries&#39;,
+          items: [&#39;Express&#39;, &#39;Koa&#39;, &#39;Django&#39;],
+        },
+      ]}
+    /&gt;
+  );
+}
+</code></pre>
+<ol start="4">
+<li>Array of grouped options (object format):</li>
+</ol>
+<pre><code class="language-tsx">import { NativeSelect } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;NativeSelect
+      data={[
+        {
+          group: &#39;Frontend libraries&#39;,
+          items: [
+            { label: &#39;React&#39;, value: &#39;react&#39; },
+            { label: &#39;Angular&#39;, value: &#39;angular&#39; },
+            { label: &#39;Vue&#39;, value: &#39;vue&#39;, disabled: true },
+          ],
+        },
+        {
+          group: &#39;Backend libraries&#39;,
+          items: [
+            { label: &#39;Express&#39;, value: &#39;express&#39; },
+            { label: &#39;Koa&#39;, value: &#39;koa&#39; },
+            { label: &#39;Django&#39;, value: &#39;django&#39; },
+          ],
+        },
+      ]}
+    /&gt;
+  );
+}
+</code></pre>
+<p>Example of <code>data</code> prop with array of grouped options:</p>
+<pre><code>
+import { NativeSelect } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;NativeSelect
+      data={[
+        {
+          group: &#39;Frontend libraries&#39;,
+          items: [
+            { label: &#39;React&#39;, value: &#39;react&#39; },
+            { label: &#39;Angular&#39;, value: &#39;angular&#39; },
+            { label: &#39;Vue&#39;, value: &#39;vue&#39;, disabled: true },
+          ],
+        },
+        {
+          group: &#39;Backend libraries&#39;,
+          items: [
+            { label: &#39;Express&#39;, value: &#39;express&#39; },
+            { label: &#39;Koa&#39;, value: &#39;koa&#39; },
+            { label: &#39;Django&#39;, value: &#39;django&#39; },
+          ],
+        },
+      ]}
+    /&gt;
+  );
+}
+</code></pre>
+<h3 id="children-options">children options</h3>
+<p>To add options with <code>children</code> prop, use <code>option</code> elements to add options and <code>optgroup</code>
+elements to group them:</p>
+<pre><code>
+import { NativeSelect } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;NativeSelect label=&quot;With children options&quot;&gt;
+      &lt;optgroup label=&quot;Frontend libraries&quot;&gt;
+        &lt;option value=&quot;react&quot;&gt;React&lt;/option&gt;
+        &lt;option value=&quot;angular&quot;&gt;Angular&lt;/option&gt;
+        &lt;option value=&quot;vue&quot; disabled&gt;
+          Vue
+        &lt;/option&gt;
+      &lt;/optgroup&gt;
+
+      &lt;optgroup label=&quot;Backend libraries&quot;&gt;
+        &lt;option value=&quot;express&quot;&gt;Express&lt;/option&gt;
+        &lt;option value=&quot;koa&quot;&gt;Koa&lt;/option&gt;
+        &lt;option value=&quot;django&quot;&gt;Django&lt;/option&gt;
+      &lt;/optgroup&gt;
+    &lt;/NativeSelect&gt;
+  );
+}
+</code></pre>
+<h2 id="with-dividers">With dividers</h2>
+<p>Use <code>hr</code> tags to add dividers between options:</p>
+<pre><code>
+import { NativeSelect } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;NativeSelect label=&quot;With dividers&quot;&gt;
+      &lt;option&gt;Select library&lt;/option&gt;
+
+      &lt;hr /&gt;
+
+      &lt;optgroup label=&quot;Frontend libraries&quot;&gt;
+        &lt;option value=&quot;react&quot;&gt;React&lt;/option&gt;
+        &lt;option value=&quot;angular&quot;&gt;Angular&lt;/option&gt;
+        &lt;option value=&quot;vue&quot;&gt;Vue&lt;/option&gt;
+      &lt;/optgroup&gt;
+
+      &lt;hr /&gt;
+
+      &lt;optgroup label=&quot;Backend libraries&quot;&gt;
+        &lt;option value=&quot;express&quot;&gt;Express&lt;/option&gt;
+        &lt;option value=&quot;koa&quot;&gt;Koa&lt;/option&gt;
+        &lt;option value=&quot;django&quot;&gt;Django&lt;/option&gt;
+      &lt;/optgroup&gt;
+    &lt;/NativeSelect&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { NativeSelect, rem } from &#39;@mantine/core&#39;;
+import { IconChevronDown, IconHash } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;NativeSelect
+        leftSection={&lt;IconHash style={{ width: rem(16), height: rem(16) }} /&gt;}
+        leftSectionPointerEvents=&quot;none&quot;
+        label=&quot;Left section&quot;
+        data={[&#39;React&#39;, &#39;Angular&#39;]}
+      /&gt;
+
+      &lt;NativeSelect
+        rightSection={&lt;IconChevronDown style={{ width: rem(16), height: rem(16) }} /&gt;}
+        label=&quot;Right section&quot;
+        data={[&#39;React&#39;, &#39;Angular&#39;]}
+        mt=&quot;md&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled-state">Disabled state</h2>
+<pre><code>
+import { NativeSelect } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;NativeSelect disabled data={[&#39;React&#39;, &#39;Angular&#39;]} label=&quot;Disabled NativeSelect&quot; /&gt;;
+}
+</code></pre>
+<h2 id="error-state">Error state</h2>
+<pre><code>
+import { NativeSelect } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;NativeSelect error label=&quot;Boolean error&quot; data={[&#39;React&#39;, &#39;Angular&#39;]} /&gt;
+      &lt;NativeSelect
+        error=&quot;Error message&quot;
+        label=&quot;React node error&quot;
+        data={[&#39;React&#39;, &#39;Angular&#39;]}
+        mt=&quot;md&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { NativeSelect } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;NativeSelect{{props}} data={[&#39;React&#39;, &#39;Angular&#39;]} label=&quot;NativeSelect label&quot; description=&quot;NativeSelect description&quot; error=&quot;NativeSelect error&quot; withAsterisk /&gt;;
+}
+</code></pre>

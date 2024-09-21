@@ -1,0 +1,74 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>Group</code> is a horizontal flex container. If you need a vertical flex container, use Stack
+component instead. If you need to have full control over flex container properties, use Flex component.</p>
+<pre><code>
+import { Group, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Group{{props}}&gt;
+      &lt;Button variant=&quot;default&quot;&gt;First&lt;/Button&gt;
+      &lt;Button variant=&quot;default&quot;&gt;Second&lt;/Button&gt;
+      &lt;Button variant=&quot;default&quot;&gt;Third&lt;/Button&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>
+<h2 id="preventgrowoverflow">preventGrowOverflow</h2>
+<p><code>preventGrowOverflow</code> prop allows you to control how <code>Group</code> children should behave when there is not enough
+space to fit them all on one line. By default, children are not allowed to take more space than
+<code>(1 / children.length) * 100%</code> of parent width (<code>preventGrowOverflow</code> is set to <code>true</code>). To change
+this behavior, set <code>preventGrowOverflow</code> to <code>false</code> and children will be allowed to grow and take
+as much space as they need.</p>
+<pre><code>
+import { Group, Button, Box, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Box style={{ overflow: &#39;hidden&#39; }}&gt;
+      &lt;Box maw={500} p=&quot;md&quot; mx=&quot;auto&quot; bg=&quot;var(--mantine-color-blue-light)&quot;&gt;
+        &lt;Text size=&quot;sm&quot; mb={5}&gt;
+          preventGrowOverflow: true – each child width is always limited to 33% of parent width
+          (since there are 3 children)
+        &lt;/Text&gt;
+
+        &lt;Group grow wrap=&quot;nowrap&quot;&gt;
+          &lt;Button variant=&quot;default&quot;&gt;First button&lt;/Button&gt;
+          &lt;Button variant=&quot;default&quot;&gt;Second button with large content&lt;/Button&gt;
+          &lt;Button variant=&quot;default&quot;&gt;Third button&lt;/Button&gt;
+        &lt;/Group&gt;
+
+        &lt;Text size=&quot;sm&quot; mb={5} mt=&quot;md&quot;&gt;
+          preventGrowOverflow: false – children will grow based on their content, they can take more
+          than 33% of parent width
+        &lt;/Text&gt;
+
+        &lt;Group grow preventGrowOverflow={false} wrap=&quot;nowrap&quot;&gt;
+          &lt;Button variant=&quot;default&quot;&gt;First button&lt;/Button&gt;
+          &lt;Button variant=&quot;default&quot;&gt;Second button with large content&lt;/Button&gt;
+          &lt;Button variant=&quot;default&quot;&gt;Third button&lt;/Button&gt;
+        &lt;/Group&gt;
+      &lt;/Box&gt;
+    &lt;/Box&gt;
+  );
+}
+</code></pre>
+<h2 id="group-children">Group children</h2>
+<p><strong>!important</strong> <code>Group</code> works correctly only with React elements.
+Strings, numbers, fragments may have incorrect styles if <code>grow</code> prop is set:</p>
+<pre><code class="language-tsx">// Invalid Group usage, do not do this
+import { Group } from &#39;@mantine/core&#39;;
+
+function InvalidDemo() {
+  return (
+    &lt;Group grow&gt;
+      First string
+      &lt;&gt;
+        &lt;div&gt;element inside fragment&lt;/div&gt;
+        &lt;div&gt;another inside fragment&lt;/div&gt;
+      &lt;/&gt;
+      {20}
+    &lt;/Group&gt;
+  );
+}
+</code></pre>

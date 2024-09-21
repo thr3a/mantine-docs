@@ -1,0 +1,407 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Button{{props}}&gt;Button&lt;/Button&gt;;
+}
+</code></pre>
+<h2 id="full-width">Full width</h2>
+<p>If <code>fullWidth</code> prop is set <code>Button</code> will take 100% of parent width:</p>
+<pre><code>
+import { Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Button fullWidth&gt;Full width button&lt;/Button&gt;;
+}
+</code></pre>
+<h2 id="left-and-right-sections">Left and right sections</h2>
+<p><code>leftSection</code> and <code>rightSection</code> allow adding icons or any other element to the left and right side of the button.
+When a section is added, padding on the corresponding side is reduced.</p>
+<p>Note that <code>leftSection</code> and <code>rightSection</code> are flipped in RTL mode
+(<code>leftSection</code> is displayed on the right and <code>rightSection</code> is displayed on the left).</p>
+<pre><code>
+import { Group, Button } from &#39;@mantine/core&#39;;
+import { IconPhoto, IconDownload, IconArrowRight } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;Group justify=&quot;center&quot;&gt;
+      &lt;Button leftSection={&lt;IconPhoto size={14} /&gt;} variant=&quot;default&quot;&gt;
+        Gallery
+      &lt;/Button&gt;
+
+      &lt;Button rightSection={&lt;IconDownload size={14} /&gt;}&gt;Download&lt;/Button&gt;
+
+      &lt;Button
+        variant=&quot;light&quot;
+        leftSection={&lt;IconPhoto size={14} /&gt;}
+        rightSection={&lt;IconArrowRight size={14} /&gt;}
+      &gt;
+        Visit gallery
+      &lt;/Button&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>
+<h2 id="sections-position">Sections position</h2>
+<p><code>justify</code> prop sets <code>justify-content</code> of <code>inner</code> element. You can use it to change the alignment of
+left and right sections. For example, to spread them across the button set <code>justify=&quot;space-between&quot;</code>.</p>
+<p>If you need to align just one section to the side of the button set <code>justify</code> to <code>space-between</code>
+and add empty <code>&lt;span /&gt;</code> to the opposite section.</p>
+<pre><code>(props) => `
+import { Button } from '@mantine/core';
+import { IconPhoto } from '@tabler/icons-react';
+
+function Demo() {
+  const icon = <IconPhoto size={14} />;
+  return (
+    <>
+      <Button justify="${props.justify}" fullWidth leftSection={icon} rightSection={icon} variant="default">
+        Button label
+      </Button>
+
+      <Button justify="${props.justify}" fullWidth leftSection={icon} variant="default" mt="md">
+        Button label
+      </Button>
+
+      <Button justify="${props.justify}" fullWidth rightSection={icon} variant="default" mt="md">
+        Button label
+      </Button>
+
+      <Button
+        justify="${props.justify}"
+        fullWidth
+        rightSection={icon}
+        leftSection={<span />}
+        variant="default"
+        mt="md"
+      >
+        Button label
+      </Button>
+    </>
+  );
+}
+`</code></pre>
+<h2 id="compact-size">Compact size</h2>
+<p><code>Button</code> supports <code>xs</code> – <code>xl</code> and <code>compact-xs</code> – <code>compact-xl</code> sizes. <code>compact</code> sizes have
+the same font-size as <code>xs</code> – <code>xl</code> but reduced padding and height.</p>
+<pre><code>(props) => `
+import { Button, Group } from '@mantine/core';
+
+function Demo() {
+  return (
+    <Group justify="center">
+      <Button size="${props.size}">Regular ${props.size}</Button>
+      <Button size="compact-${props.size}">Compact ${props.size}</Button>
+    </Group>
+  );
+}
+`</code></pre>
+<pre><code>(props) => `
+import { Button } from '@mantine/core';
+
+function Demo() {
+  return (
+    <Button
+      variant="gradient"
+      gradient={{ from: '${props.gradientFrom}', to: '${props.gradientTo}', deg: ${props.gradientDegree} }}
+    >
+      Gradient button
+    </Button>
+  );
+}
+`</code></pre>
+<h2 id="disabled-state">Disabled state</h2>
+<p>To make <code>Button</code> disabled, set <code>disabled</code> prop, this will prevent any interactions with the button
+and add disabled styles. If you want the button to just look disabled but still be interactive,
+set <code>data-disabled</code> prop instead. Note that disabled styles are the same for all variants.</p>
+<pre><code>
+import { Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Button disabled&gt;Disabled button&lt;/Button&gt;;
+}
+</code></pre>
+<h2 id="disabled-state-when-button-is-link">Disabled state when Button is link</h2>
+<p><code>&lt;a /&gt;</code> element does not support <code>disabled</code> attribute. To make <code>Button</code> disabled when it is
+rendered as a link, set <code>data-disabled</code> attribute instead and prevent default behavior in
+<code>onClick</code> event handler.</p>
+<pre><code>
+import { Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Button
+      component=&quot;a&quot;
+      href=&quot;https://mantine.dev&quot;
+      data-disabled
+      onClick={(event) =&gt; event.preventDefault()}
+    &gt;
+      Disabled link
+    &lt;/Button&gt;
+  );
+}
+</code></pre>
+<h2 id="customize-disabled-styles">Customize disabled styles</h2>
+<p>To customize disabled styles, it is recommended to use both <code>&amp;:disabled</code> and <code>&amp;[data-disabled]</code>
+selectors:</p>
+<ul>
+<li><code>&amp;:disabled</code> is used to style the button when <code>disabled</code> prop is set and
+also when the button is disabled by the parent component (for example, when <code>disabled</code> prop is set on a
+<code>&lt;fieldset /&gt;</code> element which contains <code>Button</code>).</li>
+<li><code>&amp;[data-disabled]</code> is used to style the button when it is not actually disabled but should look like
+it is (for example, <code>data-disabled</code> should be used if you need to use Tooltip with disabled <code>Button</code>
+or when <code>Button</code> is used as a link)</li>
+</ul>
+<pre><code>
+import { Button } from &#39;@mantine/core&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+function Demo() {
+  return (
+    &lt;Button className={classes.button} disabled&gt;
+      Disabled with styles
+    &lt;/Button&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled-button-with-tooltip">Disabled button with Tooltip</h2>
+<p><code>onMouseLeave</code> event is not triggered when <code>Button</code> is disabled, so if you need to use
+Tooltip with disabled <code>Button</code> you need to set <code>data-disabled</code> prop on <code>Button</code>
+instead of <code>disabled</code>. Note that it is also required to change <code>onClick</code> event handler to
+<code>(event) =&gt; event.preventDefault()</code> as <code>Button</code> is not actually disabled and will still trigger
+<code>onClick</code> event.</p>
+<pre><code>
+import { Button, Tooltip } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tooltip label=&quot;Tooltip for disabled button&quot;&gt;
+      &lt;Button data-disabled onClick={(event) =&gt; event.preventDefault()}&gt;
+        Disabled button with tooltip
+      &lt;/Button&gt;
+    &lt;/Tooltip&gt;
+  );
+}
+</code></pre>
+<h2 id="loading-state">Loading state</h2>
+<p>When <code>loading</code> prop is set, <code>Button</code> will be disabled and Loader with overlay will be rendered
+in the center of the button. Loader color depends on <code>Button</code> variant.</p>
+<pre><code>
+import { Button, Group, Switch } from &#39;@mantine/core&#39;;
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+
+function Demo() {
+  const [loading, { toggle }] = useDisclosure();
+  return (
+    &lt;&gt;
+      &lt;Group&gt;
+        &lt;Button loading={loading}&gt;Filled button&lt;/Button&gt;
+        &lt;Button variant=&quot;light&quot; loading={loading}&gt;
+          Light button
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;outline&quot; loading={loading}&gt;
+          Outline button
+        &lt;/Button&gt;
+      &lt;/Group&gt;
+
+      &lt;Switch checked={loading} onChange={toggle} label=&quot;Loading state&quot; mt=&quot;md&quot; /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="loader-props">Loader props</h2>
+<p>You can customize Loader with <code>loaderProps</code> prop, it accepts all props that
+Loader component has:</p>
+<pre><code>
+import { Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Button loading loaderProps={{ type: &#39;dots&#39; }}&gt;
+      Loading button
+    &lt;/Button&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Button, rem } from &#39;@mantine/core&#39;;
+import { IconAt } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return &lt;Button{{props}} leftSection={&lt;IconAt style={{ width: rem(16), height: rem(16) }} /&gt;}&gt;Your email&lt;/Button&gt;;
+}
+</code></pre>
+<p>Example of customizing <code>Button</code> with Styles API and data-* attributes:</p>
+<pre><code>
+import { Button, ButtonProps, Group, rem } from &#39;@mantine/core&#39;;
+import { IconArrowRight } from &#39;@tabler/icons-react&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+function SendFilesButton(props: ButtonProps &amp; React.ComponentPropsWithoutRef&lt;&#39;button&#39;&gt;) {
+  return &lt;Button {...props} radius=&quot;md&quot; classNames={classes} /&gt;;
+}
+
+function Demo() {
+  return (
+    &lt;Group&gt;
+      &lt;SendFilesButton
+        leftSection=&quot;12&quot;
+        rightSection={&lt;IconArrowRight style={{ width: rem(18) }} /&gt;}
+      &gt;
+        Send files
+      &lt;/SendFilesButton&gt;
+      &lt;SendFilesButton
+        leftSection=&quot;3&quot;
+        rightSection={&lt;IconArrowRight style={{ width: rem(18) }} /&gt;}
+        disabled
+      &gt;
+        Send files
+      &lt;/SendFilesButton&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>
+<h2 id="custom-variants">Custom variants</h2>
+<p>To add new <code>Button</code> variants, use data-variant attribute.
+Usually new variants are added on theme, this way they are
+available in all <code>Button</code> components in your application.</p>
+<pre><code>
+import { Group, Button, MantineProvider, createTheme } from &#39;@mantine/core&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+const theme = createTheme({
+  components: {
+    Button: Button.extend({
+      classNames: classes,
+    }),
+  },
+});
+
+function Demo() {
+  return (
+    &lt;MantineProvider theme={theme}&gt;
+      &lt;Group&gt;
+        &lt;Button variant=&quot;danger&quot;&gt;Danger variant&lt;/Button&gt;
+        &lt;Button variant=&quot;primary&quot;&gt;Primary variant&lt;/Button&gt;
+      &lt;/Group&gt;
+    &lt;/MantineProvider&gt;
+  );
+}
+</code></pre>
+<h2 id="customize-variants-colors">Customize variants colors</h2>
+<p>You can customize colors for <code>Button</code> and other components variants by adding
+variantColorResolver to your theme.</p>
+<pre><code>
+import {
+  Button,
+  Group,
+  MantineProvider,
+  defaultVariantColorsResolver,
+  VariantColorsResolver,
+  parseThemeColor,
+  rem,
+  rgba,
+  darken,
+} from &#39;@mantine/core&#39;;
+
+const variantColorResolver: VariantColorsResolver = (input) =&gt; {
+  const defaultResolvedColors = defaultVariantColorsResolver(input);
+  const parsedColor = parseThemeColor({
+    color: input.color || input.theme.primaryColor,
+    theme: input.theme,
+  });
+
+  // Override some properties for variant
+  if (parsedColor.isThemeColor &amp;&amp; parsedColor.color === &#39;lime&#39; &amp;&amp; input.variant === &#39;filled&#39;) {
+    return {
+      ...defaultResolvedColors,
+      color: &#39;var(--mantine-color-black)&#39;,
+      hoverColor: &#39;var(--mantine-color-black)&#39;,
+    };
+  }
+
+  // Completely override variant
+  if (input.variant === &#39;light&#39;) {
+    return {
+      background: rgba(parsedColor.value, 0.1),
+      hover: rgba(parsedColor.value, 0.15),
+      border: `${rem(1)} solid ${parsedColor.value}`,
+      color: darken(parsedColor.value, 0.1),
+    };
+  }
+
+  // Add new variants support
+  if (input.variant === &#39;danger&#39;) {
+    return {
+      background: &#39;var(--mantine-color-red-9)&#39;,
+      hover: &#39;var(--mantine-color-red-8)&#39;,
+      color: &#39;var(--mantine-color-white)&#39;,
+      border: &#39;none&#39;,
+    };
+  }
+
+  return defaultResolvedColors;
+};
+
+function Demo() {
+  return (
+    &lt;MantineProvider theme={{ variantColorResolver }}&gt;
+      &lt;Group&gt;
+        &lt;Button color=&quot;lime.4&quot; variant=&quot;filled&quot;&gt;
+          Lime filled button
+        &lt;/Button&gt;
+
+        &lt;Button color=&quot;orange&quot; variant=&quot;light&quot;&gt;
+          Orange light button
+        &lt;/Button&gt;
+
+        &lt;Button variant=&quot;danger&quot;&gt;Danger button&lt;/Button&gt;
+      &lt;/Group&gt;
+    &lt;/MantineProvider&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Button, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Group&gt;
+      &lt;Button color=&quot;lime.4&quot;&gt;Default&lt;/Button&gt;
+      &lt;Button color=&quot;lime.4&quot; autoContrast&gt;
+        Auto contrast
+      &lt;/Button&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>
+<h2 id="buttongroup">Button.Group</h2>
+<pre><code>
+import { Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Button.Group{{props}}&gt;
+      &lt;Button variant=&quot;default&quot;&gt;First&lt;/Button&gt;
+      &lt;Button variant=&quot;default&quot;&gt;Second&lt;/Button&gt;
+      &lt;Button variant=&quot;default&quot;&gt;Third&lt;/Button&gt;
+    &lt;/Button.Group&gt;
+  );
+}
+</code></pre>
+<p>Note that you must not wrap child <code>Button</code> components with any additional elements:</p>
+<pre><code class="language-tsx">import { Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Button.Group&gt;
+      &lt;div&gt;
+        &lt;Button&gt;This will not work&lt;/Button&gt;
+      &lt;/div&gt;
+      &lt;Button&gt;Buttons will have incorrect borders&lt;/Button&gt;
+    &lt;/Button.Group&gt;
+  );
+}
+</code></pre>

@@ -1,0 +1,250 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { PasswordInput } from &#39;@mantine/core&#39;;
+
+
+function Demo() {
+  return (
+    &lt;PasswordInput
+      {{props}}
+      placeholder=&quot;Input placeholder&quot;
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { PasswordInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState(&#39;&#39;);
+  return (
+    &lt;PasswordInput
+      value={value}
+      onChange={(event) =&gt; setValue(event.currentTarget.value)}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="controlled-visibility-toggle">Controlled visibility toggle</h2>
+<p>Control visibility state with <code>visible</code> and <code>onVisibilityChange</code> props,
+for example, the props can be used to sync visibility state between two inputs:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { PasswordInput, Stack } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [visible, { toggle }] = useDisclosure(false);
+  return (
+    &lt;Stack&gt;
+      &lt;PasswordInput
+        label=&quot;Password&quot;
+        defaultValue=&quot;secret&quot;
+        visible={visible}
+        onVisibilityChange={toggle}
+      /&gt;
+      &lt;PasswordInput
+        label=&quot;Confirm password&quot;
+        defaultValue=&quot;secret&quot;
+        visible={visible}
+        onVisibilityChange={toggle}
+      /&gt;
+    &lt;/Stack&gt;
+  );
+}
+</code></pre>
+<h2 id="change-visibility-toggle-icon">Change visibility toggle icon</h2>
+<p>To change visibility toggle icon, pass a React component that accepts <code>reveal</code> prop to <code>visibilityToggleIcon</code>:</p>
+<pre><code>
+import { PasswordInput } from &#39;@mantine/core&#39;;
+import { IconEyeCheck, IconEyeOff } from &#39;@tabler/icons-react&#39;;
+
+const VisibilityToggleIcon = ({ reveal }: { reveal: boolean }) =&gt;
+  reveal ? (
+    &lt;IconEyeOff style={{ width: &#39;var(--psi-icon-size)&#39;, height: &#39;var(--psi-icon-size)&#39; }} /&gt;
+  ) : (
+    &lt;IconEyeCheck style={{ width: &#39;var(--psi-icon-size)&#39;, height: &#39;var(--psi-icon-size)&#39; }} /&gt;
+  );
+
+function Demo() {
+  return (
+    &lt;PasswordInput
+      maw={320}
+      mx=&quot;auto&quot;
+      label=&quot;Change visibility toggle icon&quot;
+      placeholder=&quot;Change visibility toggle icon&quot;
+      defaultValue=&quot;secret&quot;
+      visibilityToggleIcon={VisibilityToggleIcon}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="strength-meter-example">Strength meter example</h2>
+<p>Password strength meter example with Progress and Popover components:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { IconX, IconCheck } from &#39;@tabler/icons-react&#39;;
+import { PasswordInput, Progress, Text, Popover, Box, rem } from &#39;@mantine/core&#39;;
+
+function PasswordRequirement({ meets, label }: { meets: boolean; label: string }) {
+  return (
+    &lt;Text
+      c={meets ? &#39;teal&#39; : &#39;red&#39;}
+      style={{ display: &#39;flex&#39;, alignItems: &#39;center&#39; }}
+      mt={7}
+      size=&quot;sm&quot;
+    &gt;
+      {meets ? (
+        &lt;IconCheck style={{ width: rem(14), height: rem(14) }} /&gt;
+      ) : (
+        &lt;IconX style={{ width: rem(14), height: rem(14) }} /&gt;
+      )}{&#39; &#39;}
+      &lt;Box ml={10}&gt;{label}&lt;/Box&gt;
+    &lt;/Text&gt;
+  );
+}
+
+const requirements = [
+  { re: /[0-9]/, label: &#39;Includes number&#39; },
+  { re: /[a-z]/, label: &#39;Includes lowercase letter&#39; },
+  { re: /[A-Z]/, label: &#39;Includes uppercase letter&#39; },
+  { re: /[$&amp;+,:;=?@#|&#39;&lt;&gt;.^*()%!-]/, label: &#39;Includes special symbol&#39; },
+];
+
+function getStrength(password: string) {
+  let multiplier = password.length &gt; 5 ? 0 : 1;
+
+  requirements.forEach((requirement) =&gt; {
+    if (!requirement.re.test(password)) {
+      multiplier += 1;
+    }
+  });
+
+  return Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 10);
+}
+
+function Demo() {
+  const [popoverOpened, setPopoverOpened] = useState(false);
+  const [value, setValue] = useState(&#39;&#39;);
+  const checks = requirements.map((requirement, index) =&gt; (
+    &lt;PasswordRequirement key={index} label={requirement.label} meets={requirement.re.test(value)} /&gt;
+  ));
+
+  const strength = getStrength(value);
+  const color = strength === 100 ? &#39;teal&#39; : strength &gt; 50 ? &#39;yellow&#39; : &#39;red&#39;;
+
+  return (
+    &lt;Popover opened={popoverOpened} position=&quot;bottom&quot; width=&quot;target&quot; transitionProps={{ transition: &#39;pop&#39; }}&gt;
+      &lt;Popover.Target&gt;
+        &lt;div
+          onFocusCapture={() =&gt; setPopoverOpened(true)}
+          onBlurCapture={() =&gt; setPopoverOpened(false)}
+        &gt;
+          &lt;PasswordInput
+            withAsterisk
+            label=&quot;Your password&quot;
+            placeholder=&quot;Your password&quot;
+            value={value}
+            onChange={(event) =&gt; setValue(event.currentTarget.value)}
+          /&gt;
+        &lt;/div&gt;
+      &lt;/Popover.Target&gt;
+      &lt;Popover.Dropdown&gt;
+        &lt;Progress color={color} value={strength} size={5} mb=&quot;xs&quot; /&gt;
+        &lt;PasswordRequirement label=&quot;Includes at least 6 characters&quot; meets={value.length &gt; 5} /&gt;
+        {checks}
+      &lt;/Popover.Dropdown&gt;
+    &lt;/Popover&gt;
+  );
+}
+</code></pre>
+<h2 id="usage-without-visibility-toggle">Usage without visibility toggle</h2>
+<p>If you do not need visibility toggle button, use TextInput component instead:</p>
+<pre><code class="language-tsx">import { TextInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;TextInput type=&quot;password&quot; /&gt;;
+}
+</code></pre>
+<p>Note that when <code>rightSection</code> prop is used, visibility toggle button is not rendered.</p>
+<pre><code>
+import { PasswordInput, rem } from &#39;@mantine/core&#39;;
+import { IconLock } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  const icon = &lt;IconLock style={{ width: rem(18), height: rem(18) }} stroke={1.5} /&gt;;
+
+  return (
+    &lt;&gt;
+      &lt;PasswordInput leftSection={icon} label=&quot;With left section&quot; placeholder=&quot;With left section&quot; /&gt;
+      &lt;PasswordInput
+        rightSection={icon}
+        label=&quot;With right section&quot;
+        placeholder=&quot;With right section&quot;
+        mt=&quot;md&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="error-state">Error state</h2>
+<pre><code>
+import { PasswordInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;PasswordInput label=&quot;Boolean error&quot; placeholder=&quot;Boolean error&quot; error /&gt;
+      &lt;PasswordInput
+        mt=&quot;md&quot;
+        label=&quot;With error message&quot;
+        placeholder=&quot;With error message&quot;
+        error=&quot;Invalid name&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled">Disabled</h2>
+<p>When <code>disabled</code> prop is set, visibility toggle button is hidden:</p>
+<pre><code>
+import { PasswordInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;PasswordInput disabled label=&quot;Disabled password input&quot; placeholder=&quot;Disabled password input&quot; /&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { IconLock } from &#39;@tabler/icons-react&#39;;
+import { PasswordInput, rem } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;PasswordInput
+      label=&quot;Label&quot;
+      placeholder=&quot;PasswordInput&quot;
+      description=&quot;Description&quot;
+      error=&quot;Error&quot;
+      withAsterisk
+      leftSection={&lt;IconLock style={{ width: rem(18), height: rem(18) }} /&gt;}
+      {{props}}
+    /&gt;
+  );
+}
+</code></pre>
+<p>To set <code>aria-label</code> on the visibility toggle button, use <code>visibilityToggleButtonProps</code> prop:</p>
+<pre><code class="language-tsx">import { PasswordInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;PasswordInput
+      label=&quot;Password&quot;
+      visibilityToggleButtonProps={{
+        &#39;aria-label&#39;: &#39;Toggle password visibility&#39;,
+      }}
+    /&gt;
+  );
+}
+</code></pre>

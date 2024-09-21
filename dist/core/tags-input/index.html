@@ -1,0 +1,627 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>TagsInput</code> provides a way to enter multiple values. It can be used with suggestions or without them.
+<code>TagsInput</code> is similar to MultiSelect, but it allows entering custom values.</p>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;TagsInput label=&quot;Press Enter to submit a tag&quot; placeholder=&quot;Enter tag&quot; /&gt;;
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<p><code>TagsInput</code> value must be an array of strings, other types are not supported.
+<code>onChange</code> function is called with an array of strings as a single argument.</p>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState&lt;string[]&gt;([]);
+  return &lt;TagsInput data={[]} value={value} onChange={setValue} /&gt;;
+}
+</code></pre>
+<h2 id="controlled-search-value">Controlled search value</h2>
+<p>You can control search value with <code>searchValue</code> and <code>onSearchChange</code> props:</p>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [searchValue, setSearchValue] = useState(&#39;&#39;);
+  return (
+    &lt;TagsInput
+      searchValue={searchValue}
+      onSearchChange={setSearchValue}
+      data={[]}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="clearable">Clearable</h2>
+<p>Set <code>clearable</code> prop to display the clear button in the right section. The button is not displayed
+when:</p>
+<ul>
+<li>The component does not have a value</li>
+<li>The component is disabled</li>
+<li>The component is read only</li>
+</ul>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      label=&quot;Press Enter to submit a tag&quot;
+      placeholder=&quot;Enter tag&quot;
+      defaultValue={[&#39;React&#39;]}
+      clearable
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="max-selected-values">Max selected values</h2>
+<p>You can limit the number of selected values with <code>maxTags</code> prop. This will not allow adding more values
+once the limit is reached.</p>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      label=&quot;Press Enter to submit a tag&quot;
+      description=&quot;Add up to 3 tags&quot;
+      placeholder=&quot;Enter tag&quot;
+      maxTags={3}
+      defaultValue={[&#39;first&#39;, &#39;second&#39;]}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="accept-value-on-blur">Accept value on blur</h2>
+<p>By default, if the user types a value and blurs the input, the value is added to the list.
+You can change this behavior by setting <code>acceptValueOnBlur</code> to <code>false</code>. In this case, the value is added
+only when the user presses <code>Enter</code> or clicks on a suggestion.</p>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;TagsInput
+        label=&quot;Value IS accepted on blur&quot;
+        placeholder=&quot;Enter text, then blur the field&quot;
+        data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Svelte&#39;]}
+        acceptValueOnBlur
+      /&gt;
+      &lt;TagsInput
+        label=&quot;Value IS NOT accepted on blur&quot;
+        placeholder=&quot;Enter text, then blur the field&quot;
+        data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Svelte&#39;]}
+        acceptValueOnBlur={false}
+        mt=&quot;md&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="allow-duplicates">Allow duplicates</h2>
+<p>By default <code>TagsInput</code> does not allow to add duplicate values, but you can change this behavior by
+setting <code>allowDuplicates</code> prop. Value is considered duplicate if it is already present in the <code>value</code> array,
+regardless of the case and trailing whitespace.</p>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      label=&quot;Press Enter to submit a tag&quot;
+      placeholder=&quot;Duplicates are allowed&quot;
+      allowDuplicates
+    /&gt;
+  );
+}
+
+</code></pre>
+<h2 id="split-chars">Split chars</h2>
+<p>By default, <code>TagsInput</code> splits values by comma (<code>,</code>), you can change this behavior by setting
+<code>splitChars</code> prop to an array of strings. All values from <code>splitChars</code> cannot be included in the final value.
+Values are also splitted on paste.</p>
+<p>Example of splitting by <code>,</code>, <code>|</code> and space:</p>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      label=&quot;Press Enter to submit a tag&quot;
+      placeholder=&quot;Enter tag&quot;
+      splitChars={[&#39;,&#39;, &#39; &#39;, &#39;|&#39;]}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="with-suggestions">With suggestions</h2>
+<p><code>TagsInput</code> can be used with suggestions, it will render suggestions list under input and allow to select
+suggestions with keyboard or mouse. Note that user is not limited to suggestions, it is still possible to
+enter custom values. If you want to allow values only from suggestions, use MultiSelect component instead.</p>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      label=&quot;Press Enter to submit a tag&quot;
+      placeholder=&quot;Pick tag from list&quot;
+      data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Svelte&#39;]}
+    /&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { TagsInput, ComboboxItem, OptionsFilter } from &#39;@mantine/core&#39;;
+
+const optionsFilter: OptionsFilter = ({ options, search }) =&gt; {
+  const splittedSearch = search.toLowerCase().trim().split(&#39; &#39;);
+  return (options as ComboboxItem[]).filter((option) =&gt; {
+    const words = option.label.toLowerCase().trim().split(&#39; &#39;);
+    return splittedSearch.every((searchWord) =&gt; words.some((word) =&gt; word.includes(searchWord)));
+  });
+};
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      label=&quot;What countries have you visited?&quot;
+      placeholder=&quot;Pick value or enter anything&quot;
+      data={[&#39;Great Britain&#39;, &#39;Russian Federation&#39;, &#39;United States&#39;]}
+      filter={optionsFilter}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="sort-options">Sort options</h2>
+<p>By default, options are sorted by their position in the data array. You can change this behavior
+with <code>filter</code> function:</p>
+<pre><code>
+import { TagsInput, ComboboxItem, OptionsFilter } from &#39;@mantine/core&#39;;
+
+const optionsFilter: OptionsFilter = ({ options, search }) =&gt; {
+  const filtered = (options as ComboboxItem[]).filter((option) =&gt;
+    option.label.toLowerCase().trim().includes(search.toLowerCase().trim())
+  );
+
+  filtered.sort((a, b) =&gt; a.label.localeCompare(b.label));
+  return filtered;
+};
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      label=&quot;Your favorite libraries&quot;
+      placeholder=&quot;Pick value or enter anything&quot;
+      data={[&#39;4 – React&#39;, &#39;1 – Angular&#39;, &#39;3 – Vue&#39;, &#39;2 – Svelte&#39;]}
+      filter={optionsFilter}
+    /&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+const largeData = Array(100_000)
+  .fill(0)
+  .map((_, index) =&gt; `Option ${index}`);
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      label=&quot;100 000 options tags input&quot;
+      placeholder=&quot;Use limit to optimize performance&quot;
+      limit={5}
+      data={largeData}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="renderoption">renderOption</h2>
+<p><code>renderOption</code> callback allows you to customize option rendering. It is called with option object.
+The function must return a React node.</p>
+<pre><code>
+import { Group, TagsInput, TagsInputProps, Text } from &#39;@mantine/core&#39;;
+
+const data: Record&lt;string, { emoji: string; description: string }&gt; = {
+  Apples: {
+    emoji: &#39;🍎&#39;,
+    description: &#39;Crisp and juicy snacking delight&#39;,
+  },
+  Bread: {
+    emoji: &#39;🍞&#39;,
+    description: &#39;Freshly baked daily essential&#39;,
+  },
+  Bananas: {
+    emoji: &#39;🍌&#39;,
+    description: &#39;Perfect for a healthy breakfast&#39;,
+  },
+  Eggs: {
+    emoji: &#39;🥚&#39;,
+    description: &#39;Versatile protein source for cooking&#39;,
+  },
+  Broccoli: {
+    emoji: &#39;🥦&#39;,
+    description: &#39;Nutrient-rich green vegetable&#39;,
+  },
+};
+
+const renderTagsInputOption: TagsInputProps[&#39;renderOption&#39;] = ({ option }) =&gt; (
+  &lt;Group&gt;
+    &lt;Text span fz={24}&gt;
+      {data[option.value].emoji}
+    &lt;/Text&gt;
+    &lt;div&gt;
+      &lt;Text&gt;{option.value}&lt;/Text&gt;
+      &lt;Text size=&quot;xs&quot; opacity={0.5}&gt;
+        {data[option.value].description}
+      &lt;/Text&gt;
+    &lt;/div&gt;
+  &lt;/Group&gt;
+);
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      data={[&#39;Apples&#39;, &#39;Bread&#39;, &#39;Bananas&#39;, &#39;Eggs&#39;, &#39;Broccoli&#39;]}
+      renderOption={renderTagsInputOption}
+      label=&quot;Groceries&quot;
+      placeholder=&quot;Pick tag from list or type to add new&quot;
+      maxDropdownHeight={300}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="scrollable-dropdown">Scrollable dropdown</h2>
+<p>By default, the options list is wrapped with ScrollArea.Autosize.
+You can control dropdown max-height with <code>maxDropdownHeight</code> prop if you do not change the default settings.</p>
+<p>If you want to use native scrollbars, set <code>withScrollArea={false}</code>. Note that in this case,
+you will need to change dropdown styles with Styles API.</p>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+const data = Array(100)
+  .fill(0)
+  .map((_, index) =&gt; `Option ${index}`);
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;TagsInput
+        label=&quot;With scroll area (default)&quot;
+        placeholder=&quot;Pick value or enter anything&quot;
+        data={data}
+        maxDropdownHeight={200}
+      /&gt;
+
+      &lt;TagsInput
+        label=&quot;With native scroll&quot;
+        placeholder=&quot;Pick value or enter anything&quot;
+        data={data}
+        withScrollArea={false}
+        styles={{ dropdown: { maxHeight: 200, overflowY: &#39;auto&#39; } }}
+        mt=&quot;md&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="group-options">Group options</h2>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      label=&quot;Enter tags&quot;
+      placeholder=&quot;Enter tags&quot;
+      data={[
+        { group: &#39;Frontend&#39;, items: [&#39;React&#39;, &#39;Angular&#39;] },
+        { group: &#39;Backend&#39;, items: [&#39;Express&#39;, &#39;Django&#39;] },
+      ]}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled-options">Disabled options</h2>
+<p>When option is disabled, it cannot be selected and is ignored in keyboard navigation.
+Note that user can still enter disabled option as a value. If you want to prohibit certain values,
+use controlled component and filter them out in <code>onChange</code> function.</p>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      label=&quot;Enter tags&quot;
+      placeholder=&quot;Some tags are disabled&quot;
+      data={[
+        { value: &#39;React&#39; },
+        { value: &#39;Angular&#39; },
+        { value: &#39;Vue&#39;, disabled: true },
+        { value: &#39;Svelte&#39;, disabled: true },
+      ]}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="inside-popover">Inside Popover</h2>
+<p>To use <code>TagsInput</code> inside popover, you need to set <code>withinPortal: false</code>:</p>
+<pre><code>
+import { Popover, Button, TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Popover width={300} position=&quot;bottom&quot; withArrow shadow=&quot;md&quot;&gt;
+      &lt;Popover.Target&gt;
+        &lt;Button&gt;Toggle popover&lt;/Button&gt;
+      &lt;/Popover.Target&gt;
+      &lt;Popover.Dropdown&gt;
+        &lt;TagsInput
+          label=&quot;Your favorite library&quot;
+          placeholder=&quot;Pick value or enter anything&quot;
+          data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;, &#39;Svelte&#39;]}
+          comboboxProps={{ withinPortal: false }}
+        /&gt;
+      &lt;/Popover.Dropdown&gt;
+    &lt;/Popover&gt;
+  );
+}
+</code></pre>
+<h2 id="control-dropdown-opened-state">Control dropdown opened state</h2>
+<p>You can control dropdown opened state with <code>dropdownOpened</code> prop. Additionally,
+you can use <code>onDropdownClose</code> and <code>onDropdownOpen</code> to listen to dropdown opened state changes.</p>
+<pre><code>
+import { TagsInput, Button } from &#39;@mantine/core&#39;;
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+
+function Demo() {
+  const [dropdownOpened, { toggle }] = useDisclosure();
+  return (
+    &lt;&gt;
+      &lt;Button onClick={toggle} mb=&quot;md&quot;&gt;
+        Toggle dropdown
+      &lt;/Button&gt;
+
+      &lt;TagsInput
+        label=&quot;Your favorite library&quot;
+        placeholder=&quot;Pick value or enter anything&quot;
+        data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;, &#39;Svelte&#39;]}
+        dropdownOpened={dropdownOpened}
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="dropdown-position">Dropdown position</h2>
+<p>By default, the dropdown is displayed below the input if there is enough space; otherwise it is displayed above the input.
+You can change this behavior by setting <code>position</code> and <code>middlewares</code> props, which are passed down to the
+underlying Popover component.</p>
+<p>Example of dropdown that is always displayed above the input:</p>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      label=&quot;Your favorite library&quot;
+      placeholder=&quot;Pick value or enter anything&quot;
+      data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;, &#39;Svelte&#39;]}
+      comboboxProps={{ position: &#39;top&#39;, middlewares: { flip: false, shift: false } }}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="dropdown-animation">Dropdown animation</h2>
+<p>By default, dropdown animations are disabled. To enable them, you can set <code>transitionProps</code>,
+which will be passed down to the underlying Transition component.</p>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      label=&quot;Your favorite library&quot;
+      placeholder=&quot;Pick value or enter anything&quot;
+      data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;, &#39;Svelte&#39;]}
+      comboboxProps={{ transitionProps: { transition: &#39;pop&#39;, duration: 200 } }}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="dropdown-width">Dropdown width</h2>
+<p>To change dropdown width, set <code>width</code> prop in <code>comboboxProps</code>. By default,
+dropdown width is equal to the input width.</p>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      label=&quot;Your favorite library&quot;
+      placeholder=&quot;Pick value or enter anything&quot;
+      data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;, &#39;Svelte&#39;]}
+      comboboxProps={{ width: 200, position: &#39;bottom-start&#39; }}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="dropdown-padding">Dropdown padding</h2>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;TagsInput
+        label=&quot;Zero padding&quot;
+        placeholder=&quot;Pick value or enter anything&quot;
+        data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;, &#39;Svelte&#39;]}
+        comboboxProps={{ dropdownPadding: 0 }}
+      /&gt;
+      &lt;TagsInput
+        mt=&quot;md&quot;
+        label=&quot;10px padding&quot;
+        placeholder=&quot;Pick value or enter anything&quot;
+        data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;, &#39;Svelte&#39;]}
+        comboboxProps={{ dropdownPadding: 10 }}
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="dropdown-shadow">Dropdown shadow</h2>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      label=&quot;Your favorite library&quot;
+      placeholder=&quot;Pick value or enter anything&quot;
+      data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;, &#39;Svelte&#39;]}
+      comboboxProps={{ shadow: &#39;md&#39; }}
+    /&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { TagsInput, rem } from &#39;@mantine/core&#39;;
+import { IconComponents } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  const icon = &lt;IconComponents style={{ width: rem(16), height: rem(16) }} /&gt;;
+  return (
+    &lt;&gt;
+      &lt;TagsInput
+        data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;]}
+        leftSectionPointerEvents=&quot;none&quot;
+        leftSection={icon}
+        label=&quot;Your favorite library&quot;
+        placeholder=&quot;Your favorite library&quot;
+      /&gt;
+      &lt;TagsInput
+        mt=&quot;md&quot;
+        data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;]}
+        rightSectionPointerEvents=&quot;none&quot;
+        rightSection={icon}
+        label=&quot;Your favorite library&quot;
+        placeholder=&quot;Your favorite library&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="input-props">Input props</h2>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      {{props}}
+      placeholder=&quot;TagsInput placeholder&quot;
+      value={[&#39;First&#39;, &#39;Second&#39;]}
+      data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;, &#39;Svelte&#39;]}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="read-only">Read only</h2>
+<p>Set <code>readOnly</code> to make the input read only. When <code>readOnly</code> is set,
+<code>TagsInput</code> will not show suggestions and will not call <code>onChange</code> function.</p>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      label=&quot;Read only&quot;
+      placeholder=&quot;Enter tag&quot;
+      readOnly
+      defaultValue={[&#39;First&#39;, &#39;Second&#39;]}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled">Disabled</h2>
+<p>Set <code>disabled</code> to disable the input. When <code>disabled</code> is set,
+user cannot interact with the input and <code>TagsInput</code> will not show suggestions.</p>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      label=&quot;Disabled&quot;
+      placeholder=&quot;Enter tag&quot;
+      disabled
+      defaultValue={[&#39;First&#39;, &#39;Second&#39;]}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="error-state">Error state</h2>
+<pre><code>
+import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;TagsInput
+        label=&quot;Boolean error&quot;
+        placeholder=&quot;Boolean error&quot;
+        error
+        defaultValue={[&#39;React&#39;, &#39;Angular&#39;]}
+      /&gt;
+      &lt;TagsInput
+        mt=&quot;md&quot;
+        label=&quot;With error message&quot;
+        placeholder=&quot;With error message&quot;
+        error=&quot;Invalid name&quot;
+        defaultValue={[&#39;React&#39;, &#39;Angular&#39;]}
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { IconAt } from &#39;@tabler/icons-react&#39;;
+import { TagsInput, rem } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;TagsInput
+     {{props}}
+      leftSection={&lt;IconAt style={{ width: rem(18), height: rem(18) }} stroke={1.5} /&gt;}
+      label=&quot;TagsInput&quot;
+      description=&quot;Description&quot;
+      error=&quot;Error&quot;
+      placeholder=&quot;TagsInput&quot;
+      defaultValue={[&#39;First&#39;, &#39;Second&#39;]}
+      data={[&#39;React&#39;, &#39;Angular&#39;]}
+    /&gt;
+  );
+}
+</code></pre>
+<p>To set <code>aria-label</code> on the clear button, use <code>clearButtonProps</code>. Note that it is required
+only when <code>clearable</code> is set.</p>
+<pre><code class="language-tsx">import { TagsInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;TagsInput
+      data={[]}
+      clearable
+      clearButtonProps={{
+        &#39;aria-label&#39;: &#39;Clear input&#39;,
+      }}
+    /&gt;
+  );
+}
+</code></pre>

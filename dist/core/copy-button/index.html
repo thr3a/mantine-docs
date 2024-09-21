@@ -1,0 +1,50 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>CopyButton</code> is based on use-clipboard hook.
+Its children is a function that receives an object with the following properties:</p>
+<ul>
+<li><code>copied</code> – boolean value that indicates that a given value was recently copied to the clipboard, it resets after a given timeout (defaults to 500ms)</li>
+<li><code>copy</code> – function that should be called to copy given value to clipboard</li>
+</ul>
+<pre><code>
+import { CopyButton, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;CopyButton value=&quot;https://mantine.dev&quot;&gt;
+      {({ copied, copy }) =&gt; (
+        &lt;Button color={copied ? &#39;teal&#39; : &#39;blue&#39;} onClick={copy}&gt;
+          {copied ? &#39;Copied url&#39; : &#39;Copy url&#39;}
+        &lt;/Button&gt;
+      )}
+    &lt;/CopyButton&gt;
+  );
+}
+</code></pre>
+<h2 id="security">Security</h2>
+<p>Due to security reasons <code>CopyButton</code> component will not work in iframes and may not work with local files opened with <code>file://</code> protocol
+(component will work fine with local websites that are using <code>http://</code> protocol). You can learn more about <code>navigator.clipboard</code> here.</p>
+<h2 id="timeout">Timeout</h2>
+<p>You can provide a custom <code>copied</code> reset <code>timeout</code>:</p>
+<pre><code>
+import { CopyButton, ActionIcon, Tooltip, rem } from &#39;@mantine/core&#39;;
+import { IconCopy, IconCheck } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;CopyButton value=&quot;https://mantine.dev&quot; timeout={2000}&gt;
+      {({ copied, copy }) =&gt; (
+        &lt;Tooltip label={copied ? &#39;Copied&#39; : &#39;Copy&#39;} withArrow position=&quot;right&quot;&gt;
+          &lt;ActionIcon color={copied ? &#39;teal&#39; : &#39;gray&#39;} variant=&quot;subtle&quot; onClick={copy}&gt;
+            {copied ? (
+              &lt;IconCheck style={{ width: rem(16) }} /&gt;
+            ) : (
+              &lt;IconCopy style={{ width: rem(16) }} /&gt;
+            )}
+          &lt;/ActionIcon&gt;
+        &lt;/Tooltip&gt;
+      )}
+    &lt;/CopyButton&gt;
+  );
+}
+
+</code></pre>

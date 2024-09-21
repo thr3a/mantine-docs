@@ -1,0 +1,180 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Badge } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Badge{{props}}&gt;Badge&lt;/Badge&gt;;
+}
+</code></pre>
+<pre><code>(props) => `
+import { Badge } from '@mantine/core';
+
+function Demo() {
+  return (
+    <Badge
+      size="xl"
+      variant="gradient"
+      gradient={{ from: '${props.gradientFrom}', to: '${props.gradientTo}', deg: ${props.gradientDegree} }}
+    >
+      Gradient badge
+    </Badge>
+  );
+}
+`</code></pre>
+<h2 id="rounded">Rounded</h2>
+<p>Set <code>circle</code> prop, to reduce horizontal padding and make badge width equal to its height:</p>
+<pre><code>
+import { Badge, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Group&gt;
+      &lt;Badge size=&quot;xs&quot; circle&gt;
+        1
+      &lt;/Badge&gt;
+      &lt;Badge size=&quot;sm&quot; circle&gt;
+        7
+      &lt;/Badge&gt;
+      &lt;Badge size=&quot;md&quot; circle&gt;
+        9
+      &lt;/Badge&gt;
+      &lt;Badge size=&quot;lg&quot; circle&gt;
+        3
+      &lt;/Badge&gt;
+      &lt;Badge size=&quot;xl&quot; circle&gt;
+        8
+      &lt;/Badge&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>
+<h2 id="left-and-right-sections">Left and right sections</h2>
+<pre><code>
+import { Badge, Group, rem } from &#39;@mantine/core&#39;;
+import { IconAt } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  const icon = &lt;IconAt style={{ width: rem(12), height: rem(12) }} /&gt;;
+  return (
+    &lt;Group&gt;
+      &lt;Badge leftSection={icon}&gt;With left section&lt;/Badge&gt;
+      &lt;Badge rightSection={icon}&gt;With right section&lt;/Badge&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>
+<h2 id="full-width">Full width</h2>
+<p>Set <code>fullWidth</code> to make badge span full width of its parent element:</p>
+<pre><code>
+import { Badge } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Badge fullWidth&gt;Full width badge&lt;/Badge&gt;;
+}
+</code></pre>
+<h2 id="customize-variants-colors">Customize variants colors</h2>
+<p>You can customize colors for <code>Badge</code> and other components variants by adding
+variantColorResolver to your theme.</p>
+<pre><code>
+import { IconPhoto, IconFingerprint, IconError404 } from &#39;@tabler/icons-react&#39;;
+import {
+  Badge,
+  Group,
+  MantineProvider,
+  defaultVariantColorsResolver,
+  VariantColorsResolver,
+  parseThemeColor,
+  rem,
+  rgba,
+  darken,
+} from &#39;@mantine/core&#39;;
+
+const variantColorResolver: VariantColorsResolver = (input) =&gt; {
+  const defaultResolvedColors = defaultVariantColorsResolver(input);
+  const parsedColor = parseThemeColor({
+    color: input.color || input.theme.primaryColor,
+    theme: input.theme,
+  });
+
+  // Override some properties for variant
+  if (parsedColor.isThemeColor &amp;&amp; parsedColor.color === &#39;lime&#39; &amp;&amp; input.variant === &#39;filled&#39;) {
+    return {
+      ...defaultResolvedColors,
+      color: &#39;var(--mantine-color-black)&#39;,
+      hoverColor: &#39;var(--mantine-color-black)&#39;,
+    };
+  }
+
+  // Completely override variant
+  if (input.variant === &#39;light&#39;) {
+    return {
+      background: rgba(parsedColor.value, 0.1),
+      hover: rgba(parsedColor.value, 0.15),
+      border: `${rem(1)} solid ${parsedColor.value}`,
+      color: darken(parsedColor.value, 0.1),
+    };
+  }
+
+  // Add new variants support
+  if (input.variant === &#39;danger&#39;) {
+    return {
+      background: &#39;var(--mantine-color-red-9)&#39;,
+      hover: &#39;var(--mantine-color-red-8)&#39;,
+      color: &#39;var(--mantine-color-white)&#39;,
+      border: &#39;none&#39;,
+    };
+  }
+
+  return defaultResolvedColors;
+};
+
+function Demo() {
+  return (
+    &lt;MantineProvider theme={{ variantColorResolver }}&gt;
+      &lt;Group&gt;
+        &lt;Badge color=&quot;lime.4&quot; variant=&quot;filled&quot;&gt;
+          Lime filled
+        &lt;/Badge&gt;
+
+        &lt;Badge color=&quot;orange&quot; variant=&quot;light&quot;&gt;
+          Orange light
+        &lt;/Badge&gt;
+
+        &lt;Badge variant=&quot;danger&quot;&gt;
+          Danger
+        &lt;/Badge&gt;
+      &lt;/Group&gt;
+    &lt;/MantineProvider&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Badge, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Group&gt;
+      &lt;Badge size=&quot;lg&quot; color=&quot;lime.4&quot;&gt;
+        Default
+      &lt;/Badge&gt;
+      &lt;Badge autoContrast size=&quot;lg&quot; color=&quot;lime.4&quot;&gt;
+        Auto contrast
+      &lt;/Badge&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Badge, rem } from &#39;@mantine/core&#39;;
+import { IconAt } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  const icon = &lt;IconAt style={{ width: rem(12), height: rem(12) }} /&gt;;
+
+  return (
+    &lt;Badge leftSection={icon} rightSection={icon}{{props}}&gt;
+      Badge component
+    &lt;/Badge&gt;
+  );
+}
+</code></pre>

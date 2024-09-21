@@ -1,0 +1,27 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>Breadcrumbs</code> component accepts any number of React nodes as children
+and adds a given separator (defaults to <code>/</code>) between them:</p>
+<pre><code>
+import { Breadcrumbs, Anchor } from &#39;@mantine/core&#39;;
+
+const items = [
+  { title: &#39;Mantine&#39;, href: &#39;#&#39; },
+  { title: &#39;Mantine hooks&#39;, href: &#39;#&#39; },
+  { title: &#39;use-id&#39;, href: &#39;#&#39; },
+].map((item, index) =&gt; (
+  &lt;Anchor href={item.href} key={index}&gt;
+    {item.title}
+  &lt;/Anchor&gt;
+));
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Breadcrumbs&gt;{items}&lt;/Breadcrumbs&gt;
+      &lt;Breadcrumbs separator=&quot;→&quot; separatorMargin=&quot;md&quot; mt=&quot;xs&quot;&gt;
+        {items}
+      &lt;/Breadcrumbs&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>

@@ -1,0 +1,158 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>PillsInput</code> is a utility component that can be used to create custom tag inputs, multi selects and
+other similar components. By itself it does not include any logic, it only renders given children.
+Usually, <code>PillsInput</code> is used in combination with Pill component.</p>
+<pre><code>
+import { PillsInput, Pill } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;PillsInput label=&quot;PillsInput&quot;&gt;
+      &lt;Pill.Group&gt;
+        &lt;Pill&gt;React&lt;/Pill&gt;
+        &lt;Pill&gt;Vue&lt;/Pill&gt;
+        &lt;Pill&gt;Svelte&lt;/Pill&gt;
+        &lt;PillsInput.Field placeholder=&quot;Enter tags&quot; /&gt;
+      &lt;/Pill.Group&gt;
+    &lt;/PillsInput&gt;
+  );
+}
+</code></pre>
+<h2 id="input-props">Input props</h2>
+<pre><code>
+import { PillsInput, Pill } from &#39;@mantine/core&#39;;
+
+
+function Demo() {
+  return (
+    &lt;PillsInput
+      {{props}}
+    &gt;
+      &lt;Pill.Group&gt;
+        &lt;Pill&gt;React&lt;/Pill&gt;
+        &lt;Pill&gt;Vue&lt;/Pill&gt;
+        &lt;Pill&gt;Svelte&lt;/Pill&gt;
+        &lt;PillsInput.Field placeholder=&quot;Enter tags&quot; /&gt;
+      &lt;/Pill.Group&gt;
+    &lt;/PillsInput&gt;
+  );
+}
+</code></pre>
+<h2 id="searchable-select-example">Searchable select example</h2>
+<p>Combine <code>PillsInput</code> with Combobox to create searchable multiselect:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { PillsInput, Pill, Combobox, CheckIcon, Group, useCombobox } from &#39;@mantine/core&#39;;
+
+const groceries = [&#39;🍎 Apples&#39;, &#39;🍌 Bananas&#39;, &#39;🥦 Broccoli&#39;, &#39;🥕 Carrots&#39;, &#39;🍫 Chocolate&#39;];
+
+function Demo() {
+  const combobox = useCombobox({
+    onDropdownClose: () =&gt; combobox.resetSelectedOption(),
+    onDropdownOpen: () =&gt; combobox.updateSelectedOptionIndex(&#39;active&#39;),
+  });
+
+  const [search, setSearch] = useState(&#39;&#39;);
+  const [value, setValue] = useState&lt;string[]&gt;([]);
+
+  const handleValueSelect = (val: string) =&gt;
+    setValue((current) =&gt;
+      current.includes(val) ? current.filter((v) =&gt; v !== val) : [...current, val]
+    );
+
+  const handleValueRemove = (val: string) =&gt;
+    setValue((current) =&gt; current.filter((v) =&gt; v !== val));
+
+  const values = value.map((item) =&gt; (
+    &lt;Pill key={item} withRemoveButton onRemove={() =&gt; handleValueRemove(item)}&gt;
+      {item}
+    &lt;/Pill&gt;
+  ));
+
+  const options = groceries
+    .filter((item) =&gt; item.toLowerCase().includes(search.trim().toLowerCase()))
+    .map((item) =&gt; (
+      &lt;Combobox.Option value={item} key={item} active={value.includes(item)}&gt;
+        &lt;Group gap=&quot;sm&quot;&gt;
+          {value.includes(item) ? &lt;CheckIcon size={12} /&gt; : null}
+          &lt;span&gt;{item}&lt;/span&gt;
+        &lt;/Group&gt;
+      &lt;/Combobox.Option&gt;
+    ));
+
+  return (
+    &lt;Combobox store={combobox} onOptionSubmit={handleValueSelect}&gt;
+      &lt;Combobox.DropdownTarget&gt;
+        &lt;PillsInput onClick={() =&gt; combobox.openDropdown()}&gt;
+          &lt;Pill.Group&gt;
+            {values}
+
+            &lt;Combobox.EventsTarget&gt;
+              &lt;PillsInput.Field
+                onFocus={() =&gt; combobox.openDropdown()}
+                onBlur={() =&gt; combobox.closeDropdown()}
+                value={search}
+                placeholder=&quot;Search values&quot;
+                onChange={(event) =&gt; {
+                  combobox.updateSelectedOptionIndex();
+                  setSearch(event.currentTarget.value);
+                }}
+                onKeyDown={(event) =&gt; {
+                  if (event.key === &#39;Backspace&#39; &amp;&amp; search.length === 0) {
+                    event.preventDefault();
+                    handleValueRemove(value[value.length - 1]);
+                  }
+                }}
+              /&gt;
+            &lt;/Combobox.EventsTarget&gt;
+          &lt;/Pill.Group&gt;
+        &lt;/PillsInput&gt;
+      &lt;/Combobox.DropdownTarget&gt;
+
+      &lt;Combobox.Dropdown&gt;
+        &lt;Combobox.Options&gt;
+          {options.length &gt; 0 ? options : &lt;Combobox.Empty&gt;Nothing found...&lt;/Combobox.Empty&gt;}
+        &lt;/Combobox.Options&gt;
+      &lt;/Combobox.Dropdown&gt;
+    &lt;/Combobox&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p>If <code>PillsInput</code> is used without label prop, it will not be announced properly by screen reader:</p>
+<pre><code class="language-tsx">import { PillsInput } from &#39;@mantine/core&#39;;
+
+// Inaccessible input – screen reader will not announce it properly
+function Demo() {
+  return (
+    &lt;PillsInput&gt;
+      &lt;PillsInput.Field /&gt;
+    &lt;/PillsInput&gt;
+  );
+}
+</code></pre>
+<p>Set <code>aria-label</code> on the <code>PillsInput.Field</code> component to make the input accessible.
+In this case label will not be visible, but screen reader will announce it:</p>
+<pre><code class="language-tsx">import { PillsInput } from &#39;@mantine/core&#39;;
+
+// Accessible input – it has aria-label
+function Demo() {
+  return (
+    &lt;PillsInput&gt;
+      &lt;PillsInput.Field aria-label=&quot;Enter tags&quot; /&gt;
+    &lt;/PillsInput&gt;
+  );
+}
+</code></pre>
+<p>If <code>label</code> prop is set, the input will be accessible it is not required to set <code>aria-label</code>:</p>
+<pre><code class="language-tsx">import { PillsInput } from &#39;@mantine/core&#39;;
+
+// Accessible input – it has associated label element
+function Demo() {
+  return (
+    &lt;PillsInput label=&quot;Enter tags&quot;&gt;
+      &lt;PillsInput.Field /&gt;
+    &lt;/PillsInput&gt;
+  );
+}
+</code></pre>

@@ -1,0 +1,57 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p>Use <code>NumberFormatter</code> to format numbers. It supports the same formatting related props
+as NumberInput component.</p>
+<pre><code>
+import { NumberFormatter } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;NumberFormatter prefix=&quot;$ &quot; value={1000000} thousandSeparator /&gt;;
+}
+</code></pre>
+<h2 id="prefix-and-suffix">Prefix and suffix</h2>
+<p>Set <code>prefix</code> and <code>suffix</code> props to add given string to the start or end of the value:</p>
+<pre><code>
+import { NumberFormatter } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;div&gt;
+        With prefix: &lt;NumberFormatter prefix=&quot;$ &quot; value={100} /&gt;
+      &lt;/div&gt;
+      &lt;div&gt;
+        With suffix: &lt;NumberFormatter value={100} suffix=&quot; RUB&quot; /&gt;
+      &lt;/div&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="thousands-separator">Thousands separator</h2>
+<p>Set <code>thousandSeparator</code> prop to separate thousands with a character. You can control
+grouping logic with <code>thousandsGroupStyle</code>, it accepts: <code>thousand</code>, <code>lakh</code>, <code>wan</code>, <code>none</code> values.</p>
+<pre><code>
+import { NumberFormatter } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;div&gt;
+        With default separator: &lt;NumberFormatter thousandSeparator value={1000000} /&gt;
+      &lt;/div&gt;
+      &lt;div&gt;
+        With custom separator:{&#39; &#39;}
+        &lt;NumberFormatter thousandSeparator=&quot;.&quot; decimalSeparator=&quot;,&quot; value={1000000} /&gt;
+      &lt;/div&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="decimal-scale">Decimal scale</h2>
+<p><code>decimalScale</code> prop controls the number of allowed decimal places:</p>
+<pre><code>
+import { NumberFormatter } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;NumberFormatter value={5 / 3} decimalScale={2} /&gt;;
+}
+</code></pre>

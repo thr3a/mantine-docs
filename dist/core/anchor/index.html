@@ -1,0 +1,79 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Anchor } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Anchor href=&quot;https://mantine.dev/&quot; target=&quot;_blank&quot;&gt;
+      Anchor component
+    &lt;/Anchor&gt;
+  );
+}
+</code></pre>
+<h2 id="underline">Underline</h2>
+<p>Use <code>underline</code> prop to configure <code>text-decoration</code> property. It accepts the following values:</p>
+<ul>
+<li><code>always</code> - link is always underlined</li>
+<li><code>hover</code> - link is underlined on hover</li>
+<li><code>never</code> - link is never underlined</li>
+</ul>
+<pre><code>
+import { Anchor, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Group justify=&quot;center&quot;&gt;
+      &lt;Anchor href=&quot;https://mantine.dev/&quot; target=&quot;_blank&quot; underline=&quot;always&quot;&gt;
+        Underline always
+      &lt;/Anchor&gt;
+      &lt;Anchor href=&quot;https://mantine.dev/&quot; target=&quot;_blank&quot; underline=&quot;hover&quot;&gt;
+        Underline hover
+      &lt;/Anchor&gt;
+      &lt;Anchor href=&quot;https://mantine.dev/&quot; target=&quot;_blank&quot; underline=&quot;never&quot;&gt;
+        Underline never
+      &lt;/Anchor&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>
+<p>You can also configure <code>underline</code> prop for all <code>Anchor</code> components with default props:</p>
+<pre><code class="language-tsx">import { Anchor, createTheme, MantineProvider } from &#39;@mantine/core&#39;;
+
+const theme = createTheme({
+  components: {
+    Anchor: Anchor.extend({
+      defaultProps: {
+        underline: &#39;always&#39;,
+      },
+    }),
+  },
+});
+
+function Demo() {
+  return (
+    &lt;MantineProvider theme={theme}&gt;
+      {/* Your app here */}
+    &lt;/MantineProvider&gt;
+  );
+}
+</code></pre>
+<h2 id="text-props">Text props</h2>
+<p><code>Anchor</code> components supports all Text component props.
+For example, you can use gradient variant:</p>
+<pre><code>
+import { Anchor } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Anchor
+      variant=&quot;gradient&quot;
+      gradient={{ from: &#39;pink&#39;, to: &#39;yellow&#39; }}
+      fw={500}
+      fz=&quot;lg&quot;
+      href=&quot;#text-props&quot;
+    &gt;
+      A link with pink to yellow gradient
+    &lt;/Anchor&gt;
+  );
+}
+</code></pre>

@@ -1,0 +1,83 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p>Use <code>Spoiler</code> to hide long section of content.
+Set <code>maxHeight</code> prop to control point at which content will be hidden under spoiler and show/hide control appears.
+If the content height is less than <code>maxHeight</code>, the spoiler will just render children.</p>
+<p><code>hideLabel</code> and <code>showLabel</code> props are required – they are used as spoiler toggle button label in corresponding state.</p>
+<pre><code>
+import { Spoiler } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Spoiler maxHeight={120} showLabel=&quot;Show more&quot; hideLabel=&quot;Hide&quot;&gt;
+      {/* Content here */}
+    &lt;/Spoiler&gt;
+  );
+}
+</code></pre>
+<h2 id="control-expanded-state">Control expanded state</h2>
+<p>To control expanded state use <code>expanded</code> and <code>onExpandedChange</code> props. Note that
+<code>expanded</code> prop does not have any effect on spoiler visuals if the content height
+is less than given <code>maxHeight</code>.</p>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { Spoiler } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    &lt;Spoiler
+      showLabel=&quot;Show more&quot;
+      hideLabel=&quot;Hide details&quot;
+      expanded={expanded}
+      onExpandedChange={setExpanded}
+    &gt;
+      {/* Spoiler content */}
+    &lt;/Spoiler&gt;
+  );
+}
+</code></pre>
+<h2 id="subscribe-to-expanded-state-changes">Subscribe to expanded state changes</h2>
+<p>Use <code>onExpandedChange</code> to subscribe to expanded state changes:</p>
+<pre><code class="language-tsx">import { Spoiler } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Spoiler
+      showLabel=&quot;Show more&quot;
+      hideLabel=&quot;Hide details&quot;
+      onExpandedChange={(expanded) =&gt; console.log(expanded)}
+    &gt;
+      {/* Spoiler content */}
+    &lt;/Spoiler&gt;
+  );
+}
+</code></pre>
+<h2 id="transition-duration">Transition duration</h2>
+<p>Control transition duration by setting <code>transitionDuration</code> prop (transition-duration CSS property in ms).
+To disable animations, set <code>transitionDuration={0}</code>:</p>
+<pre><code>
+import { Spoiler } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Spoiler maxHeight={120} showLabel=&quot;Show more&quot; hideLabel=&quot;Hide&quot; transitionDuration={0}&gt;
+      {/* Content here */}
+    &lt;/Spoiler&gt;
+  );
+}
+</code></pre>
+<h2 id="get-control-ref">Get control ref</h2>
+<pre><code class="language-tsx">import { useRef } from &#39;react&#39;;
+import { Spoiler } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const spoilerControlRef = useRef&lt;HTMLButtonElement&gt;(null);
+  return (
+    &lt;Spoiler
+      controlRef={spoilerControlRef}
+      hideLabel=&quot;Hide&quot;
+      showLabel=&quot;Show&quot;
+    /&gt;
+  );
+}
+</code></pre>

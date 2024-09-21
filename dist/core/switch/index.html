@@ -1,0 +1,206 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Switch } from &#39;@mantine/core&#39;;
+
+
+function Demo() {
+  return (
+    &lt;Switch
+      defaultChecked
+      {{props}}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { Switch } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [checked, setChecked] = useState(false);
+  return (
+    &lt;Switch
+      checked={checked}
+      onChange={(event) =&gt; setChecked(event.currentTarget.checked)}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="inner-labels">Inner Labels</h2>
+<pre><code>
+import { Switch, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Group justify=&quot;center&quot;&gt;
+      &lt;Switch size=&quot;xs&quot; onLabel=&quot;ON&quot; offLabel=&quot;OFF&quot; /&gt;
+      &lt;Switch size=&quot;sm&quot; onLabel=&quot;ON&quot; offLabel=&quot;OFF&quot; /&gt;
+      &lt;Switch size=&quot;md&quot; onLabel=&quot;ON&quot; offLabel=&quot;OFF&quot; /&gt;
+      &lt;Switch size=&quot;lg&quot; onLabel=&quot;ON&quot; offLabel=&quot;OFF&quot; /&gt;
+      &lt;Switch size=&quot;xl&quot; onLabel=&quot;ON&quot; offLabel=&quot;OFF&quot; /&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>
+<h2 id="icon-labels">Icon labels</h2>
+<pre><code>
+import { Switch, useMantineTheme, rem } from &#39;@mantine/core&#39;;
+import { IconSun, IconMoonStars } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  const theme = useMantineTheme();
+
+  const sunIcon = (
+    &lt;IconSun
+      style={{ width: rem(16), height: rem(16) }}
+      stroke={2.5}
+      color={theme.colors.yellow[4]}
+    /&gt;
+  );
+
+  const moonIcon = (
+    &lt;IconMoonStars
+      style={{ width: rem(16), height: rem(16) }}
+      stroke={2.5}
+      color={theme.colors.blue[6]}
+    /&gt;
+  );
+
+  return &lt;Switch size=&quot;md&quot; color=&quot;dark.4&quot; onLabel={sunIcon} offLabel={moonIcon} /&gt;;
+}
+</code></pre>
+<h2 id="thumb-icon">Thumb icon</h2>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Switch, useMantineTheme, rem } from &#39;@mantine/core&#39;;
+import { IconCheck, IconX } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  const theme = useMantineTheme();
+  const [checked, setChecked] = useState(false);
+  return (
+    &lt;Switch
+      checked={checked}
+      onChange={(event) =&gt; setChecked(event.currentTarget.checked)}
+      color=&quot;teal&quot;
+      size=&quot;md&quot;
+      label=&quot;Switch with thumb icon&quot;
+      thumbIcon={
+        checked ? (
+          &lt;IconCheck
+            style={{ width: rem(12), height: rem(12) }}
+            color={theme.colors.teal[6]}
+            stroke={3}
+          /&gt;
+        ) : (
+          &lt;IconX
+            style={{ width: rem(12), height: rem(12) }}
+            color={theme.colors.red[6]}
+            stroke={3}
+          /&gt;
+        )
+      }
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="with-tooltip">With tooltip</h2>
+<p>Set <code>refProp=&quot;rootRef&quot;</code> on Tooltip and other similar components to make them work with <code>Switch</code>:</p>
+<pre><code>
+import { Switch, Tooltip } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tooltip label=&quot;Switch tooltip&quot; refProp=&quot;rootRef&quot;&gt;
+      &lt;Switch label=&quot;Switch with tooltip&quot; /&gt;
+    &lt;/Tooltip&gt;
+  );
+}
+</code></pre>
+<h2 id="pointer-cursor">Pointer cursor</h2>
+<p>By default, switch input and label have <code>cursor: default</code> (same as native <code>input[type=&quot;checkbox&quot;]</code>).
+To change cursor to pointer, set <code>cursorType</code> on theme:</p>
+<pre><code class="language-tsx">import { createTheme, MantineProvider, Switch } from &#39;@mantine/core&#39;;
+
+const theme = createTheme({
+  cursorType: &#39;pointer&#39;,
+});
+
+function Demo() {
+  return (
+    &lt;MantineProvider theme={theme}&gt;
+      &lt;Switch label=&quot;Pointer cursor&quot; /&gt;
+    &lt;/MantineProvider&gt;
+  );
+}
+</code></pre>
+<h2 id="switchgroup">Switch.Group</h2>
+<pre><code>
+import { Switch, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Switch.Group
+      defaultValue={[&#39;react&#39;]}
+      {{props}}
+    &gt;
+      &lt;Group mt=&quot;xs&quot;&gt;
+        &lt;Switch value=&quot;react&quot; label=&quot;React&quot; /&gt;
+        &lt;Switch value=&quot;svelte&quot; label=&quot;Svelte&quot; /&gt;
+        &lt;Switch value=&quot;ng&quot; label=&quot;Angular&quot; /&gt;
+        &lt;Switch value=&quot;vue&quot; label=&quot;Vue&quot; /&gt;
+      &lt;/Group&gt;
+    &lt;/Switch.Group&gt;
+  );
+}
+</code></pre>
+<h2 id="controlled-switchgroup">Controlled Switch.Group</h2>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { Switch } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState&lt;string[]&gt;([]);
+
+  return (
+    &lt;Switch.Group value={value} onChange={setValue}&gt;
+      &lt;Switch value=&quot;react&quot; label=&quot;React&quot; /&gt;
+      &lt;Switch value=&quot;svelte&quot; label=&quot;Svelte&quot; /&gt;
+    &lt;/Switch.Group&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Switch } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Switch{{props}} label=&quot;Switch component&quot; description=&quot;Switch description&quot; error=&quot;Switch error /&gt;;
+}
+</code></pre>
+<h2 id="get-input-ref">Get input ref</h2>
+<pre><code class="language-tsx">import { useRef } from &#39;react&#39;;
+import { Switch } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const ref = useRef&lt;HTMLInputElement&gt;(null);
+  return &lt;Switch ref={ref} /&gt;;
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p><code>Switch</code> is a regular <code>input[type=&quot;checkbox&quot;]</code>. Set <code>aria-label</code> if the <code>Switch</code> is used without <code>label</code> prop:</p>
+<pre><code class="language-tsx">import { Switch } from &#39;@mantine/core&#39;;
+
+// -&gt; not ok, input is not labeled
+function Bad() {
+  return &lt;Switch /&gt;;
+}
+
+// -&gt; ok, input has aria-label
+function Good() {
+  return &lt;Switch aria-label=&quot;I agree to everything&quot; /&gt;;
+}
+
+// -&gt; ok, input has associated label
+function AlsoGood() {
+  return &lt;Switch label=&quot;I agree to everything&quot; /&gt;;
+}
+</code></pre>

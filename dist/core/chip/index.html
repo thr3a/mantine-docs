@@ -1,0 +1,119 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Chip } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Chip defaultChecked{{props}}&gt;Awesome chip&lt;/Chip&gt;
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { Chip } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [checked, setChecked] = useState(false);
+
+  return (
+    &lt;Chip checked={checked} onChange={() =&gt; setChecked((v) =&gt; !v)}&gt;
+      My chip
+    &lt;/Chip&gt;
+  );
+}
+</code></pre>
+<h2 id="change-checked-icon">Change checked icon</h2>
+<pre><code>
+import { Chip, rem } from &#39;@mantine/core&#39;;
+import { IconX } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;Chip
+      icon={&lt;IconX style={{ width: rem(16), height: rem(16) }} /&gt;}
+      color=&quot;red&quot;
+      variant=&quot;filled&quot;
+      defaultChecked
+    &gt;
+      Forbidden
+    &lt;/Chip&gt;
+  );
+}
+</code></pre>
+<h2 id="states">States</h2>
+<pre><code></code></pre>
+<h2 id="chip-with-tooltip">Chip with tooltip</h2>
+<p>To use <code>Chip</code> with Tooltip and other similar components, set <code>refProp=&quot;rootRef&quot;</code>
+on the Tooltip component:</p>
+<pre><code>
+import { Tooltip, Chip } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tooltip label=&quot;Chip tooltip&quot; refProp=&quot;rootRef&quot;&gt;
+      &lt;Chip defaultChecked&gt;Chip with tooltip&lt;/Chip&gt;
+    &lt;/Tooltip&gt;
+  );
+}
+</code></pre>
+<h2 id="chipgroup">Chip.Group</h2>
+<p><code>Chip.Group</code> component manages state of child Chip components,
+set <code>multiple</code> prop to allow multiple chips to be selected at a time:</p>
+<pre><code>
+import { Chip, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Chip.Group&gt;
+        &lt;Group justify=&quot;center&quot;&gt;
+          &lt;Chip value=&quot;1&quot;&gt;Single chip&lt;/Chip&gt;
+          &lt;Chip value=&quot;2&quot;&gt;Can be selected&lt;/Chip&gt;
+          &lt;Chip value=&quot;3&quot;&gt;At a time&lt;/Chip&gt;
+        &lt;/Group&gt;
+      &lt;/Chip.Group&gt;
+
+      &lt;Chip.Group multiple&gt;
+        &lt;Group justify=&quot;center&quot; mt=&quot;md&quot;&gt;
+          &lt;Chip value=&quot;1&quot;&gt;Multiple chips&lt;/Chip&gt;
+          &lt;Chip value=&quot;2&quot;&gt;Can be selected&lt;/Chip&gt;
+          &lt;Chip value=&quot;3&quot;&gt;At a time&lt;/Chip&gt;
+        &lt;/Group&gt;
+      &lt;/Chip.Group&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="controlled-chipgroup">Controlled Chip.Group</h2>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { Chip } from &#39;@mantine/core&#39;;
+
+function Single() {
+  // string value when multiple is false (default)
+  const [value, setValue] = useState(&#39;react&#39;);
+
+  return (
+    &lt;Chip.Group multiple={false} value={value} onChange={setValue}&gt;
+      &lt;Chip value=&quot;react&quot;&gt;React&lt;/Chip&gt;
+      &lt;Chip value=&quot;ng&quot;&gt;Angular&lt;/Chip&gt;
+      &lt;Chip value=&quot;svelte&quot;&gt;Svelte&lt;/Chip&gt;
+      &lt;Chip value=&quot;vue&quot;&gt;Vue&lt;/Chip&gt;
+    &lt;/Chip.Group&gt;
+  );
+}
+
+function Multiple() {
+  // array of strings value when multiple is true
+  const [value, setValue] = useState([&#39;react&#39;]);
+
+  return (
+    &lt;Chip.Group multiple value={value} onChange={setValue}&gt;
+      &lt;Chip value=&quot;react&quot;&gt;React&lt;/Chip&gt;
+      &lt;Chip value=&quot;ng&quot;&gt;Angular&lt;/Chip&gt;
+      &lt;Chip value=&quot;svelte&quot;&gt;Svelte&lt;/Chip&gt;
+      &lt;Chip value=&quot;vue&quot;&gt;Vue&lt;/Chip&gt;
+    &lt;/Chip.Group&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p><code>Chip</code> and <code>Chip.Group</code> components are accessible by default – they are built with native radio/checkbox inputs,
+all keyboard events work the same as with native controls.</p>

@@ -1,0 +1,339 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Popover, Text, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Popover width={200} position=&quot;bottom&quot; withArrow shadow=&quot;md&quot;&gt;
+      &lt;Popover.Target&gt;
+        &lt;Button&gt;Toggle popover&lt;/Button&gt;
+      &lt;/Popover.Target&gt;
+      &lt;Popover.Dropdown&gt;
+        &lt;Text size=&quot;xs&quot;&gt;This is uncontrolled popover, it is opened when button is clicked&lt;/Text&gt;
+      &lt;/Popover.Dropdown&gt;
+    &lt;/Popover&gt;
+  );
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<p>You can control Popover state with <code>opened</code> and <code>onChange</code> props:</p>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { Button, Popover } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, setOpened] = useState(false);
+  return (
+    &lt;Popover opened={opened} onChange={setOpened}&gt;
+      &lt;Popover.Target&gt;
+        &lt;Button onClick={() =&gt; setOpened((o) =&gt; !o)}&gt;
+          Toggle popover
+        &lt;/Button&gt;
+      &lt;/Popover.Target&gt;
+
+      &lt;Popover.Dropdown&gt;Dropdown&lt;/Popover.Dropdown&gt;
+    &lt;/Popover&gt;
+  );
+}
+</code></pre>
+<p>Controlled example with mouse events:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Popover, Text, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { close, open }] = useDisclosure(false);
+  return (
+    &lt;Popover width={200} position=&quot;bottom&quot; withArrow shadow=&quot;md&quot; opened={opened}&gt;
+      &lt;Popover.Target&gt;
+        &lt;Button onMouseEnter={open} onMouseLeave={close}&gt;
+          Hover to see popover
+        &lt;/Button&gt;
+      &lt;/Popover.Target&gt;
+      &lt;Popover.Dropdown style={{ pointerEvents: &#39;none&#39; }}&gt;
+        &lt;Text size=&quot;sm&quot;&gt;This popover is shown when user hovers the target element&lt;/Text&gt;
+      &lt;/Popover.Dropdown&gt;
+    &lt;/Popover&gt;
+  );
+}
+</code></pre>
+<h2 id="focus-trap">Focus trap</h2>
+<p>If you need to use interactive elements (inputs, buttons, etc.) inside <code>Popover.Dropdown</code>, set <code>trapFocus</code> prop:</p>
+<pre><code>
+import { Popover, Button, TextInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Popover width={300} trapFocus position=&quot;bottom&quot; withArrow shadow=&quot;md&quot;&gt;
+      &lt;Popover.Target&gt;
+        &lt;Button&gt;Toggle popover&lt;/Button&gt;
+      &lt;/Popover.Target&gt;
+      &lt;Popover.Dropdown&gt;
+        &lt;TextInput label=&quot;Name&quot; placeholder=&quot;Name&quot; size=&quot;xs&quot; /&gt;
+        &lt;TextInput label=&quot;Email&quot; placeholder=&quot;john@doe.com&quot; size=&quot;xs&quot; mt=&quot;xs&quot; /&gt;
+      &lt;/Popover.Dropdown&gt;
+    &lt;/Popover&gt;
+  );
+}
+</code></pre>
+<h2 id="inline-elements">Inline elements</h2>
+<p>Enable <code>inline</code> middleware to use <code>Popover</code> with inline elements:</p>
+<pre><code>
+import { Popover, Mark, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Text&gt;
+      Stantler’s magnificent antlers were traded at high prices as works of art. As a result, this
+      Pokémon was hunted close to extinction by those who were after the priceless antlers.{&#39; &#39;}
+      &lt;Popover middlewares={{ flip: true, shift: true, inline: true }} position=&quot;top&quot;&gt;
+        &lt;Popover.Target&gt;
+          &lt;Mark&gt;When visiting a junkyard&lt;/Mark&gt;
+        &lt;/Popover.Target&gt;
+        &lt;Popover.Dropdown&gt;Inline dropdown&lt;/Popover.Dropdown&gt;
+      &lt;/Popover&gt;
+      , you may catch sight of it having an intense fight with Murkrow over shiny objects.Ho-Oh’s
+      feathers glow in seven colors depending on the angle at which they are struck by light. These
+      feathers are said to bring happiness to the bearers. This Pokémon is said to live at the foot
+      of a rainbow.
+    &lt;/Text&gt;
+  );
+}
+</code></pre>
+<h2 id="same-width">Same width</h2>
+<p>Set <code>width=&quot;target&quot;</code> prop to make Popover dropdown take the same width as target element:</p>
+<pre><code>
+import { Popover, Text, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Popover width=&quot;target&quot; position=&quot;bottom&quot; withArrow shadow=&quot;md&quot;&gt;
+      &lt;Popover.Target&gt;
+        &lt;Button w={280}&gt;Toggle popover&lt;/Button&gt;
+      &lt;/Popover.Target&gt;
+      &lt;Popover.Dropdown&gt;
+        &lt;Text size=&quot;sm&quot;&gt;
+          This popover has same width as target, it is useful when you are building input dropdowns
+        &lt;/Text&gt;
+      &lt;/Popover.Dropdown&gt;
+    &lt;/Popover&gt;
+  );
+}
+
+</code></pre>
+<h2 id="offset">offset</h2>
+<p>Set <code>offset</code> prop to a number to change dropdown position relative to the target element.
+This way you can control dropdown offset on main axis only.</p>
+<pre><code>
+import { Popover, Button, Text } from &#39;@mantine/core&#39;;
+
+
+function Demo() {
+  return (
+    &lt;Popover
+      width={200}
+      opened
+      {{props}}
+    &gt;
+      &lt;Popover.Target&gt;
+        &lt;Button&gt;Popover target&lt;/Button&gt;
+      &lt;/Popover.Target&gt;
+      &lt;Popover.Dropdown&gt;
+        &lt;Text size=&quot;xs&quot;&gt;
+          Change position and offset to configure dropdown offset relative to target
+        &lt;/Text&gt;
+      &lt;/Popover.Dropdown&gt;
+    &lt;/Popover&gt;
+  );
+}
+</code></pre>
+<p>To control offset on both axis, pass object with <code>mainAxis</code> and <code>crossAxis</code> properties:</p>
+<pre><code>(props) => `
+import { Popover, Button, Text } from '@mantine/core';
+
+function Demo() {
+  return (
+    <Popover
+      width={200}
+      position="${props.position}"
+      opened
+      offset={{ mainAxis: ${props.mainAxis}, crossAxis: ${props.crossAxis} }}
+    >
+      <Popover.Target>
+        <Button>Popover target</Button>
+      </Popover.Target>
+      <Popover.Dropdown>
+        <Text size="xs">
+          Change position and offset to configure dropdown offset relative to target
+        </Text>
+      </Popover.Dropdown>
+    </Popover>
+  );
+}
+`</code></pre>
+<h2 id="middlewares">Middlewares</h2>
+<p>You can enable or disable Floating UI middlewares with
+<code>middlewares</code> prop:</p>
+<ul>
+<li>shift middleware shifts the dropdown to keep it in view. It is enabled by default</li>
+<li>flip middleware changes the placement of the dropdown to keep it in view. It is enabled by default.</li>
+<li>inline middleware improves positioning for inline reference elements that span over multiple lines. It is disabled by default.</li>
+<li>size middleware manipulates dropdown size. It is disabled by default.</li>
+</ul>
+<p>Example of turning off <code>shift</code> and <code>flip</code> middlewares:</p>
+<pre><code class="language-tsx">import { Popover } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Popover
+      middlewares={{ flip: false, shift: false }}
+      position=&quot;bottom&quot;
+    &gt;
+      {/* Popover content */}
+    &lt;/Popover&gt;
+  );
+}
+</code></pre>
+<h2 id="customize-middleware-options">Customize middleware options</h2>
+<p>To customize Floating UI middlewares options, pass them as
+an object to the <code>middlewares</code> prop. For example, to change shift
+middleware padding to <code>20px</code> use the following configuration:</p>
+<pre><code class="language-tsx">import { Popover } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Popover
+      middlewares={{ shift: { padding: 20 } }}
+      position=&quot;bottom&quot;
+    &gt;
+      {/* Popover content */}
+    &lt;/Popover&gt;
+  );
+}
+</code></pre>
+<h2 id="dropdown-arrow">Dropdown arrow</h2>
+<p>Set <code>withArrow</code> prop to add an arrow to the dropdown. Arrow is a <code>div</code> element rotated with <code>transform: rotate(45deg)</code>.</p>
+<p><code>arrowPosition</code> prop determines how arrow is position relative to the target element when <code>position</code> is set to <code>*-start</code> and <code>*-end</code> values on <code>Popover</code> component.
+By default, the value is <code>center</code> – the arrow is positioned in the center of the target element if it is possible.</p>
+<p>If you change <code>arrowPosition</code> to <code>side</code>, then the arrow will be positioned on the side of the target element,
+and you will be able to control arrow offset with <code>arrowOffset</code> prop. Note that when <code>arrowPosition</code> is set to <code>center</code>,
+<code>arrowOffset</code> prop is ignored.</p>
+<pre><code>
+import { Popover, Button, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Popover width={200} opened position=&quot;bottom-start&quot; withArrow{{props}}&gt;
+      &lt;Popover.Target&gt;
+        &lt;Button&gt;Target element&lt;/Button&gt;
+      &lt;/Popover.Target&gt;
+      &lt;Popover.Dropdown&gt;
+        &lt;Text size=&quot;xs&quot;&gt;Arrow position can be changed for *-start and *-end positions&lt;/Text&gt;
+      &lt;/Popover.Dropdown&gt;
+    &lt;/Popover&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled">Disabled</h2>
+<p>Set <code>disabled</code> prop to prevent <code>Popover.Dropdown</code> from rendering:</p>
+<pre><code>
+import { Popover, Text, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Popover width={200}{{props}}&gt;
+      &lt;Popover.Target&gt;
+        &lt;Button&gt;Toggle popover&lt;/Button&gt;
+      &lt;/Popover.Target&gt;
+      &lt;Popover.Dropdown&gt;
+        &lt;Text size=&quot;xs&quot;&gt;Disabled popover dropdown is always hidden&lt;/Text&gt;
+      &lt;/Popover.Dropdown&gt;
+    &lt;/Popover&gt;
+  );
+}
+</code></pre>
+<h2 id="click-outside">Click outside</h2>
+<p>By default, <code>Popover</code> closes when you click outside of the dropdown. To disable this behavior, set <code>closeOnClickOutside={false}</code>.</p>
+<p>You can configure events that are used for click outside detection with <code>clickOutsideEvents</code> prop.
+By default, <code>Popover</code> listens to <code>mousedown</code> and <code>touchstart</code> events. You can change it to any other
+events, for example, <code>mouseup</code> and <code>touchend</code>:</p>
+<pre><code>
+import { Popover, Text, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Popover width={200} position=&quot;bottom&quot; clickOutsideEvents={[&#39;mouseup&#39;, &#39;touchend&#39;]}&gt;
+      &lt;Popover.Target&gt;
+        &lt;Button&gt;Toggle popover&lt;/Button&gt;
+      &lt;/Popover.Target&gt;
+      &lt;Popover.Dropdown&gt;
+        &lt;Text size=&quot;xs&quot;&gt;Popover will be closed with mouseup and touchend events&lt;/Text&gt;
+      &lt;/Popover.Dropdown&gt;
+    &lt;/Popover&gt;
+  );
+}
+</code></pre>
+<h2 id="initial-focus">Initial focus</h2>
+<p>Popover uses FocusTrap component to manage focus.
+Add <code>data-autofocus</code> attribute to element that should receive initial focus:</p>
+<pre><code class="language-tsx">import { Popover } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Popover&gt;
+      &lt;Popover.Target&gt;
+        &lt;button type=&quot;button&quot;&gt;Target&lt;/button&gt;
+      &lt;/Popover.Target&gt;
+      &lt;Popover.Dropdown&gt;
+        &lt;input /&gt;
+        &lt;input data-autofocus /&gt;
+        &lt;input /&gt;
+      &lt;/Popover.Dropdown&gt;
+    &lt;/Popover&gt;
+  );
+}
+</code></pre>
+<h2 id="nested-popovers">Nested popovers</h2>
+<p>Nested popovers require children rendering without Portal. Usually, you
+should disable portal with props of the component that renders popover content, for example,
+Select has <code>comboboxProps={{ withinPortal: false }}</code> prop. Check documentation
+of the component that you are using to render popover content to find out how to disable the portal.
+If the portal is not disabled, outside click will close all popovers.</p>
+<p>Example of disabling portal in Select and DatePickerInput
+components:</p>
+<pre><code>
+import { Button, Popover, Select } from &#39;@mantine/core&#39;;
+import { DatePickerInput } from &#39;@mantine/dates&#39;;
+
+function Demo() {
+  return (
+    &lt;Popover width={300} position=&quot;bottom&quot; withArrow shadow=&quot;md&quot;&gt;
+      &lt;Popover.Target&gt;
+        &lt;Button&gt;Toggle popover&lt;/Button&gt;
+      &lt;/Popover.Target&gt;
+      &lt;Popover.Dropdown bg=&quot;var(--mantine-color-body)&quot;&gt;
+        &lt;Select
+          label=&quot;Select within Popover&quot;
+          placeholder=&quot;Select within Popover&quot;
+          comboboxProps={{ withinPortal: false }}
+          data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Svelte&#39;, &#39;Vue&#39;]}
+        /&gt;
+        &lt;DatePickerInput
+          label=&quot;DatePickerInput within Popover&quot;
+          placeholder=&quot;DatePickerInput within Popover&quot;
+          popoverProps={{ withinPortal: false }}
+          mt=&quot;md&quot;
+        /&gt;
+      &lt;/Popover.Dropdown&gt;
+    &lt;/Popover&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p>Popover follows WAI-ARIA recommendations:</p>
+<ul>
+<li>Dropdown element has <code>role=&quot;dialog&quot;</code> and <code>aria-labelledby=&quot;target-id&quot;</code> attributes</li>
+<li>Target element has <code>aria-haspopup=&quot;dialog&quot;</code>, <code>aria-expanded</code>, <code>aria-controls=&quot;dropdown-id&quot;</code> attributes</li>
+</ul>
+<p>Uncontrolled Popover will be accessible only when used with <code>button</code> element or component that renders it (Button, ActionIcon, etc.).
+Other elements will not support <code>Space</code> and <code>Enter</code> key presses.</p>
+<h2 id="keyboard-interactions">Keyboard interactions</h2>

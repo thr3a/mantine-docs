@@ -1,0 +1,108 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>Loader</code> component supports 3 types of loaders: <code>oval</code>, <code>bars</code> and <code>dots</code> by default. All
+loaders are animated with CSS for better performance.</p>
+<pre><code>
+import { Loader } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Loader{{props}} /&gt;;
+}
+</code></pre>
+<h2 id="size-prop">Size prop</h2>
+<p>You can pass any valid CSS values and numbers to <code>size</code> prop. Numbers are treated as px, but
+converted to rem. For example, <code>size={32}</code> will produce
+<code>--loader-size: 2rem</code> CSS variable.</p>
+<pre><code>
+import { Loader } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Loader{{props}} /&gt;;
+}
+</code></pre>
+<h2 id="adding-custom-loaders">Adding custom loaders</h2>
+<p><code>Loader</code> component is used in other components (Button, ActionIcon, LoadingOverlay, etc.).
+You can change loader type with default props by setting <code>type</code>.
+You can also add a custom CSS or SVG loader with <code>loaders</code> default prop.</p>
+<h3 id="custom-css-only-loader">Custom CSS only loader</h3>
+<p>Note that in order for <code>size</code> and <code>color</code> props to work with custom loaders, you need to
+use <code>--loader-size</code> and <code>--loader-color</code> CSS variables in your loader styles.</p>
+<pre><code>
+import { MantineProvider, Loader } from &#39;@mantine/core&#39;;
+import { CssLoader } from &#39;./CssLoader&#39;;
+
+const theme = createTheme({
+  components: {
+    Loader: Loader.extend({
+      defaultProps: {
+        loaders: { ...Loader.defaultLoaders, custom: CssLoader },
+        type: &#39;custom&#39;,
+      },
+    }),
+  },
+});
+
+function Demo() {
+  return (
+    &lt;MantineThemeProvider theme={theme}&gt;
+      &lt;Loader /&gt;
+    &lt;/MantineThemeProvider&gt;
+  );
+}
+</code></pre>
+<h3 id="custom-svg-loader">Custom SVG loader</h3>
+<p>It is recommended to use CSS only loaders, as SVG based animations may have the following issues:</p>
+<ul>
+<li>High CPU usage – loader may look glitchy on low-end devices</li>
+<li>Loader animation may not start playing until js is loaded – user may see static loader</li>
+</ul>
+<p>In your SVG loader, you need to use <code>--loader-size</code> and <code>--loader-color</code> variables the same
+way as in CSS only custom loader in order for <code>size</code> and <code>color</code> props to work. Usually,
+you would need to set <code>width</code> and <code>height</code> to <code>var(--loader-size)</code> and <code>fill</code>/<code>stroke</code> to
+<code>var(--loader-color)</code>.</p>
+<pre><code>
+import { MantineProvider, Loader } from &#39;@mantine/core&#39;;
+import { RingLoader } from &#39;./RingLoader&#39;;
+
+const theme = createTheme({
+  components: {
+    Loader: Loader.extend({
+      defaultProps: {
+        loaders: { ...Loader.defaultLoaders, ring: RingLoader },
+        type: &#39;ring&#39;,
+      },
+    }),
+  },
+});
+
+function Demo() {
+  return (
+    &lt;MantineThemeProvider theme={theme}&gt;
+      &lt;Loader /&gt;
+    &lt;/MantineThemeProvider&gt;
+  );
+}
+</code></pre>
+<h2 id="children-prop">children prop</h2>
+<p><code>Loader</code> supports <code>children</code> prop. If you pass anything to <code>children</code>, it will be rendered
+instead of the loader. This is useful when you want to control <code>Loader</code> representation
+in components that use <code>loaderProps</code>, for example Button, LoadingOverlay, Dropzone.</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { LoadingOverlay, Button, Group, Box } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [visible, { toggle }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Box pos=&quot;relative&quot;&gt;
+        &lt;LoadingOverlay visible={visible} loaderProps={{ children: &#39;Loading...&#39; }} /&gt;
+        {/* ...other content */}
+      &lt;/Box&gt;
+
+      &lt;Group justify=&quot;center&quot;&gt;
+        &lt;Button onClick={toggle}&gt;Toggle overlay&lt;/Button&gt;
+      &lt;/Group&gt;
+    &lt;/&gt;
+  );
+}</code></pre>

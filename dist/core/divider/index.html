@@ -1,0 +1,120 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Text, Divider } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Text&gt;
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, officiis! Fugit minus ea,
+        perferendis eum consectetur quae vitae. Aliquid, quam reprehenderit? Maiores sed pariatur
+        aliquid commodi atque sunt officiis natus?
+      &lt;/Text&gt;
+
+      &lt;Divider my=&quot;md&quot; /&gt;
+
+      &lt;Text&gt;
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, officiis! Fugit minus ea,
+        perferendis eum consectetur quae vitae. Aliquid, quam reprehenderit? Maiores sed pariatur
+        aliquid commodi atque sunt officiis natus?
+      &lt;/Text&gt;
+
+      &lt;Divider my=&quot;md&quot; /&gt;
+
+      &lt;Text&gt;
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, officiis! Fugit minus ea,
+        perferendis eum consectetur quae vitae. Aliquid, quam reprehenderit? Maiores sed pariatur
+        aliquid commodi atque sunt officiis natus?
+      &lt;/Text&gt;
+    &lt;/&gt;
+  );
+}
+
+</code></pre>
+<h2 id="variants">Variants</h2>
+<pre><code>
+import { Divider } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Divider my=&quot;sm&quot; /&gt;
+      &lt;Divider my=&quot;sm&quot; variant=&quot;dashed&quot; /&gt;
+      &lt;Divider my=&quot;sm&quot; variant=&quot;dotted&quot; /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="with-label">With label</h2>
+<pre><code>
+import { Divider, Box, Anchor } from &#39;@mantine/core&#39;;
+import { IconSearch } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Divider my=&quot;xs&quot; label=&quot;Label on the left&quot; labelPosition=&quot;left&quot; /&gt;
+      &lt;Divider my=&quot;xs&quot; label=&quot;Label in the center&quot; labelPosition=&quot;center&quot; /&gt;
+      &lt;Divider my=&quot;xs&quot; label=&quot;Label on the right&quot; labelPosition=&quot;right&quot; /&gt;
+      &lt;Divider
+        my=&quot;xs&quot;
+        variant=&quot;dashed&quot;
+        labelPosition=&quot;center&quot;
+        label={
+          &lt;&gt;
+            &lt;IconSearch size={12} /&gt;
+            &lt;Box ml={5}&gt;Search results&lt;/Box&gt;
+          &lt;/&gt;
+        }
+      /&gt;
+      &lt;Divider
+        my=&quot;xs&quot;
+        label={
+          &lt;Anchor href=&quot;https://mantine.dev&quot; target=&quot;_blank&quot; inherit&gt;
+            Link label
+          &lt;/Anchor&gt;
+        }
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="sizes">Sizes</h2>
+<pre><code>
+import { Divider } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Divider size=&quot;xs&quot; /&gt;
+      &lt;Divider size=&quot;sm&quot; /&gt;
+      &lt;Divider size=&quot;md&quot; /&gt;
+      &lt;Divider size=&quot;lg&quot; /&gt;
+      &lt;Divider size=&quot;xl&quot; /&gt;
+      &lt;Divider size={10} /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="vertical-orientation">Vertical orientation</h2>
+<pre><code>
+import { Divider, Group, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Group&gt;
+      &lt;Text&gt;Label&lt;/Text&gt;
+      &lt;Divider orientation=&quot;vertical&quot; /&gt;
+      &lt;Text&gt;Label&lt;/Text&gt;
+      &lt;Divider size=&quot;sm&quot; orientation=&quot;vertical&quot; /&gt;
+      &lt;Text&gt;Label&lt;/Text&gt;
+      &lt;Divider size=&quot;md&quot; orientation=&quot;vertical&quot; /&gt;
+      &lt;Text&gt;Label&lt;/Text&gt;
+      &lt;Divider size=&quot;lg&quot; orientation=&quot;vertical&quot; /&gt;
+      &lt;Text&gt;Label&lt;/Text&gt;
+      &lt;Divider size=&quot;xl&quot; orientation=&quot;vertical&quot; /&gt;
+      &lt;Text&gt;Label&lt;/Text&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>

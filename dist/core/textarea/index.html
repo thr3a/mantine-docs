@@ -1,0 +1,111 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Textarea } from &#39;@mantine/core&#39;;
+
+
+function Demo() {
+  return (
+    &lt;Textarea
+      {{props}}
+      placeholder=&quot;Input placeholder&quot;
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { Textarea } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState(&#39;&#39;);
+  return (
+    &lt;Textarea
+      value={value}
+      onChange={(event) =&gt; setValue(event.currentTarget.value)}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="autosize">Autosize</h2>
+<p>Autosize textarea uses react-textarea-autosize package.
+Textarea height will grow until maxRows are reached or indefinitely if maxRows not set.</p>
+<pre><code>
+import { Textarea } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Textarea
+        placeholder=&quot;Autosize with no rows limit&quot;
+        label=&quot;Autosize with no rows limit&quot;
+        autosize
+        minRows={2}
+      /&gt;
+
+      &lt;Textarea
+        label=&quot;Autosize with 4 rows max&quot;
+        placeholder=&quot;Autosize with 4 rows max&quot;
+        autosize
+        minRows={2}
+        maxRows={4}
+      /&gt;
+    &lt;/&gt;
+  );
+}
+
+</code></pre>
+<h2 id="enable-resize">Enable resize</h2>
+<p>By default, resize is <code>none</code>,
+to enable it set <code>resize</code> prop to <code>vertical</code> or <code>both</code>:</p>
+<pre><code>
+import { Textarea } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Textarea resize=&quot;vertical&quot; label=&quot;Disabled&quot; placeholder=&quot;Your comment&quot; /&gt;;
+}
+</code></pre>
+<h2 id="error-state">Error state</h2>
+<pre><code>
+import { Textarea } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Textarea label=&quot;Boolean error&quot; placeholder=&quot;Boolean error&quot; error /&gt;
+      &lt;Textarea
+        mt=&quot;md&quot;
+        label=&quot;With error message&quot;
+        placeholder=&quot;With error message&quot;
+        error=&quot;Invalid name&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled-state">Disabled state</h2>
+<pre><code>
+import { Textarea } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Textarea label=&quot;Disabled&quot; placeholder=&quot;Your comment&quot; disabled /&gt;;
+}
+</code></pre>
+<pre><code>
+import { IconAt } from &#39;@tabler/icons-react&#39;;
+import { Textarea, rem } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Textarea
+      label=&quot;Label&quot;
+      placeholder=&quot;Textarea&quot;
+      description=&quot;Description&quot;
+      error=&quot;Error&quot;
+      withAsterisk
+      leftSection={&lt;IconAt style={{ width: rem(18), height: rem(18) }} /&gt;}
+      autosize
+      {{props}}
+    /&gt;
+  );
+}
+</code></pre>

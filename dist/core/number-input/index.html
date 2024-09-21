@@ -1,0 +1,346 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>NumberInput</code> is based on react-number-format.
+It supports most of the props from the <code>NumericFormat</code> component in the original package.</p>
+<pre><code>
+import { NumberInput } from &#39;@mantine/core&#39;;
+
+
+function Demo() {
+  return (
+    &lt;NumberInput
+      {{props}}
+      placeholder=&quot;Input placeholder&quot;
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { NumberInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState&lt;string | number&gt;(&#39;&#39;);
+  return &lt;NumberInput value={value} onChange={setValue} /&gt;;
+}
+</code></pre>
+<h2 id="value-type">Value type</h2>
+<p><code>value</code>, <code>defaultValue</code> and <code>onChange</code> props can be either string or number. In all cases
+when <code>NumberInput</code> value can be represented as a number, <code>onChange</code> function is called
+with a number (for example <code>55</code>, <code>1.28</code>, <code>-100</code>, etc.). But there are several cases when
+it is not possible to represent value as a number:</p>
+<ul>
+<li>Empty state is represented as an empty string – <code>&#39;&#39;</code></li>
+<li>Numbers that are larger than <code>Number.MAX_SAFE_INTEGER</code> or smaller than <code>Number.MIN_SAFE_INTEGER</code> are represented as strings – <code>&#39;90071992547409910&#39;</code></li>
+<li>Numbers that consist of only multiple zeros are represented as strings – <code>0.</code>, <code>0.0</code>, <code>-0.00</code>, etc.</li>
+</ul>
+<h2 id="min-and-max">min and max</h2>
+<p>Set <code>min</code> and <code>max</code> props to limit the input value:</p>
+<pre><code>
+import { NumberInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;NumberInput
+      label=&quot;Enter value between 10 and 20&quot;
+      placeholder=&quot;Don&#39;t enter more than 20 and less than 10&quot;
+      min={10}
+      max={20}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="clamp-behavior">Clamp behavior</h2>
+<p>By default, the value is clamped when the input is blurred. If you set <code>clampBehavior=&quot;strict&quot;</code>,
+it will not be possible to enter value outside of min/max range. Note that this option
+may cause issues if you have tight <code>min</code> and <code>max</code>, for example <code>min={10}</code> and <code>max={20}</code>.
+If you need to disable value clamping entirely, set <code>clampBehavior=&quot;none&quot;</code>.</p>
+<pre><code>
+import { NumberInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;NumberInput
+      label=&quot;You cannot enter number less than 0 or greater than 100&quot;
+      placeholder=&quot;You cannot enter number less than 0 or greater than 100&quot;
+      clampBehavior=&quot;strict&quot;
+      min={0}
+      max={100}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="prefix-and-suffix">Prefix and suffix</h2>
+<p>Set <code>prefix</code> and <code>suffix</code> props to add given string to the start or end of the input value:</p>
+<pre><code>
+import { NumberInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;NumberInput
+        label=&quot;With prefix&quot;
+        placeholder=&quot;Dollars&quot;
+        prefix=&quot;$&quot;
+        defaultValue={100}
+        mb=&quot;md&quot;
+      /&gt;
+      &lt;NumberInput
+        label=&quot;With suffix&quot;
+        placeholder=&quot;Percents&quot;
+        suffix=&quot;%&quot;
+        defaultValue={100}
+        mt=&quot;md&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="negative-numbers">Negative numbers</h2>
+<p>By default, negative numbers are allowed. Set <code>allowNegative={false}</code> to allow only positive numbers.</p>
+<pre><code>
+import { NumberInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;NumberInput
+      label=&quot;Negative number are not allowed&quot;
+      placeholder=&quot;Do not enter negative numbers&quot;
+      allowNegative={false}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="decimal-numbers">Decimal numbers</h2>
+<p>By default, decimal numbers are allowed. Set <code>allowDecimal={false}</code> to allow only integers.</p>
+<pre><code>
+import { NumberInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;NumberInput
+      label=&quot;Decimals are not allowed&quot;
+      placeholder=&quot;Do not enter decimal numbers&quot;
+      allowDecimal={false}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="decimal-scale">Decimal scale</h2>
+<p><code>decimalScale</code> controls how many decimal places are allowed:</p>
+<pre><code>
+import { NumberInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;NumberInput
+      label=&quot;You can enter only 2 digits after decimal point&quot;
+      placeholder=&quot;Do not enter more that 2&quot;
+      decimalScale={2}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="fixed-decimal-scale">Fixed decimal scale</h2>
+<p>Set <code>fixedDecimalScale</code> to always display fixed number of decimal places:</p>
+<pre><code>
+import { NumberInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;NumberInput
+      label=&quot;Always show 2 digits after decimal point&quot;
+      placeholder=&quot;Do not enter more that 2&quot;
+      decimalScale={2}
+      fixedDecimalScale
+      defaultValue={2.2}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="decimal-separator">Decimal separator</h2>
+<p>Set <code>decimalSeparator</code> to change decimal separator character:</p>
+<pre><code>
+import { NumberInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;NumberInput
+      label=&quot;Custom decimal separator&quot;
+      placeholder=&quot;You can change it&quot;
+      decimalSeparator=&quot;,&quot;
+      defaultValue={20.573}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="thousand-separator">Thousand separator</h2>
+<p>Set <code>thousandSeparator</code> prop to separate thousands with a character. You can control
+grouping logic with <code>thousandsGroupStyle</code>, it accepts: <code>thousand</code>, <code>lakh</code>, <code>wan</code>, <code>none</code> values.</p>
+<pre><code>
+import { NumberInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;NumberInput
+        label=&quot;Thousands are separated with a coma&quot;
+        placeholder=&quot;Thousands are separated with a coma&quot;
+        thousandSeparator=&quot;,&quot;
+        defaultValue={1_000_000}
+      /&gt;
+
+      &lt;NumberInput
+        label=&quot;Thousands are separated with a space&quot;
+        placeholder=&quot;Thousands are separated with a space&quot;
+        thousandSeparator=&quot; &quot;
+        defaultValue={1_000_000}
+        mt=&quot;md&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { NumberInput, rem } from &#39;@mantine/core&#39;;
+import { IconCurrencyDram } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  const icon = &lt;IconCurrencyDram style={{ width: rem(20), height: rem(20) }} stroke={1.5} /&gt;;
+  return (
+    &lt;&gt;
+      &lt;NumberInput leftSection={icon} label=&quot;With left section&quot; placeholder=&quot;With left section&quot; /&gt;
+      &lt;NumberInput
+        rightSection={icon}
+        label=&quot;With right section&quot;
+        placeholder=&quot;With right section&quot;
+        mt=&quot;md&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="incrementdecrement-controls">Increment/decrement controls</h2>
+<p>By default, the right section is occupied by increment and decrement buttons.
+To hide them, set <code>hideControls</code> prop. You can also use <code>rightSection</code> prop to render anything
+in the right section to replace the default controls.</p>
+<pre><code>
+import { NumberInput } from &#39;@mantine/core&#39;;
+import { IconChartBubble } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;NumberInput label=&quot;Hide controls&quot; placeholder=&quot;Hide controls&quot; hideControls /&gt;
+      &lt;NumberInput
+        label=&quot;Custom right section&quot;
+        placeholder=&quot;Custom right section&quot;
+        mt=&quot;md&quot;
+        rightSection={&lt;IconChartBubble /&gt;}
+        rightSectionPointerEvents=&quot;none&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="incrementdecrement-on-hold">Increment/decrement on hold</h2>
+<p>Set <code>stepHoldDelay</code> and <code>stepHoldInterval</code> props to define behavior when increment/decrement controls are clicked and hold:</p>
+<pre><code>
+import { NumberInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;NumberInput
+        label=&quot;Step on hold&quot;
+        description=&quot;Step value when clicking and holding increment/decrement buttons&quot;
+        stepHoldDelay={500}
+        stepHoldInterval={100}
+      /&gt;
+
+      &lt;NumberInput
+        label=&quot;Step the value with interval function&quot;
+        description=&quot;Step value will increase incrementally when control is hold&quot;
+        stepHoldDelay={500}
+        stepHoldInterval={(t) =&gt; Math.max(1000 / t ** 2, 25)}
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="custom-increment-and-decrement-controls">Custom increment and decrement controls</h2>
+<p>You can get a ref with <code>increment</code> and <code>decrement</code> functions to create custom controls:</p>
+<pre><code>
+import { useRef } from &#39;react&#39;;
+import { NumberInput, Group, Button, NumberInputHandlers } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const handlersRef = useRef&lt;NumberInputHandlers&gt;(null);
+  return (
+    &lt;&gt;
+      &lt;NumberInput
+        label=&quot;Click buttons to change value&quot;
+        placeholder=&quot;Click the buttons&quot;
+        handlersRef={handlersRef}
+        step={2}
+        min={10}
+        max={20}
+        defaultValue={15}
+      /&gt;
+
+      &lt;Group mt=&quot;md&quot; justify=&quot;center&quot;&gt;
+        &lt;Button onClick={() =&gt; handlersRef.current?.decrement()} variant=&quot;default&quot;&gt;
+          Decrement by 2
+        &lt;/Button&gt;
+
+        &lt;Button onClick={() =&gt; handlersRef.current?.increment()} variant=&quot;default&quot;&gt;
+          Increment by 2
+        &lt;/Button&gt;
+      &lt;/Group&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="error-state">Error state</h2>
+<pre><code>
+import { NumberInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;NumberInput label=&quot;Boolean error&quot; placeholder=&quot;Boolean error&quot; error /&gt;
+      &lt;NumberInput
+        mt=&quot;md&quot;
+        label=&quot;With error message&quot;
+        placeholder=&quot;With error message&quot;
+        error=&quot;Invalid name&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled-state">Disabled state</h2>
+<pre><code>
+import { NumberInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;NumberInput disabled label=&quot;Disabled input&quot; placeholder=&quot;Disabled input&quot; /&gt;;
+}
+</code></pre>
+<pre><code>
+import { IconAt } from &#39;@tabler/icons-react&#39;;
+import { NumberInput, rem } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;NumberInput
+      label=&quot;Label&quot;
+      placeholder=&quot;NumberInput&quot;
+      description=&quot;Description&quot;
+      error=&quot;Error&quot;
+      withAsterisk
+      leftSection={&lt;IconAt style={{ width: rem(18), height: rem(18) }} /&gt;}
+      {{props}}
+    /&gt;
+  );
+}
+</code></pre>

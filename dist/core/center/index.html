@@ -1,0 +1,30 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Center, Box } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Center maw={400} h={100} bg=&quot;var(--mantine-color-gray-light)&quot;&gt;
+      &lt;Box bg=&quot;var(--mantine-color-blue-light)&quot;&gt;All elements inside Center are centered&lt;/Box&gt;
+    &lt;/Center&gt;
+  );
+}
+</code></pre>
+<h2 id="inline">Inline</h2>
+<p>To use <code>Center</code> with inline elements set <code>inline</code> prop.
+For example, you can center link icon and label:</p>
+<pre><code>
+import { Center, Anchor, Box, rem } from &#39;@mantine/core&#39;;
+import { IconArrowLeft } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;Anchor href=&quot;https://mantine.dev&quot; target=&quot;_blank&quot;&gt;
+      &lt;Center inline&gt;
+        &lt;IconArrowLeft style={{ width: rem(12), height: rem(12) }} /&gt;
+        &lt;Box ml={5}&gt;Back to Mantine website&lt;/Box&gt;
+      &lt;/Center&gt;
+    &lt;/Anchor&gt;
+  );
+}
+</code></pre>

@@ -1,0 +1,360 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Slider } from &#39;@mantine/core&#39;;
+
+
+function Demo() {
+  return (
+    &lt;Slider
+      {{props}}
+      marks={[
+        { value: 20, label: &#39;20%&#39; },
+        { value: 50, label: &#39;50%&#39; },
+        { value: 80, label: &#39;80%&#39; },
+      ]}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<p>Controlled <code>Slider</code>:</p>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { Slider } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState(40);
+  return &lt;Slider value={value} onChange={setValue} /&gt;;
+}
+</code></pre>
+<p>Controlled <code>RangeSlider</code>:</p>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { RangeSlider } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState&lt;[number, number]&gt;([20, 80]);
+  return &lt;RangeSlider value={value} onChange={setValue} /&gt;;
+}
+</code></pre>
+<h2 id="disabled">Disabled</h2>
+<pre><code>
+import { Slider, RangeSlider } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Slider defaultValue={60} disabled /&gt;
+      &lt;RangeSlider
+        mt=&quot;xl&quot;
+        mb=&quot;xl&quot;
+        disabled
+        defaultValue={[25, 75]}
+        marks={[
+          { value: 0, label: &#39;xs&#39; },
+          { value: 25, label: &#39;sm&#39; },
+          { value: 50, label: &#39;md&#39; },
+          { value: 75, label: &#39;lg&#39; },
+          { value: 100, label: &#39;xl&#39; },
+        ]}
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="onchangeend">onChangeEnd</h2>
+<p><code>onChangeEnd</code> callback is called when user the slider is stopped from being dragged or value is changed with keyboard.
+You can use it as a debounced callback to avoid too frequent updates.</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Slider, Text, Box } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState(50);
+  const [endValue, setEndValue] = useState(50);
+
+  return (
+    &lt;Box maw={400} mx=&quot;auto&quot;&gt;
+      &lt;Slider value={value} onChange={setValue} onChangeEnd={setEndValue} /&gt;
+      &lt;Text mt=&quot;md&quot; size=&quot;sm&quot;&gt;
+        onChange value: &lt;b&gt;{value}&lt;/b&gt;
+      &lt;/Text&gt;
+      &lt;Text mt={5} size=&quot;sm&quot;&gt;
+        onChangeEnd value: &lt;b&gt;{endValue}&lt;/b&gt;
+      &lt;/Text&gt;
+    &lt;/Box&gt;
+  );
+}
+</code></pre>
+<h2 id="control-label">Control label</h2>
+<p>To change label behavior and appearance, set the following props:</p>
+<ul>
+<li><code>label</code> – formatter function, accepts value as an argument, set null to disable label, defaults to <code>f =&gt; f</code></li>
+<li><code>labelAlwaysOn</code> – if true – label will always be displayed, by default label is visible only when user is dragging</li>
+<li><code>labelTransitionProps</code> – props passed down to the Transition component, can be used to customize label animation</li>
+</ul>
+<pre><code>
+import { Slider, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Text size=&quot;sm&quot;&gt;No label&lt;/Text&gt;
+      &lt;Slider defaultValue={40} label={null} /&gt;
+
+      &lt;Text size=&quot;sm&quot; mt=&quot;xl&quot;&gt;Formatted label&lt;/Text&gt;
+      &lt;Slider defaultValue={40} label={(value) =&gt; `${value} °C`} /&gt;
+
+      &lt;Text size=&quot;sm&quot; mt=&quot;xl&quot;&gt;Label always visible&lt;/Text&gt;
+      &lt;Slider defaultValue={40} labelAlwaysOn /&gt;
+
+      &lt;Text size=&quot;sm&quot; mt=&quot;xl&quot;&gt;Custom label transition&lt;/Text&gt;
+      &lt;Slider
+        defaultValue={40}
+        labelTransitionProps={{
+          transition: &#39;skew-down&#39;,
+          duration: 150,
+          timingFunction: &#39;linear&#39;,
+        }}
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="min-max-and-step">Min, max and step</h2>
+<pre><code>
+import { Slider, Text } from &#39;@mantine/core&#39;;
+
+const marks = [
+  { value: 0, label: &#39;xs&#39; },
+  { value: 25, label: &#39;sm&#39; },
+  { value: 50, label: &#39;md&#39; },
+  { value: 75, label: &#39;lg&#39; },
+  { value: 100, label: &#39;xl&#39; },
+];
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Text&gt;Decimal step&lt;/Text&gt;
+      &lt;Slider
+        defaultValue={0}
+        min={-10}
+        max={10}
+        label={(value) =&gt; value.toFixed(1)}
+        step={0.1}
+        styles={{ markLabel: { display: &#39;none&#39; } }}
+      /&gt;
+
+      &lt;Text mt=&quot;md&quot;&gt;Step matched with marks&lt;/Text&gt;
+      &lt;Slider
+        defaultValue={50}
+        label={(val) =&gt; marks.find((mark) =&gt; mark.value === val)!.label}
+        step={25}
+        marks={marks}
+        styles={{ markLabel: { display: &#39;none&#39; } }}
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="decimal-values">Decimal values</h2>
+<p>To use <code>Slider</code> with decimal values, set <code>min</code>, <code>max</code> and <code>step</code> props:</p>
+<pre><code>
+import { Slider } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Slider min={0} max={1} step={0.0005} defaultValue={0.5535} /&gt;;
+}
+</code></pre>
+<h2 id="minrange">minRange</h2>
+<p>Use <code>minRange</code> prop to control minimum range between <code>from</code> and <code>to</code> values
+in <code>RangeSlider</code>. The default value is <code>10</code>. The example below shows how to
+use <code>minRange</code> prop to capture decimal values from the user:</p>
+<pre><code>
+import { RangeSlider } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;RangeSlider minRange={0.2} min={0} max={1} step={0.0005} defaultValue={[0.1245, 0.5535]} /&gt;
+  );
+}
+</code></pre>
+<h2 id="marks">Marks</h2>
+<p>Add any number of marks to slider by setting <code>marks</code> prop to an array of objects:</p>
+<pre><code class="language-tsx">const marks = [
+  { value: 20 }, // -&gt; displays mark on slider track
+  { value: 40, label: &#39;40%&#39; }, // -&gt; adds mark label below slider track
+];
+</code></pre>
+<p>Note that mark value is relative to slider value, not width:</p>
+<pre><code>
+import { Slider, RangeSlider } from &#39;@mantine/core&#39;;
+
+const marks = [
+  { value: 20, label: &#39;20%&#39; },
+  { value: 50, label: &#39;50%&#39; },
+  { value: 80, label: &#39;80%&#39; },
+];
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Slider defaultValue={40} marks={[{ value: 10 }, { value: 40 }, { value: 95 }]} /&gt;
+      &lt;Slider defaultValue={40} marks={marks} /&gt;
+      &lt;RangeSlider defaultValue={[20, 80]} marks={marks} /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="thumb-size">Thumb size</h2>
+<pre><code>
+import { Slider } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Slider{{props}} defaultValue={20} /&gt;;
+}
+</code></pre>
+<h2 id="thumb-children">Thumb children</h2>
+<pre><code>
+import { Slider, RangeSlider, rem } from &#39;@mantine/core&#39;;
+import { IconHeart, IconHeartBroken } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Slider
+        thumbChildren={&lt;IconHeart size=&quot;1rem&quot; /&gt;}
+        color=&quot;red&quot;
+        label={null}
+        defaultValue={40}
+        thumbSize={26}
+        styles={{ thumb: { borderWidth: rem(2), padding: rem(3) } }}
+      /&gt;
+
+      &lt;RangeSlider
+        mt=&quot;xl&quot;
+        styles={{ thumb: { borderWidth: rem(2), padding: rem(3) } }}
+        color=&quot;red&quot;
+        label={null}
+        defaultValue={[20, 60]}
+        thumbSize={26}
+        thumbChildren={[&lt;IconHeart size=&quot;1rem&quot; key=&quot;1&quot; /&gt;, &lt;IconHeartBroken size=&quot;1rem&quot; key=&quot;2&quot; /&gt;]}
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="scale">Scale</h2>
+<p>You can use the <code>scale</code> prop to represent the value on a different scale.</p>
+<p>In the following demo, the value <code>x</code> represents the value <code>2^x</code>. Increasing <code>x</code> by one increases the represented value by 2 to the power of <code>x</code>.</p>
+<pre><code>
+import { RangeSlider, Slider } from &#39;@mantine/core&#39;;
+
+function valueLabelFormat(value: number) {
+  const units = [&#39;KB&#39;, &#39;MB&#39;, &#39;GB&#39;, &#39;TB&#39;];
+
+  let unitIndex = 0;
+  let scaledValue = value;
+
+  while (scaledValue &gt;= 1024 &amp;&amp; unitIndex &lt; units.length - 1) {
+    unitIndex += 1;
+    scaledValue /= 1024;
+  }
+
+  return `${scaledValue} ${units[unitIndex]}`;
+}
+
+const getScale = (v: number) =&gt; 2 ** v;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Slider
+        scale={getScale}
+        step={1}
+        min={2}
+        max={30}
+        labelAlwaysOn
+        defaultValue={10}
+        label={valueLabelFormat}
+      /&gt;
+      &lt;RangeSlider
+        mt={50}
+        scale={getScale}
+        step={1}
+        min={2}
+        max={30}
+        labelAlwaysOn
+        defaultValue={[10, 20]}
+        label={valueLabelFormat}
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="inverted">Inverted</h2>
+<p>You can invert the track with the <code>inverted</code> prop:</p>
+<pre><code>
+import { RangeSlider, Slider } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Slider inverted defaultValue={80} /&gt;
+      &lt;RangeSlider inverted defaultValue={[40, 80]} mt=&quot;xl&quot; /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Slider } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Slider{{props}} marks={[{ value: 20, label: &#39;20%&#39; }, { value: 80, label: &#39;80%&#39; }]} labelAlwaysOn /&gt;;
+}
+</code></pre>
+<p>Example of using Styles API to change <code>Slider</code> styles:</p>
+<pre><code>
+import { Slider } from &#39;@mantine/core&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+function Demo() {
+  return (
+    &lt;Slider
+      defaultValue={40}
+      marks={[
+        { value: 20, label: &#39;20%&#39; },
+        { value: 50, label: &#39;50%&#39; },
+        { value: 80, label: &#39;80%&#39; },
+      ]}
+      size={2}
+      classNames={classes}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="vertical-slider">Vertical slider</h2>
+<p><code>Slider</code> and <code>RangeSlider</code> do not provide vertical orientation as it is very rarely used.
+If you need this feature you can build it yourself with use-move hook.</p>
+<h2 id="accessibility">Accessibility</h2>
+<p><code>Slider</code> and <code>RangeSlider</code> components are accessible by default:</p>
+<ul>
+<li>Thumbs are focusable</li>
+<li>When the user uses mouse to interact with the slider, focus is moved to the slider track, when the user presses arrows focus is moved to the thumb</li>
+<li>Value can be changed with arrows with step increment/decrement</li>
+</ul>
+<p>To label component for screen readers, add labels to thumbs:</p>
+<pre><code class="language-tsx">import { RangeSlider, Slider } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Slider thumbLabel=&quot;Thumb aria-label&quot; /&gt;
+      &lt;RangeSlider
+        thumbFromLabel=&quot;First thumb aria-label&quot;
+        thumbToLabel=&quot;Second thumb aria-label&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="keyboard-interactions">Keyboard interactions</h2>

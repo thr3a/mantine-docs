@@ -1,0 +1,70 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>AspectRatio</code> allows maintaining a consistent width/height ratio.
+It can be used to display images, maps, videos and other media.</p>
+<pre><code>
+import { AspectRatio } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;AspectRatio ratio={1080 / 720} maw={300} mx=&quot;auto&quot;&gt;
+      &lt;img
+        src=&quot;https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-5.png&quot;
+        alt=&quot;Panda&quot;
+      /&gt;
+    &lt;/AspectRatio&gt;
+  );
+}
+</code></pre>
+<h2 id="map-embed">Map embed</h2>
+<pre><code>
+import { AspectRatio } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;AspectRatio ratio={16 / 9}&gt;
+      &lt;iframe
+        src=&quot;https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3025.3063874233135!2d-74.04668908358428!3d40.68924937933441!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25090129c363d%3A0x40c6a5770d25022b!2sStatue%20of%20Liberty%20National%20Monument!5e0!3m2!1sen!2sru!4v1644262070010!5m2!1sen!2sru&quot;
+        title=&quot;Google map&quot;
+        style={{ border: 0 }}
+      /&gt;
+    &lt;/AspectRatio&gt;
+  );
+}
+</code></pre>
+<h2 id="video-embed">Video embed</h2>
+<pre><code>
+import { AspectRatio } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;AspectRatio ratio={16 / 9}&gt;
+      &lt;iframe
+        src=&quot;https://www.youtube.com/embed/mzJ4vCjSt28&quot;
+        title=&quot;YouTube video player&quot;
+        style={{ border: 0 }}
+        allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot;
+        allowFullScreen
+      /&gt;
+    &lt;/AspectRatio&gt;
+  );
+}
+</code></pre>
+<h2 id="inside-flex-container">Inside flex container</h2>
+<p>By default, <code>AspectRatio</code> does not have fixed width and height, it will take as much space as possible
+in a regular container. To make it work inside flex container, you need to set <code>width</code> or <code>flex</code> property.</p>
+<pre><code>
+import { AspectRatio, Image, rem } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;div style={{ display: &#39;flex&#39; }}&gt;
+      &lt;AspectRatio ratio={1} style={{ flex: `0 0 ${rem(100)}` }}&gt;
+        &lt;Image
+          src=&quot;https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-6.png&quot;
+          alt=&quot;Avatar&quot;
+        /&gt;
+      &lt;/AspectRatio&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>

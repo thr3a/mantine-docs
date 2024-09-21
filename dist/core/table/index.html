@@ -1,0 +1,288 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p>Table data for all examples:</p>
+<pre><code class="language-tsx">const elements = [
+  { position: 6, mass: 12.011, symbol: &#39;C&#39;, name: &#39;Carbon&#39; },
+  { position: 7, mass: 14.007, symbol: &#39;N&#39;, name: &#39;Nitrogen&#39; },
+  { position: 39, mass: 88.906, symbol: &#39;Y&#39;, name: &#39;Yttrium&#39; },
+  { position: 56, mass: 137.33, symbol: &#39;Ba&#39;, name: &#39;Barium&#39; },
+  { position: 58, mass: 140.12, symbol: &#39;Ce&#39;, name: &#39;Cerium&#39; },
+];
+</code></pre>
+<pre><code>
+import { Table } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const rows = elements.map((element) =&gt; (
+    &lt;Table.Tr key={element.name}&gt;
+      &lt;Table.Td&gt;{element.position}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.name}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.symbol}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.mass}&lt;/Table.Td&gt;
+    &lt;/Table.Tr&gt;
+  ));
+
+  return (
+    &lt;Table&gt;
+      &lt;Table.Thead&gt;
+        &lt;Table.Tr&gt;
+          &lt;Table.Th&gt;Element position&lt;/Table.Th&gt;
+          &lt;Table.Th&gt;Element name&lt;/Table.Th&gt;
+          &lt;Table.Th&gt;Symbol&lt;/Table.Th&gt;
+          &lt;Table.Th&gt;Atomic mass&lt;/Table.Th&gt;
+        &lt;/Table.Tr&gt;
+      &lt;/Table.Thead&gt;
+      &lt;Table.Tbody&gt;{rows}&lt;/Table.Tbody&gt;
+    &lt;/Table&gt;
+  );
+}
+</code></pre>
+<h2 id="data-prop">data prop</h2>
+<p>You can use <code>data</code> prop to automatically generate table rows from array of React nodes.
+<code>data</code> prop accepts an object with the following properties:</p>
+<ul>
+<li><code>head</code> – an array of React nodes (<code>React.ReactNode[]</code>) to render <code>Table.Th</code> in <code>Table.Thead</code></li>
+<li><code>foot</code> – an array of React nodes (<code>React.ReactNode[]</code>) to render <code>Table.Th</code> in <code>Table.Tfoot</code></li>
+<li><code>body</code> - an array of arrays of React nodes (<code>React.ReactNode[][]</code>) to render <code>Table.Td</code> in <code>Table.Tbody</code></li>
+<li><code>caption</code> – a React node to render <code>Table.Caption</code></li>
+</ul>
+<pre><code>
+import { Table, TableData } from &#39;@mantine/core&#39;;
+
+const tableData: TableData = {
+  caption: &#39;Some elements from periodic table&#39;,
+  head: [&#39;Element position&#39;, &#39;Atomic mass&#39;, &#39;Symbol&#39;, &#39;Element name&#39;],
+  body: [
+    [6, 12.011, &#39;C&#39;, &#39;Carbon&#39;],
+    [7, 14.007, &#39;N&#39;, &#39;Nitrogen&#39;],
+    [39, 88.906, &#39;Y&#39;, &#39;Yttrium&#39;],
+    [56, 137.33, &#39;Ba&#39;, &#39;Barium&#39;],
+    [58, 140.12, &#39;Ce&#39;, &#39;Cerium&#39;],
+  ],
+};
+
+function Demo() {
+  return &lt;Table data={tableData} /&gt;;
+}
+</code></pre>
+<h2 id="sticky-header">Sticky header</h2>
+<p>Set <code>stickyHeader</code> to make table header sticky. To customize top position of the header use <code>stickyHeaderOffset</code> prop:
+it is useful when you have a fixed header in your application. For example, Mantine documentation website has a fixed
+header with 60px height:</p>
+<pre><code>
+import { Table } from &#39;@mantine/core&#39;;
+
+const elements = [
+  { position: 6, mass: 12.011, symbol: &#39;C&#39;, name: &#39;Carbon&#39; },
+  { position: 7, mass: 14.007, symbol: &#39;N&#39;, name: &#39;Nitrogen&#39; },
+  { position: 39, mass: 88.906, symbol: &#39;Y&#39;, name: &#39;Yttrium&#39; },
+  { position: 56, mass: 137.33, symbol: &#39;Ba&#39;, name: &#39;Barium&#39; },
+  { position: 58, mass: 140.12, symbol: &#39;Ce&#39;, name: &#39;Cerium&#39; },
+];
+
+function Demo() {
+  const rows = elements.map((element) =&gt; (
+    &lt;Table.Tr key={element.name}&gt;
+      &lt;Table.Td&gt;{element.position}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.name}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.symbol}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.mass}&lt;/Table.Td&gt;
+    &lt;/Table.Tr&gt;
+  ));
+
+  return (
+    &lt;Table stickyHeader stickyHeaderOffset={60}&gt;
+      &lt;Table.Thead&gt;
+        &lt;Table.Tr&gt;
+          &lt;Table.Th&gt;Element position&lt;/Table.Th&gt;
+          &lt;Table.Th&gt;Element name&lt;/Table.Th&gt;
+          &lt;Table.Th&gt;Symbol&lt;/Table.Th&gt;
+          &lt;Table.Th&gt;Atomic mass&lt;/Table.Th&gt;
+        &lt;/Table.Tr&gt;
+      &lt;/Table.Thead&gt;
+      &lt;Table.Tbody&gt;{rows}&lt;/Table.Tbody&gt;
+      &lt;Table.Caption&gt;Scroll page to see sticky thead&lt;/Table.Caption&gt;
+    &lt;/Table&gt;
+  );
+}
+</code></pre>
+<h2 id="spacing">Spacing</h2>
+<p>To control spacing use <code>horizontalSpacing</code> and <code>verticalSpacing</code> props. Both props support spacing from <code>theme.spacing</code> and any valid CSS value to set cell padding:</p>
+<pre><code>
+import { Table } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Table{{props}}&gt;
+      {/* {...rows} */}
+    &lt;/Table&gt;
+  );
+}
+</code></pre>
+<h2 id="caption-and-tfoot">Caption and tfoot</h2>
+<p>Table support tfoot and caption elements. Set <code>captionSide</code> prop (top or bottom) to change caption position.</p>
+<pre><code>
+import { Table } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const rows = elements.map((element) =&gt; (
+    &lt;Table.Tr key={element.name}&gt;
+      &lt;Table.Td&gt;{element.position}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.name}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.symbol}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.mass}&lt;/Table.Td&gt;
+    &lt;/Table.Tr&gt;
+  ));
+
+  const ths = (
+    &lt;Table.Tr&gt;
+      &lt;Table.Th&gt;Element position&lt;/Table.Th&gt;
+      &lt;Table.Th&gt;Element name&lt;/Table.Th&gt;
+      &lt;Table.Th&gt;Symbol&lt;/Table.Th&gt;
+      &lt;Table.Th&gt;Atomic mass&lt;/Table.Th&gt;
+    &lt;/Table.Tr&gt;
+  );
+
+  return (
+    &lt;Table captionSide=&quot;bottom&quot;&gt;
+      &lt;Table.Caption&gt;Some elements from periodic table&lt;/Table.Caption&gt;
+      &lt;Table.Thead&gt;{ths}&lt;/Table.Thead&gt;
+      &lt;Table.Tbody&gt;{rows}&lt;/Table.Tbody&gt;
+      &lt;Table.Tfoot&gt;{ths}&lt;/Table.Tfoot&gt;
+    &lt;/Table&gt;
+  );
+}
+</code></pre>
+<h2 id="striped-and-rows-hover">Striped and rows hover</h2>
+<pre><code>
+import { Table } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Table{{props}}&gt;
+      {/* {...rows} */}
+    &lt;/Table&gt;
+  );
+}
+</code></pre>
+<h2 id="scroll-container">Scroll container</h2>
+<p>To prevent viewport overflow wrap <code>Table</code> with <code>Table.ScrollContainer</code>.
+The component accepts <code>minWidth</code> prop which sets minimum width below which table will be scrollable.</p>
+<pre><code>
+import { Table } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const rows = elements.map((element) =&gt; (
+    &lt;Table.Tr key={element.name}&gt;
+      &lt;Table.Td&gt;{element.position}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.name}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.symbol}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.mass}&lt;/Table.Td&gt;
+    &lt;/Table.Tr&gt;
+  ));
+
+  return (
+    &lt;Table.ScrollContainer minWidth={500}&gt;
+      &lt;Table&gt;
+        &lt;Table.Thead&gt;
+          &lt;Table.Tr&gt;
+            &lt;Table.Th&gt;Element position&lt;/Table.Th&gt;
+            &lt;Table.Th&gt;Element name&lt;/Table.Th&gt;
+            &lt;Table.Th&gt;Symbol&lt;/Table.Th&gt;
+            &lt;Table.Th&gt;Atomic mass&lt;/Table.Th&gt;
+          &lt;/Table.Tr&gt;
+        &lt;/Table.Thead&gt;
+        &lt;Table.Tbody&gt;{rows}&lt;/Table.Tbody&gt;
+      &lt;/Table&gt;
+    &lt;/Table.ScrollContainer&gt;
+  );
+}
+</code></pre>
+<p>By default, <code>Table.ScrollContainer</code> uses ScrollArea, you can change it
+to native scrollbars by setting <code>type=&quot;native&quot;</code>:</p>
+<pre><code>
+import { Table } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const rows = elements.map((element) =&gt; (
+    &lt;Table.Tr key={element.name}&gt;
+      &lt;Table.Td&gt;{element.position}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.name}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.symbol}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.mass}&lt;/Table.Td&gt;
+    &lt;/Table.Tr&gt;
+  ));
+
+  return (
+    &lt;Table.ScrollContainer minWidth={500} type=&quot;native&quot;&gt;
+      &lt;Table&gt;
+        &lt;Table.Thead&gt;
+          &lt;Table.Tr&gt;
+            &lt;Table.Th&gt;Element position&lt;/Table.Th&gt;
+            &lt;Table.Th&gt;Element name&lt;/Table.Th&gt;
+            &lt;Table.Th&gt;Symbol&lt;/Table.Th&gt;
+            &lt;Table.Th&gt;Atomic mass&lt;/Table.Th&gt;
+          &lt;/Table.Tr&gt;
+        &lt;/Table.Thead&gt;
+        &lt;Table.Tbody&gt;{rows}&lt;/Table.Tbody&gt;
+      &lt;/Table&gt;
+    &lt;/Table.ScrollContainer&gt;
+  );
+}
+</code></pre>
+<h2 id="example-table-with-row-selection">Example: Table with row selection</h2>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Table, Checkbox } from &#39;@mantine/core&#39;;
+
+const elements = [
+  { position: 6, mass: 12.011, symbol: &#39;C&#39;, name: &#39;Carbon&#39; },
+  { position: 7, mass: 14.007, symbol: &#39;N&#39;, name: &#39;Nitrogen&#39; },
+  { position: 39, mass: 88.906, symbol: &#39;Y&#39;, name: &#39;Yttrium&#39; },
+  { position: 56, mass: 137.33, symbol: &#39;Ba&#39;, name: &#39;Barium&#39; },
+  { position: 58, mass: 140.12, symbol: &#39;Ce&#39;, name: &#39;Cerium&#39; },
+];
+
+function Demo() {
+  const [selectedRows, setSelectedRows] = useState&lt;number[]&gt;([]);
+
+  const rows = elements.map((element) =&gt; (
+    &lt;Table.Tr
+      key={element.name}
+      bg={selectedRows.includes(element.position) ? &#39;var(--mantine-color-blue-light)&#39; : undefined}
+    &gt;
+      &lt;Table.Td&gt;
+        &lt;Checkbox
+          aria-label=&quot;Select row&quot;
+          checked={selectedRows.includes(element.position)}
+          onChange={(event) =&gt;
+            setSelectedRows(
+              event.currentTarget.checked
+                ? [...selectedRows, element.position]
+                : selectedRows.filter((position) =&gt; position !== element.position)
+            )
+          }
+        /&gt;
+      &lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.position}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.name}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.symbol}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.mass}&lt;/Table.Td&gt;
+    &lt;/Table.Tr&gt;
+  ));
+
+  return (
+    &lt;Table&gt;
+      &lt;Table.Thead&gt;
+        &lt;Table.Tr&gt;
+          &lt;Table.Th /&gt;
+          &lt;Table.Th&gt;Element position&lt;/Table.Th&gt;
+          &lt;Table.Th&gt;Element name&lt;/Table.Th&gt;
+          &lt;Table.Th&gt;Symbol&lt;/Table.Th&gt;
+          &lt;Table.Th&gt;Atomic mass&lt;/Table.Th&gt;
+        &lt;/Table.Tr&gt;
+      &lt;/Table.Thead&gt;
+      &lt;Table.Tbody&gt;{rows}&lt;/Table.Tbody&gt;
+    &lt;/Table&gt;
+  );
+}
+</code></pre>

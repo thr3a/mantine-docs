@@ -1,0 +1,114 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Rating } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Rating defaultValue={2}{{props}} /&gt;
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { Rating } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState(0);
+  return &lt;Rating value={value} onChange={setValue} /&gt;;
+}
+</code></pre>
+<h2 id="read-only">Read only</h2>
+<pre><code>
+import { Rating } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Rating value={3.5} fractions={2} readOnly /&gt;;
+}
+</code></pre>
+<h2 id="fractions">Fractions</h2>
+<pre><code>
+import { Rating, Group, Stack } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Stack&gt;
+      &lt;Group&gt;
+        &lt;div&gt;Fractions: 2&lt;/div&gt;
+        &lt;Rating fractions={2} defaultValue={1.5} /&gt;
+      &lt;/Group&gt;
+      &lt;Group&gt;
+        &lt;div&gt;Fractions: 3&lt;/div&gt;
+        &lt;Rating fractions={3} defaultValue={2.33333333} /&gt;
+      &lt;/Group&gt;
+      &lt;Group&gt;
+        &lt;div&gt;Fractions: 4&lt;/div&gt;
+        &lt;Rating fractions={4} defaultValue={3.75} /&gt;
+      &lt;/Group&gt;
+    &lt;/Stack&gt;
+  );
+}
+</code></pre>
+<h2 id="custom-symbol">Custom symbol</h2>
+<pre><code>
+import { Rating } from &#39;@mantine/core&#39;;
+import { IconSun, IconMoon } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return &lt;Rating emptySymbol={&lt;IconSun size=&quot;1rem&quot; /&gt;} fullSymbol={&lt;IconMoon size=&quot;1rem&quot; /&gt;} /&gt;;
+}
+</code></pre>
+<h2 id="symbols-for-each-item">Symbols for each item</h2>
+<pre><code>
+import { Rating, rem } from &#39;@mantine/core&#39;;
+import {
+  IconMoodCry,
+  IconMoodSad,
+  IconMoodSmile,
+  IconMoodHappy,
+  IconMoodCrazyHappy,
+} from &#39;@tabler/icons-react&#39;;
+
+const getIconStyle = (color?: string) =&gt; ({
+  width: rem(24),
+  height: rem(24),
+  color: color ? `var(--mantine-color-${color}-7)` : undefined,
+});
+
+const getEmptyIcon = (value: number) =&gt; {
+  const iconStyle = getIconStyle();
+
+  switch (value) {
+    case 1:
+      return &lt;IconMoodCry style={iconStyle} /&gt;;
+    case 2:
+      return &lt;IconMoodSad style={iconStyle} /&gt;;
+    case 3:
+      return &lt;IconMoodSmile style={iconStyle} /&gt;;
+    case 4:
+      return &lt;IconMoodHappy style={iconStyle} /&gt;;
+    case 5:
+      return &lt;IconMoodCrazyHappy style={iconStyle} /&gt;;
+    default:
+      return null;
+  }
+};
+
+const getFullIcon = (value: number) =&gt; {
+  switch (value) {
+    case 1:
+      return &lt;IconMoodCry style={getIconStyle(&#39;red&#39;)} /&gt;;
+    case 2:
+      return &lt;IconMoodSad style={getIconStyle(&#39;orange&#39;)} /&gt;;
+    case 3:
+      return &lt;IconMoodSmile style={getIconStyle(&#39;yellow&#39;)} /&gt;;
+    case 4:
+      return &lt;IconMoodHappy style={getIconStyle(&#39;lime&#39;)} /&gt;;
+    case 5:
+      return &lt;IconMoodCrazyHappy style={getIconStyle(&#39;green&#39;)} /&gt;;
+    default:
+      return null;
+  }
+};
+
+function Demo() {
+  return &lt;Rating emptySymbol={getEmptyIcon} fullSymbol={getFullIcon} highlightSelectedOnly /&gt;;
+}
+</code></pre>

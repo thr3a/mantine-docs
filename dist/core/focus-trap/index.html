@@ -1,0 +1,87 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p>FocusTrap is a component implementation of use-focus-trap hook,
+it is used in all Mantine components that require focus trap (Modal, DatePicker, Popover, etc.).</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { FocusTrap, TextInput, Button, Box } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [active, { toggle }] = useDisclosure(false);
+
+  return (
+    &lt;Box maw={400} mx=&quot;auto&quot;&gt;
+      &lt;Button onClick={toggle}&gt;{active ? &#39;Deactivate&#39; : &#39;Activate&#39;} focus trap&lt;/Button&gt;
+
+      &lt;FocusTrap active={active}&gt;
+        &lt;div&gt;
+          &lt;TextInput mt=&quot;sm&quot; label=&quot;First input&quot; placeholder=&quot;First input&quot; /&gt;
+          &lt;TextInput mt=&quot;sm&quot; label=&quot;Second input&quot; placeholder=&quot;Second input&quot; /&gt;
+          &lt;TextInput mt=&quot;sm&quot; label=&quot;Third input&quot; placeholder=&quot;Third input&quot; /&gt;
+        &lt;/div&gt;
+      &lt;/FocusTrap&gt;
+    &lt;/Box&gt;
+  );
+}
+</code></pre>
+<h2 id="initial-focus">Initial focus</h2>
+<p>To define the element that will receive initial focus set <code>data-autofocus</code> attribute:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { FocusTrap, TextInput, Button, Box } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [active, { toggle }] = useDisclosure(false);
+
+  return (
+    &lt;Box maw={400} mx=&quot;auto&quot;&gt;
+      &lt;Button onClick={toggle}&gt;{active ? &#39;Deactivate&#39; : &#39;Activate&#39;} focus trap&lt;/Button&gt;
+
+      &lt;FocusTrap active={active}&gt;
+        &lt;div&gt;
+          &lt;TextInput mt=&quot;sm&quot; label=&quot;First input&quot; placeholder=&quot;First input&quot; /&gt;
+          &lt;TextInput mt=&quot;sm&quot; label=&quot;Second input&quot; placeholder=&quot;Second input&quot; data-autofocus /&gt;
+          &lt;TextInput mt=&quot;sm&quot; label=&quot;Third input&quot; placeholder=&quot;Third input&quot; /&gt;
+        &lt;/div&gt;
+      &lt;/FocusTrap&gt;
+    &lt;/Box&gt;
+  );
+}
+</code></pre>
+<h2 id="focustrapinitialfocus">FocusTrap.InitialFocus</h2>
+<p><code>FocusTrap.InitialFocus</code> is a special component that adds a visually hidden
+element which will receive the focus when the focus trap is activated.
+Once <code>FocusTrap.InitialFocus</code> loses focus, it is removed from the tab order.</p>
+<p>For example, it is useful if you do not want to focus any elements inside the Modal when it is opened:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Modal, Button, TextInput, FocusTrap } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Modal opened={opened} onClose={close} title=&quot;Focus demo&quot;&gt;
+        &lt;FocusTrap.InitialFocus /&gt;
+        &lt;TextInput label=&quot;First input&quot; placeholder=&quot;First input&quot; /&gt;
+        &lt;TextInput
+          data-autofocus
+          label=&quot;Input with initial focus&quot;
+          placeholder=&quot;It has data-autofocus attribute&quot;
+          mt=&quot;md&quot;
+        /&gt;
+      &lt;/Modal&gt;
+
+      &lt;Button onClick={open}&gt;Open modal&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="focus-trapping-logic">Focus trapping logic</h2>
+<ul>
+<li>Focus is trapped within child node if <code>active</code> prop is <code>true</code></li>
+<li>When FocusTrap component is mounted or when <code>active</code> prop changes from <code>false</code> to <code>true</code> first element with <code>data-autofocus</code> attribute is focused</li>
+<li>If there are no elements with <code>data-autofocus</code> attribute, then the first element that supports keyboard interaction is focused</li>
+<li>If the target element does not have focusable elements or does not support <code>ref</code>, then the focus trap will not work</li>
+<li>Trap stops working when element outside of the <code>FocusTrap</code> child is focused</li>
+</ul>

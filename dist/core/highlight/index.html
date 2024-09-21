@@ -1,0 +1,70 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p>Use Highlight component to highlight a substring in a given string with a mark tag.</p>
+<p>Pass the main string as children to Highlight component and string part that should be highlighted to <code>highlight</code> prop.
+If the main string does not include <code>highlight</code> part, it will be ignored.
+<code>Highlight</code> ignores trailing whitespace and highlights all matched characters sequences.</p>
+<pre><code>
+import { Highlight } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Highlight{{props}}&gt;
+      {{children}}
+    &lt;/Highlight&gt;
+  );
+}
+</code></pre>
+<h2 id="highlight-multiple-substrings">Highlight multiple substrings</h2>
+<p>To highlight multiple substrings, provide an array of values:</p>
+<pre><code>
+import { Highlight } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Highlight highlight={[&#39;this&#39;, &#39;that&#39;]}&gt;Highlight this and also that&lt;/Highlight&gt;;
+}
+</code></pre>
+<h2 id="change-highlight-styles">Change highlight styles</h2>
+<p>Default Mark styles can be overwritten with <code>highlightStyles</code> prop, it accepts either a function with a subscription to theme
+or an object with styles:</p>
+<pre><code>
+import { Highlight } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Highlight
+      ta=&quot;center&quot;
+      highlight={[&#39;highlighted&#39;, &#39;default&#39;]}
+      highlightStyles={{
+        backgroundImage:
+          &#39;linear-gradient(45deg, var(--mantine-color-cyan-5), var(--mantine-color-indigo-5))&#39;,
+        fontWeight: 700,
+        WebkitBackgroundClip: &#39;text&#39;,
+        WebkitTextFillColor: &#39;transparent&#39;,
+      }}
+    &gt;
+      You can change styles of highlighted part if you do not like default styles
+    &lt;/Highlight&gt;
+  );
+}
+</code></pre>
+<h2 id="text-props">Text props</h2>
+<p>Highlight is based on Text component, all its props are available:</p>
+<pre><code>
+import { Highlight } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Highlight
+      component=&quot;a&quot;
+      href=&quot;https://mantine.dev&quot;
+      target=&quot;_blank&quot;
+      highlight=&quot;mantine&quot;
+      fw={500}
+      c=&quot;var(--mantine-color-anchor)&quot;
+    &gt;
+      Mantine website
+    &lt;/Highlight&gt;
+  );
+}
+
+</code></pre>

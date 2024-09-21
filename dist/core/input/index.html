@@ -1,0 +1,447 @@
+<!DOCTYPE html><h2 id="disclaimer">Disclaimer</h2>
+<p><strong>!important:</strong> In most cases, you should not use <code>Input</code> in your application.
+<code>Input</code> is a base for other inputs and was not designed to be used directly.
+Use <code>Input</code> to create custom inputs, for other cases prefer TextInput
+or other component.</p>
+<pre><code class="language-tsx">import { Input, TextInput } from &#39;@mantine/core&#39;;
+
+// Incorrect usage, input is not accessible
+function Incorrect() {
+  return (
+    &lt;Input.Wrapper label=&quot;Input label&quot;&gt;
+      &lt;Input /&gt;
+    &lt;/Input.Wrapper&gt;
+  );
+}
+
+// Use TextInput instead of Input everywhere you want to use Input,
+// it is accessible by default and includes Input.Wrapper
+function Correct() {
+  return (
+    &lt;TextInput label=&quot;Input label&quot; description=&quot;Input description&quot; /&gt;
+  );
+}
+</code></pre>
+<h2 id="usage">Usage</h2>
+<p><code>Input</code> component is used as base for some other inputs (NativeSelect, TextInput, Textarea, etc.).
+The purpose of the <code>Input</code> is to provide shared styles and features to other inputs.</p>
+<pre><code>
+import { Input } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Input{{props}} placeholder=&quot;Input component&quot; /&gt;;
+}
+</code></pre>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Input, CloseButton } from &#39;@mantine/core&#39;;
+import { IconAt } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  const [value, setValue] = useState(&#39;Clear me&#39;);
+  return (
+    &lt;&gt;
+      &lt;Input placeholder=&quot;Your email&quot; leftSection={&lt;IconAt size={16} /&gt;} /&gt;
+      &lt;Input
+        placeholder=&quot;Clearable input&quot;
+        value={value}
+        onChange={(event) =&gt; setValue(event.currentTarget.value)}
+        rightSectionPointerEvents=&quot;all&quot;
+        mt=&quot;md&quot;
+        rightSection={
+          &lt;CloseButton
+            aria-label=&quot;Clear input&quot;
+            onClick={() =&gt; setValue(&#39;&#39;)}
+            style={{ display: value ? undefined : &#39;none&#39; }}
+          /&gt;
+        }
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="change-input-element">Change input element</h2>
+<p>Input is a polymorphic component, the default root element is <code>input</code>,
+but it can be changed to any other element or component.</p>
+<p>Example of using <code>Input</code> as <code>button</code> and <code>select</code>:</p>
+<pre><code>
+import { Input } from &#39;@mantine/core&#39;;
+import { IconChevronDown } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Input component=&quot;button&quot; pointer&gt;
+        Button input
+      &lt;/Input&gt;
+
+      &lt;Input
+        component=&quot;select&quot;
+        rightSection={&lt;IconChevronDown size={14} stroke={1.5} /&gt;}
+        pointer
+        mt=&quot;md&quot;
+      &gt;
+        &lt;option value=&quot;1&quot;&gt;1&lt;/option&gt;
+        &lt;option value=&quot;2&quot;&gt;2&lt;/option&gt;
+      &lt;/Input&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<p>Example of using react-imask with <code>Input</code>:</p>
+<pre><code>
+import { Input } from &#39;@mantine/core&#39;;
+import { IMaskInput } from &#39;react-imask&#39;;
+
+function Demo() {
+  return &lt;Input component={IMaskInput} mask=&quot;+7 (000) 000-00-00&quot; placeholder=&quot;Your phone&quot; /&gt;;
+}
+</code></pre>
+<h2 id="inputwrapper-component">Input.Wrapper component</h2>
+<p><code>Input.Wrapper</code> component is used in all other inputs
+(TextInput, NativeSelect, Textarea, etc.)
+under the hood, you <em>do not need to wrap your inputs with it, as it is already included in all of them</em>.
+Use <code>Input.Wrapper</code> only when you want to create custom inputs.</p>
+<pre><code>
+import { Input } from &#39;@mantine/core&#39;;
+
+function Wrapper() {
+  return (
+    &lt;Input.Wrapper{{props}}&gt;
+      &lt;Input placeholder=&quot;Input inside Input.Wrapper&quot; /&gt;
+    &lt;/Input.Wrapper&gt;
+  );
+}
+</code></pre>
+<h2 id="inputwrapperorder">inputWrapperOrder</h2>
+<p><code>inputWrapperOrder</code> allows configuring the order of <code>Input.Wrapper</code> parts.
+It accepts an array of four elements: <code>label</code>, <code>input</code>, <code>error</code> and <code>description</code>.
+Note that it is not required to include all of them, you can use only those that you need
+– parts that are not included will not be rendered.</p>
+<pre><code>
+import { TextInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;TextInput
+        label=&quot;Custom layout&quot;
+        placeholder=&quot;Custom layout&quot;
+        description=&quot;Description below the input&quot;
+        inputWrapperOrder={[&#39;label&#39;, &#39;error&#39;, &#39;input&#39;, &#39;description&#39;]}
+      /&gt;
+      &lt;TextInput
+        mt=&quot;xl&quot;
+        label=&quot;Custom layout&quot;
+        placeholder=&quot;Custom layout&quot;
+        description=&quot;Error and description are&quot;
+        error=&quot;both below the input&quot;
+        inputWrapperOrder={[&#39;label&#39;, &#39;input&#39;, &#39;description&#39;, &#39;error&#39;]}
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="inputcontainer">inputContainer</h2>
+<p>With <code>inputContainer</code> prop, you can enhance inputs that use <code>Input.Wrapper</code> under the hood,
+for example, you can add Tooltip to the TextInput when
+the input is focused:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { TextInput, Tooltip } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [focused, setFocused] = useState(false);
+
+  return (
+    &lt;TextInput
+      label=&quot;TextInput with tooltip&quot;
+      description=&quot;Tooltip will be relative to the input&quot;
+      placeholder=&quot;Focus me to see tooltip&quot;
+      onFocus={() =&gt; setFocused(true)}
+      onBlur={() =&gt; setFocused(false)}
+      inputContainer={(children) =&gt; (
+        &lt;Tooltip label=&quot;Additional information&quot; position=&quot;top-start&quot; opened={focused}&gt;
+          {children}
+        &lt;/Tooltip&gt;
+      )}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="required-and-withasterisk-props">required and withAsterisk props</h2>
+<p>All components that are based on <code>Input.Wrapper</code> support <code>required</code> and <code>withAsterisk</code> props.
+When set to true, both of these props will add a red asterisk to the end of the label.
+The only difference is whether input element will have <code>required</code> attribute, example with
+TextInput component:</p>
+<pre><code class="language-tsx">import { TextInput } from &#39;@mantine/core&#39;;
+
+// Will display required asterisk and add `required` attribute to the input element
+function RequiredDemo() {
+  return &lt;TextInput label=&quot;test-label&quot; required /&gt;;
+}
+
+// Will only display the asterisk, `required` attribute is not added to the input element
+function AsteriskDemo() {
+  return &lt;TextInput label=&quot;test-label&quot; withAsterisk /&gt;;
+}
+</code></pre>
+<h2 id="error-prop">error prop</h2>
+<p>All inputs that use <code>Input.Wrapper</code> under the hood support <code>error</code> prop.
+When set to <code>true</code>, it will add a red border to the input. You can also pass a React node to display
+an error message below the input. To only display error message without a red border, set <code>error</code> prop
+to React node and <code>withErrorStyles={false}</code>:</p>
+<pre><code>
+import { TextInput, rem } from &#39;@mantine/core&#39;;
+import { IconExclamationCircle } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;TextInput placeholder=&quot;Error as boolean&quot; label=&quot;Error as boolean&quot; error /&gt;
+      &lt;TextInput
+        mt=&quot;md&quot;
+        placeholder=&quot;Error as react node&quot;
+        label=&quot;Error as react node&quot;
+        error=&quot;Something went wrong&quot;
+      /&gt;
+
+      &lt;TextInput
+        mt=&quot;md&quot;
+        placeholder=&quot;Without error styles on input&quot;
+        label=&quot;Without error styles on input&quot;
+        error=&quot;Something went wrong&quot;
+        withErrorStyles={false}
+        rightSectionPointerEvents=&quot;none&quot;
+        rightSection={
+          &lt;IconExclamationCircle
+            style={{ width: rem(20), height: rem(20) }}
+            color=&quot;var(--mantine-color-error)&quot;
+          /&gt;
+        }
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="inputlabel-inputdescription-and-inputerror-components">Input.Label, Input.Description and Input.Error components</h2>
+<p><code>Input.Label</code>, <code>Input.Error</code> and <code>Input.Description</code> components can be used to create custom
+form layouts if the default <code>Input.Wrapper</code> layout does not meet your requirements.</p>
+<pre><code>
+import { Input } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Input.Label required&gt;Input label&lt;/Input.Label&gt;
+      &lt;Input.Description&gt;Input description&lt;/Input.Description&gt;
+      &lt;Input.Error&gt;Input error&lt;/Input.Error&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="inputplaceholder-component">Input.Placeholder component</h2>
+<p><code>Input.Placeholder</code> component can be used to add placeholder to <code>Input</code> and <code>InputBase</code> components that are based on <code>button</code> element
+or do not support placeholder property natively:</p>
+<pre><code>
+import { Input } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Input component=&quot;button&quot; pointer&gt;
+      &lt;Input.Placeholder&gt;Placeholder content&lt;/Input.Placeholder&gt;
+    &lt;/Input&gt;
+  );
+}
+</code></pre>
+<h2 id="default-props-on-theme">Default props on theme</h2>
+<p>You can add default props on theme
+to <code>Input</code> and <code>Input.Wrapper</code> components. These default props will be inherited by all inputs
+that use <code>Input</code> and <code>Input.Wrapper</code> under the hood (TextInput, NativeSelect, Textarea, etc.):</p>
+<pre><code>
+import { TextInput, NativeSelect, MantineProvider, createTheme, Input } from &#39;@mantine/core&#39;;
+
+const theme = createTheme({
+  components: {
+    Input: Input.extend({
+      defaultProps: {
+        variant: &#39;filled&#39;,
+      },
+    }),
+
+    InputWrapper: Input.Wrapper.extend({
+      defaultProps: {
+        inputWrapperOrder: [&#39;label&#39;, &#39;input&#39;, &#39;description&#39;, &#39;error&#39;],
+      },
+    }),
+  },
+});
+
+function Demo() {
+  return (
+    &lt;MantineProvider theme={theme}&gt;
+      &lt;TextInput
+        label=&quot;Text input&quot;
+        placeholder=&quot;Text input&quot;
+        description=&quot;Description below the input&quot;
+      /&gt;
+
+      &lt;NativeSelect
+        mt=&quot;md&quot;
+        label=&quot;Native select&quot;
+        data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;, &#39;Svelte&#39;]}
+        description=&quot;Description below the input&quot;
+      /&gt;
+    &lt;/MantineProvider&gt;
+  );
+}
+</code></pre>
+<h2 id="styles-on-theme">Styles on theme</h2>
+<p>Same as with default props, you can use <code>Input</code> and <code>Input.Wrapper</code> Styles API
+on theme to add styles to all inputs:</p>
+<pre><code>
+import { TextInput, NativeSelect, MantineProvider, createTheme, Input } from &#39;@mantine/core&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+const theme = createTheme({
+  components: {
+    Input: Input.extend({
+      classNames: {
+        input: classes.input,
+      },
+    }),
+
+    InputWrapper: Input.Wrapper.extend({
+      classNames: {
+        label: classes.label,
+      },
+    }),
+  },
+});
+
+function Demo() {
+  return (
+    &lt;MantineProvider theme={theme}&gt;
+      &lt;TextInput label=&quot;Text input&quot; placeholder=&quot;Text input&quot; /&gt;
+
+      &lt;NativeSelect
+        mt=&quot;md&quot;
+        label=&quot;Native select&quot;
+        data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;, &#39;Svelte&#39;]}
+      /&gt;
+    &lt;/MantineProvider&gt;
+  );
+}
+</code></pre>
+<h2 id="change-focus-styles">Change focus styles</h2>
+<p>Use <code>&amp;:focus-within</code> selector to change inputs focus styles. You can apply these styles to
+one component with <code>classNames</code> prop or to all inputs with Styles API
+on theme.</p>
+<pre><code>
+import { Input, TextInput } from &#39;@mantine/core&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Input placeholder=&quot;Regular Input component&quot; classNames={classes} /&gt;
+      &lt;TextInput
+        placeholder=&quot;TextInput component&quot;
+        label=&quot;TextInput component&quot;
+        mt=&quot;md&quot;
+        classNames={classes}
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="inputbase-component">InputBase component</h2>
+<p><code>InputBase</code> component combines <code>Input</code> and <code>Input.Wrapper</code> components and supports <code>component</code> prop:</p>
+<pre><code>
+import { InputBase } from &#39;@mantine/core&#39;;
+import { IMaskInput } from &#39;react-imask&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;InputBase
+        label=&quot;Your phone&quot;
+        component={IMaskInput}
+        mask=&quot;+7 (000) 000-0000&quot;
+        placeholder=&quot;Your phone&quot;
+      /&gt;
+
+      &lt;InputBase label=&quot;Custom native select&quot; component=&quot;select&quot; mt=&quot;md&quot;&gt;
+        &lt;option value=&quot;react&quot;&gt;React&lt;/option&gt;
+        &lt;option value=&quot;react&quot;&gt;Angular&lt;/option&gt;
+        &lt;option value=&quot;svelte&quot;&gt;Svelte&lt;/option&gt;
+      &lt;/InputBase&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="styles-api">Styles API</h2>
+<p><code>Input</code> and <code>Input.Wrapper</code> components support Styles API –
+you can customize styles of any inner element with <code>classNames</code> and <code>styles</code> props.</p>
+<p><code>Input</code> Styles API selectors:</p>
+<pre><code>
+import { Input, rem } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const at = &lt;IconAt style={{ width: rem(16), height: rem(16) }} stroke={1.5} /&gt;;
+  const chevron = &lt;IconChevronDown style={{ width: rem(16), height: rem(16) }} stroke={1.5} /&gt;;
+  return &lt;Input{{props}} placeholder=&quot;Input component&quot; leftSection={at} rightSection={chevron} /&gt;;
+}
+</code></pre>
+<p><code>Input.Wrapper</code> Styles API selectors:</p>
+<pre><code>
+import { Input } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Input.Wrapper{{props}} label=&quot;Input label&quot; description=&quot;Input description&quot; error=&quot;Input error&quot; withAsterisk /&gt;;
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p>If you use <code>Input</code> component without associated label element, set <code>aria-label</code>:</p>
+<pre><code class="language-tsx">import { Input } from &#39;@mantine/core&#39;;
+
+// ok – the input is labelled by the aria-label
+function WithAriaLabel() {
+  return &lt;Input aria-label=&quot;Your email&quot; /&gt;;
+}
+
+// ok – the input is labelled by the label element
+function WithLabel() {
+  return (
+    &lt;&gt;
+      &lt;label htmlFor=&quot;my-email&quot;&gt;Your email&lt;/label&gt;
+      &lt;Input id=&quot;my-email&quot; /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<p>When you use <code>Input</code> with <code>Input.Wrapper</code> it is required to set <code>id</code> on both components
+to connect label and other elements with the input:</p>
+<pre><code class="language-tsx">import { Input } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Input.Wrapper label=&quot;Your email&quot; id=&quot;your-email&quot;&gt;
+      &lt;Input id=&quot;your-email&quot; /&gt;
+    &lt;/Input.Wrapper&gt;
+  );
+}
+</code></pre>
+<p>You can use use-id to generate unique ids:</p>
+<pre><code class="language-tsx">import { Input } from &#39;@mantine/core&#39;;
+import { useId } from &#39;@mantine/hooks&#39;;
+
+function Demo() {
+  const id = useId();
+  return (
+    &lt;Input.Wrapper label=&quot;Your email&quot; id={id}&gt;
+      &lt;Input id={id} /&gt;
+    &lt;/Input.Wrapper&gt;
+  );
+}
+</code></pre>

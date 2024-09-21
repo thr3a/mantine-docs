@@ -1,0 +1,367 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>ScrollArea</code> component supports the following props:</p>
+<ul>
+<li><code>type</code> defines scrollbars behavior:
+<ul>
+<li><code>hover</code> – scrollbars are visible on hover</li>
+<li><code>scroll</code> – scrollbars are visible on scroll</li>
+<li><code>auto</code> – similar to <code>overflow: auto</code> – scrollbars are always visible when the content is overflowing</li>
+<li><code>always</code> – same as <code>auto</code>, but scrollbars are always visible regardless of whether the content is overflowing</li>
+<li><code>never</code> – scrollbars are always hidden</li>
+</ul>
+</li>
+<li><code>offsetScrollbars</code> – offset scrollbars with padding</li>
+<li><code>scrollbarSize</code> – scrollbar size, controls scrollbar and thumb width/height</li>
+<li><code>scrollHideDelay</code> – delay in ms to hide scrollbars, applicable only when type is <code>hover</code> or <code>scroll</code></li>
+</ul>
+<pre><code>
+import { ScrollArea } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;ScrollArea h={250}{{props}}&gt;
+      {/* ... content */}
+    &lt;/ScrollArea&gt;
+  );
+}
+</code></pre>
+<h2 id="horizontal-scrollbars">Horizontal scrollbars</h2>
+<pre><code>
+import { ScrollArea, Box } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;ScrollArea w={300} h={200}&gt;
+      &lt;Box w={600}&gt;
+        {/* ... content */}
+      &lt;/Box&gt;
+    &lt;/ScrollArea&gt;
+  );
+}
+</code></pre>
+<h2 id="disable-horizontal-scrollbars">Disable horizontal scrollbars</h2>
+<p>To disable horizontal scrollbars set <code>scrollbars=&quot;y&quot;</code> prop:</p>
+<pre><code>
+import { ScrollArea, Box } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;ScrollArea w={300} h={200} scrollbars=&quot;y&quot;&gt;
+      &lt;Box w={600}&gt;
+        {/* ... content */}
+      &lt;/Box&gt;
+    &lt;/ScrollArea&gt;
+  );
+}
+</code></pre>
+<h2 id="subscribe-to-scroll-position-changes">Subscribe to scroll position changes</h2>
+<p>Set <code>onScrollPositionChange</code> function to subscribe to scroll position changes,
+it will be called each time user scrolls with x and y coordinates:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Text, ScrollArea, Code, Box } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [scrollPosition, onScrollPositionChange] = useState({ x: 0, y: 0 });
+
+  return (
+    &lt;&gt;
+      &lt;ScrollArea
+        w={300}
+        h={200}
+        onScrollPositionChange={onScrollPositionChange}
+      &gt;
+        &lt;Box w={600}&gt;
+          {/* ... content */}
+        &lt;/Box&gt;
+      &lt;/ScrollArea&gt;
+
+      &lt;Text&gt;
+        Scroll position: &lt;Code&gt;{`{ x: ${scrollPosition.x}, y: ${scrollPosition.y} }`}&lt;/Code&gt;
+      &lt;/Text&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="scroll-to-position">Scroll to position</h2>
+<p>To programmatically scroll to any position,
+get viewport element ref with <code>viewportRef</code> prop and call <code>scrollTo</code> method:</p>
+<pre><code>
+import { useRef } from &#39;react&#39;;
+import { ScrollArea, Button, Stack, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const viewport = useRef&lt;HTMLDivElement&gt;(null);
+
+  const scrollToBottom = () =&gt;
+    viewport.current!.scrollTo({ top: viewport.current!.scrollHeight, behavior: &#39;smooth&#39; });
+
+  const scrollToCenter = () =&gt;
+    viewport.current!.scrollTo({ top: viewport.current!.scrollHeight / 2, behavior: &#39;smooth&#39; });
+
+  const scrollToTop = () =&gt; viewport.current!.scrollTo({ top: 0, behavior: &#39;smooth&#39; });
+
+  return (
+    &lt;Stack align=&quot;center&quot;&gt;
+      &lt;ScrollArea w={300} h={200} viewportRef={viewport}&gt;
+        {/* ... content */}
+      &lt;/ScrollArea&gt;
+
+      &lt;Group justify=&quot;center&quot;&gt;
+        &lt;Button onClick={scrollToBottom}&gt;Scroll to bottom&lt;/Button&gt;
+        &lt;Button onClick={scrollToCenter}&gt;Scroll to center&lt;/Button&gt;
+        &lt;Button onClick={scrollToTop}&gt;Scroll to top&lt;/Button&gt;
+      &lt;/Group&gt;
+    &lt;/Stack&gt;
+  );
+}
+</code></pre>
+<h2 id="styles-api">Styles API</h2>
+<pre><code>
+import { ScrollArea, Box } from &#39;@mantine/core&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+function Demo() {
+  return (
+    &lt;ScrollArea w={300} h={200} type=&quot;always&quot; offsetScrollbars classNames={classes}&gt;
+      &lt;Box w={600}&gt;
+        {/* ... content */}
+      &lt;/Box&gt;
+    &lt;/ScrollArea&gt;
+  );
+}
+</code></pre>
+<h2 id="scroll-element-into-view">Scroll element into view</h2>
+<pre><code>
+import { useState, useRef } from &#39;react&#39;;
+import { ScrollArea, UnstyledButton, TextInput } from &#39;@mantine/core&#39;;
+
+const groceries: string[] = [
+  &#39;🍎 Apples&#39;,
+  &#39;🍌 Bananas&#39;,
+  &#39;🍊 Oranges&#39;,
+  &#39;🥛 Milk&#39;,
+  &#39;🍞 Bread&#39;,
+  &#39;🥚 Eggs&#39;,
+  &#39;🍗 Chicken&#39;,
+  &#39;🥩 Beef&#39;,
+  &#39;🍝 Pasta&#39;,
+  &#39;🍚 Rice&#39;,
+  &#39;🥔 Potatoes&#39;,
+  &#39;🧅 Onions&#39;,
+  &#39;🍅 Tomatoes&#39;,
+  &#39;🥒 Cucumbers&#39;,
+  &#39;🥕 Carrots&#39;,
+  &#39;🥬 Lettuce&#39;,
+  &#39;🍃 Spinach&#39;,
+  &#39;🥦 Broccoli&#39;,
+  &#39;🧀 Cheese&#39;,
+  &#39;🍦 Yogurt&#39;,
+  &#39;🧈 Butter&#39;,
+  &#39;🍚 Sugar&#39;,
+  &#39;🧂 Salt&#39;,
+  &#39;🌶️ Pepper&#39;,
+  &#39;☕ Coffee&#39;,
+  &#39;🍵 Tea&#39;,
+  &#39;🥤 Juice&#39;,
+  &#39;💧 Water&#39;,
+  &#39;🍪 Cookies&#39;,
+  &#39;🍫 Chocolate&#39;,
+];
+
+function Demo() {
+  const viewportRef = useRef&lt;HTMLDivElement&gt;(null);
+  const [query, setQuery] = useState(&#39;&#39;);
+  const [hovered, setHovered] = useState(-1);
+  const filtered = groceries.filter((item) =&gt; item.toLowerCase().includes(query.toLowerCase()));
+  const items = filtered.map((item, index) =&gt; (
+    &lt;UnstyledButton
+      data-list-item
+      key={item}
+      display=&quot;block&quot;
+      bg={index === hovered ? &#39;var(--mantine-color-blue-light)&#39; : undefined}
+      w=&quot;100%&quot;
+      p={5}
+    &gt;
+      {item}
+    &lt;/UnstyledButton&gt;
+  ));
+
+  return (
+    &lt;&gt;
+      &lt;TextInput
+        value={query}
+        onChange={(event) =&gt; {
+          setQuery(event.currentTarget.value);
+          setHovered(-1);
+        }}
+        onKeyDown={(event) =&gt; {
+          if (event.key === &#39;ArrowDown&#39;) {
+            event.preventDefault();
+            setHovered((current) =&gt; {
+              const nextIndex = current + 1 &gt;= filtered.length ? current : current + 1;
+              viewportRef.current
+                ?.querySelectorAll(&#39;[data-list-item]&#39;)
+                ?.[nextIndex]?.scrollIntoView({ block: &#39;nearest&#39; });
+              return nextIndex;
+            });
+          }
+
+          if (event.key === &#39;ArrowUp&#39;) {
+            event.preventDefault();
+            setHovered((current) =&gt; {
+              const nextIndex = current - 1 &lt; 0 ? current : current - 1;
+              viewportRef.current
+                ?.querySelectorAll(&#39;[data-list-item]&#39;)
+                ?.[nextIndex]?.scrollIntoView({ block: &#39;nearest&#39; });
+              return nextIndex;
+            });
+          }
+        }}
+        placeholder=&quot;Search groceries&quot;
+      /&gt;
+      &lt;ScrollArea h={150} type=&quot;always&quot; mt=&quot;md&quot; viewportRef={viewportRef}&gt;
+        {items}
+      &lt;/ScrollArea&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="scrollareaautosize">ScrollArea.Autosize</h2>
+<p><code>ScrollArea.Autosize</code> component allows to create scrollable containers when given max-height is reached:</p>
+<pre><code>
+import { useCounter } from &#39;@mantine/hooks&#39;;
+import { ScrollArea, Button, Group } from &#39;@mantine/core&#39;;
+
+const lorem =
+  &#39;Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dicta perspiciatis reiciendis voluptate eaque itaque quos. Natus iure tenetur libero, reprehenderit ad, sequi, in aliquam eos necessitatibus expedita delectus veniam culpa!&#39;;
+
+function Demo() {
+  const [count, handlers] = useCounter(3, { min: 0, max: 10 });
+  const content = Array(count)
+    .fill(0)
+    .map((_, index) =&gt; &lt;p key={index}&gt;{lorem}&lt;/p&gt;);
+
+  return (
+    &lt;&gt;
+      &lt;ScrollArea.Autosize mah={300} maw={400} mx=&quot;auto&quot;&gt;
+        {content}
+      &lt;/ScrollArea.Autosize&gt;
+
+      &lt;Group justify=&quot;center&quot; mt=&quot;md&quot;&gt;
+        &lt;Button color=&quot;red&quot; onClick={handlers.decrement}&gt;
+          Remove paragraph
+        &lt;/Button&gt;
+        &lt;Button onClick={handlers.increment}&gt;
+          Add paragraph
+        &lt;/Button&gt;
+      &lt;/Group&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="scrollareaautosize-with-popover">ScrollArea.Autosize with Popover</h2>
+<pre><code>
+import { useState, useRef } from &#39;react&#39;;
+import { ScrollArea, Popover, TextInput, UnstyledButton, Text, Box } from &#39;@mantine/core&#39;;
+
+const groceries = [
+  &#39;Apples&#39;,
+  &#39;Bananas&#39;,
+  &#39;Oranges&#39;,
+  &#39;Milk&#39;,
+  &#39;Bread&#39;,
+  &#39;Eggs&#39;,
+  &#39;Chicken&#39;,
+  &#39;Beef&#39;,
+  &#39;Pasta&#39;,
+  &#39;Rice&#39;,
+  &#39;Potatoes&#39;,
+  &#39;Onions&#39;,
+  &#39;Tomatoes&#39;,
+  &#39;Cucumbers&#39;,
+  &#39;Carrots&#39;,
+  &#39;Lettuce&#39;,
+  &#39;Spinach&#39;,
+  &#39;Broccoli&#39;,
+  &#39;Cheese&#39;,
+  &#39;Yogurt&#39;,
+  &#39;Butter&#39;,
+  &#39;Sugar&#39;,
+  &#39;Salt&#39;,
+  &#39;Pepper&#39;,
+  &#39;Coffee&#39;,
+  &#39;Tea&#39;,
+  &#39;Juice&#39;,
+  &#39;Water&#39;,
+  &#39;Cookies&#39;,
+  &#39;Chocolate&#39;,
+];
+
+function Demo() {
+  const viewportRef = useRef&lt;HTMLDivElement&gt;(null);
+  const [query, setQuery] = useState(&#39;&#39;);
+  const [opened, setOpened] = useState(false);
+  const [hovered, setHovered] = useState(-1);
+  const filtered = groceries.filter((item) =&gt; item.toLowerCase().includes(query.toLowerCase()));
+  const items = filtered.map((item, index) =&gt; (
+    &lt;UnstyledButton
+      data-list-item
+      key={item}
+      display=&quot;block&quot;
+      bg={index === hovered ? &#39;var(--mantine-color-blue-light)&#39; : undefined}
+      w=&quot;100%&quot;
+      p={5}
+    &gt;
+      {item}
+    &lt;/UnstyledButton&gt;
+  ));
+
+  return (
+    &lt;Popover width=&quot;target&quot; opened={opened}&gt;
+      &lt;Popover.Target&gt;
+        &lt;TextInput
+          value={query}
+          onFocus={() =&gt; setOpened(true)}
+          onBlur={() =&gt; setOpened(false)}
+          onChange={(event) =&gt; {
+            setQuery(event.currentTarget.value);
+            setHovered(-1);
+          }}
+          onKeyDown={(event) =&gt; {
+            if (event.key === &#39;ArrowDown&#39;) {
+              event.preventDefault();
+              setHovered((current) =&gt; {
+                const nextIndex = current + 1 &gt;= filtered.length ? current : current + 1;
+                viewportRef.current
+                  ?.querySelectorAll(&#39;[data-list-item]&#39;)
+                  ?.[nextIndex]?.scrollIntoView({ block: &#39;nearest&#39; });
+                return nextIndex;
+              });
+            }
+
+            if (event.key === &#39;ArrowUp&#39;) {
+              event.preventDefault();
+              setHovered((current) =&gt; {
+                const nextIndex = current - 1 &lt; 0 ? current : current - 1;
+                viewportRef.current
+                  ?.querySelectorAll(&#39;[data-list-item]&#39;)
+                  ?.[nextIndex]?.scrollIntoView({ block: &#39;nearest&#39; });
+                return nextIndex;
+              });
+            }
+          }}
+          placeholder=&quot;Search groceries&quot;
+        /&gt;
+      &lt;/Popover.Target&gt;
+      &lt;Popover.Dropdown p={0}&gt;
+        &lt;ScrollArea.Autosize viewportRef={viewportRef} mah={200} type=&quot;always&quot; scrollbars=&quot;y&quot;&gt;
+          &lt;Box px=&quot;xs&quot; py={5}&gt;
+            {items.length &gt; 0 ? items : &lt;Text c=&quot;dimmed&quot;&gt;Nothing found&lt;/Text&gt;}
+          &lt;/Box&gt;
+        &lt;/ScrollArea.Autosize&gt;
+      &lt;/Popover.Dropdown&gt;
+    &lt;/Popover&gt;
+  );
+}
+</code></pre>

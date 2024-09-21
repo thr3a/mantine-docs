@@ -1,0 +1,428 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Tabs, rem } from &#39;@mantine/core&#39;;
+import { IconPhoto, IconMessageCircle, IconSettings } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  const iconStyle = { width: rem(12), height: rem(12) };
+
+  return (
+    &lt;Tabs{{props}} defaultValue=&quot;gallery&quot;&gt;
+      &lt;Tabs.List&gt;
+        &lt;Tabs.Tab value=&quot;gallery&quot; leftSection={&lt;IconPhoto style={iconStyle} /&gt;}&gt;
+          Gallery
+        &lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;messages&quot; leftSection={&lt;IconMessageCircle style={iconStyle} /&gt;}&gt;
+          Messages
+        &lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;settings&quot; leftSection={&lt;IconSettings style={iconStyle} /&gt;}&gt;
+          Settings
+        &lt;/Tabs.Tab&gt;
+      &lt;/Tabs.List&gt;
+
+      &lt;Tabs.Panel value=&quot;gallery&quot;&gt;
+        Gallery tab content
+      &lt;/Tabs.Panel&gt;
+
+      &lt;Tabs.Panel value=&quot;messages&quot;&gt;
+        Messages tab content
+      &lt;/Tabs.Panel&gt;
+
+      &lt;Tabs.Panel value=&quot;settings&quot;&gt;
+        Settings tab content
+      &lt;/Tabs.Panel&gt;
+    &lt;/Tabs&gt;
+  );
+}</code></pre>
+<h2 id="controlled-tabs">Controlled Tabs</h2>
+<p>To control Tabs state, use <code>value</code> and <code>onChange</code> props:</p>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { Tabs } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [activeTab, setActiveTab] = useState&lt;string | null&gt;(&#39;first&#39;);
+
+  return (
+    &lt;Tabs value={activeTab} onChange={setActiveTab}&gt;
+      &lt;Tabs.List&gt;
+        &lt;Tabs.Tab value=&quot;first&quot;&gt;First tab&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;second&quot;&gt;Second tab&lt;/Tabs.Tab&gt;
+      &lt;/Tabs.List&gt;
+
+      &lt;Tabs.Panel value=&quot;first&quot;&gt;First panel&lt;/Tabs.Panel&gt;
+      &lt;Tabs.Panel value=&quot;second&quot;&gt;Second panel&lt;/Tabs.Panel&gt;
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<h2 id="uncontrolled-tabs">Uncontrolled Tabs</h2>
+<p>If you do not need to subscribe to Tabs state changes, use <code>defaultValue</code>:</p>
+<pre><code class="language-tsx">import { Tabs } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tabs defaultValue=&quot;first&quot;&gt;
+      &lt;Tabs.List&gt;
+        &lt;Tabs.Tab value=&quot;first&quot;&gt;First tab&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;second&quot;&gt;Second tab&lt;/Tabs.Tab&gt;
+      &lt;/Tabs.List&gt;
+
+      &lt;Tabs.Panel value=&quot;first&quot;&gt;First panel&lt;/Tabs.Panel&gt;
+      &lt;Tabs.Panel value=&quot;second&quot;&gt;Second panel&lt;/Tabs.Panel&gt;
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<h2 id="change-colors">Change colors</h2>
+<p>To change colors of all tabs, set <code>color</code> on <code>Tabs</code> component, to change color of the individual tab,
+set <code>color</code> on <code>Tabs.Tab</code>.</p>
+<pre><code>
+import { Tabs } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tabs color=&quot;teal&quot; defaultValue=&quot;first&quot;&gt;
+      &lt;Tabs.List&gt;
+        &lt;Tabs.Tab value=&quot;first&quot;&gt;Teal tab&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;second&quot; color=&quot;blue&quot;&gt;
+          Blue tab
+        &lt;/Tabs.Tab&gt;
+      &lt;/Tabs.List&gt;
+
+      &lt;Tabs.Panel value=&quot;first&quot; pt=&quot;xs&quot;&gt;
+        First tab color is teal, it gets this value from context
+      &lt;/Tabs.Panel&gt;
+
+      &lt;Tabs.Panel value=&quot;second&quot; pt=&quot;xs&quot;&gt;
+        Second tab color is blue, it gets this value from props, props have the priority and will
+        override context value
+      &lt;/Tabs.Panel&gt;
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<h2 id="tabs-position">Tabs position</h2>
+<pre><code>
+import { Tabs } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tabs defaultValue=&quot;first&quot;&gt;
+      &lt;Tabs.List{{props}}&gt;
+        &lt;Tabs.Tab value=&quot;first&quot;&gt;First tab&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;second&quot;&gt;Second tab&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;third&quot;&gt;Third tab&lt;/Tabs.Tab&gt;
+      &lt;/Tabs.List&gt;
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<p>To display tab on the opposite side, set <code>margin-left: auto</code> with <code>ml=&quot;auto&quot;</code> prop or with <code>className</code>:</p>
+<pre><code>
+import { Tabs } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tabs defaultValue=&quot;chat&quot;&gt;
+      &lt;Tabs.List&gt;
+        &lt;Tabs.Tab value=&quot;chat&quot;&gt;Chat&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;gallery&quot;&gt;Gallery&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;settings&quot;&gt;Settings&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;account&quot; ml=&quot;auto&quot;&gt;
+          Account
+        &lt;/Tabs.Tab&gt;
+      &lt;/Tabs.List&gt;
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<h2 id="inverted-tabs">Inverted tabs</h2>
+<p>To make tabs inverted, place <code>Tabs.Panel</code> components before <code>Tabs.List</code> and add <code>inverted</code> prop to <code>Tabs</code> component:</p>
+<pre><code>
+import { Tabs } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tabs defaultValue=&quot;chat&quot; inverted&gt;
+      &lt;Tabs.Panel value=&quot;chat&quot; pb=&quot;xs&quot;&gt;Chat panel&lt;/Tabs.Panel&gt;
+      &lt;Tabs.Panel value=&quot;gallery&quot; pb=&quot;xs&quot;&gt;Gallery panel&lt;/Tabs.Panel&gt;
+      &lt;Tabs.Panel value=&quot;account&quot; pb=&quot;xs&quot;&gt;Account panel&lt;/Tabs.Panel&gt;
+
+      &lt;Tabs.List&gt;
+        &lt;Tabs.Tab value=&quot;chat&quot;&gt;Chat&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;gallery&quot;&gt;Gallery&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;account&quot;&gt;Account&lt;/Tabs.Tab&gt;
+      &lt;/Tabs.List&gt;
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<h2 id="vertical-tabs-placement">Vertical tabs placement</h2>
+<p>To change placement of <code>Tabs.List</code> in vertical orientation set <code>placement</code> prop:</p>
+<pre><code>
+import { Tabs } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tabs defaultValue=&quot;gallery&quot; orientation=&quot;vertical&quot;{{props}}&gt;
+      &lt;Tabs.List&gt;
+        &lt;Tabs.Tab value=&quot;gallery&quot;&gt;Gallery&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;messages&quot;&gt;Messages&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;settings&quot;&gt;Settings&lt;/Tabs.Tab&gt;
+      &lt;/Tabs.List&gt;
+
+      &lt;Tabs.Panel value=&quot;gallery&quot;&gt;Gallery tab content&lt;/Tabs.Panel&gt;
+      &lt;Tabs.Panel value=&quot;messages&quot;&gt;Messages tab content&lt;/Tabs.Panel&gt;
+      &lt;Tabs.Panel value=&quot;settings&quot;&gt;Settings tab content&lt;/Tabs.Panel&gt;
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled-tabs">Disabled tabs</h2>
+<p>Set <code>disabled</code> prop on <code>Tabs.Tab</code> component to disable tab.
+Disabled tab cannot be activated with mouse or keyboard, and they will be skipped when user navigates with arrow keys:</p>
+<pre><code>
+import { Tabs } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tabs defaultValue=&quot;chat&quot;&gt;
+      &lt;Tabs.List&gt;
+        &lt;Tabs.Tab value=&quot;chat&quot;&gt;Chat&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;gallery&quot;&gt;Gallery&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;settings&quot; disabled&gt;
+          Settings
+        &lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;account&quot;&gt;Account&lt;/Tabs.Tab&gt;
+      &lt;/Tabs.List&gt;
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<h2 id="activation-mode">Activation mode</h2>
+<p>By default, tabs are activated when user presses arrows keys or Home/End keys.
+To disable that set <code>activateTabWithKeyboard={false}</code> on <code>Tabs</code> component:</p>
+<pre><code>
+import { Tabs } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tabs defaultValue=&quot;chat&quot; activateTabWithKeyboard={false}&gt;
+      {/* ...content */}
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<h2 id="tab-deactivation">Tab deactivation</h2>
+<p>By default, active tab cannot be deactivated. To allow that set <code>allowTabDeactivation</code> on <code>Tabs</code> component:</p>
+<pre><code>
+import { Tabs } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tabs defaultValue=&quot;chat&quot; allowTabDeactivation&gt;
+      {/* ...content */}
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<h2 id="unmount-inactive-tabs">Unmount inactive tabs</h2>
+<p>By default, inactive <code>Tabs.Panel</code> will stay mounted, to unmount inactive tabs, set <code>keepMounted={false}</code> on Tabs.
+This is useful when you want to render components that impact performance inside <code>Tabs.Panel</code>. Note that
+components that are rendered inside <code>Tabs.Panel</code> will reset their state on each mount (tab change).</p>
+<pre><code class="language-tsx">import { Tabs } from &#39;@mantine/core&#39;;
+
+// Second tab panel will be mounted only when user activates second tab
+function Demo() {
+  return (
+    &lt;Tabs keepMounted={false} defaultValue=&quot;first&quot;&gt;
+      &lt;Tabs.List&gt;
+        &lt;Tabs.Tab value=&quot;first&quot;&gt;First tab&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;second&quot;&gt;Second tab&lt;/Tabs.Tab&gt;
+      &lt;/Tabs.List&gt;
+
+      &lt;Tabs.Panel value=&quot;first&quot;&gt;First panel&lt;/Tabs.Panel&gt;
+      &lt;Tabs.Panel value=&quot;second&quot;&gt;Second panel&lt;/Tabs.Panel&gt;
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<h2 id="get-tab-control-ref">Get tab control ref</h2>
+<pre><code class="language-tsx">import { useRef } from &#39;react&#39;;
+import { Tabs } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const secondTabRef = useRef&lt;HTMLButtonElement&gt;(null);
+
+  return (
+    &lt;Tabs defaultValue=&quot;first&quot;&gt;
+      &lt;Tabs.List&gt;
+        &lt;Tabs.Tab value=&quot;first&quot;&gt;First tab&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;Second&quot; ref={secondTabRef}&gt;
+          Second tab
+        &lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;third&quot;&gt;Third tab&lt;/Tabs.Tab&gt;
+      &lt;/Tabs.List&gt;
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<h2 id="usage-with-react-router">Usage with react-router</h2>
+<pre><code class="language-tsx">&lt;Route path=&quot;/tabs/:tabValue&quot; element={&lt;Demo /&gt;} /&gt;
+</code></pre>
+<pre><code class="language-tsx">import { useNavigate, useParams } from &#39;react-router-dom&#39;;
+import { Tabs } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const navigate = useNavigate();
+  const { tabValue } = useParams();
+
+  return (
+    &lt;Tabs
+      value={tabValue}
+      onChange={(value) =&gt; navigate(`/tabs/${value}`)}
+    &gt;
+      &lt;Tabs.List&gt;
+        &lt;Tabs.Tab value=&quot;first&quot;&gt;First tab&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;second&quot;&gt;Second tab&lt;/Tabs.Tab&gt;
+      &lt;/Tabs.List&gt;
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<h2 id="usage-with-nextjs-router">Usage with Next.js router</h2>
+<pre><code class="language-tsx">// For file /tabs/[activeTab].tsx
+import { useRouter } from &#39;next/router&#39;;
+import { Tabs } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const router = useRouter();
+
+  return (
+    &lt;Tabs
+      value={router.query.activeTab as string}
+      onChange={(value) =&gt; router.push(`/tabs/${value}`)}
+    &gt;
+      &lt;Tabs.List&gt;
+        &lt;Tabs.Tab value=&quot;first&quot;&gt;First tab&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;second&quot;&gt;Second tab&lt;/Tabs.Tab&gt;
+      &lt;/Tabs.List&gt;
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Tabs, rem } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const iconStyle = { width: rem(12), height: rem(12) };
+
+  return (
+    &lt;Tabs defaultValue=&quot;gallery&quot;{{props}}&gt;
+      &lt;Tabs.List&gt;
+        &lt;Tabs.Tab value=&quot;gallery&quot; leftSection={&lt;IconPhoto style={iconStyle} /&gt;}&gt;
+          Gallery
+        &lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;messages&quot; leftSection={&lt;IconMessageCircle style={iconStyle} /&gt;}&gt;
+          Messages
+        &lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;settings&quot; rightSection={&lt;IconSettings style={iconStyle} /&gt;}&gt;
+          Settings
+        &lt;/Tabs.Tab&gt;
+      &lt;/Tabs.List&gt;
+
+      &lt;Tabs.Panel value=&quot;gallery&quot; pt=&quot;xs&quot;&gt;
+        Gallery tab content
+      &lt;/Tabs.Panel&gt;
+
+      &lt;Tabs.Panel value=&quot;messages&quot; pt=&quot;xs&quot;&gt;
+        Messages tab content
+      &lt;/Tabs.Panel&gt;
+
+      &lt;Tabs.Panel value=&quot;settings&quot; pt=&quot;xs&quot;&gt;
+        Settings tab content
+      &lt;/Tabs.Panel&gt;
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<p>Example of Styles API usage to customize tab styles:</p>
+<pre><code>
+import { Tabs, rem } from &#39;@mantine/core&#39;;
+import { IconPhoto, IconMessageCircle, IconSettings } from &#39;@tabler/icons-react&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+function Demo() {
+  return (
+    &lt;Tabs variant=&quot;unstyled&quot; defaultValue=&quot;settings&quot; classNames={classes}&gt;
+      &lt;Tabs.List grow&gt;
+        &lt;Tabs.Tab
+          value=&quot;settings&quot;
+          leftSection={&lt;IconSettings style={{ width: rem(16), height: rem(16) }} /&gt;}
+        &gt;
+          Settings
+        &lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab
+          value=&quot;messages&quot;
+          leftSection={&lt;IconMessageCircle style={{ width: rem(16), height: rem(16) }} /&gt;}
+        &gt;
+          Messages
+        &lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab
+          value=&quot;gallery&quot;
+          leftSection={&lt;IconPhoto style={{ width: rem(16), height: rem(16) }} /&gt;}
+        &gt;
+          Gallery
+        &lt;/Tabs.Tab&gt;
+      &lt;/Tabs.List&gt;
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p>Tabs component follows WAI-ARIA recommendations on accessibility.</p>
+<p>If you use <code>Tabs.Tab</code> without text content, for example, only with icon, then set <code>aria-label</code>
+or use VisuallyHidden component:</p>
+<pre><code class="language-tsx">import { IconCoin } from &#39;@tabler/icons-react&#39;;
+import { Tabs, VisuallyHidden } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tabs defaultValue=&quot;chat&quot;&gt;
+      &lt;Tabs.List&gt;
+        {/* aria-label is not required, tab is labelled by children */}
+        &lt;Tabs.Tab value=&quot;chat&quot;&gt;Chat&lt;/Tabs.Tab&gt;
+
+        {/* aria-label is required, tab is not labelled by children */}
+        &lt;Tabs.Tab
+          value=&quot;money&quot;
+          aria-label=&quot;Get money&quot;
+          leftSection={&lt;IconCoin size={14} /&gt;}
+        /&gt;
+
+        {/* You can use VisuallyHidden instead of aria-label */}
+        &lt;Tabs.Tab value=&quot;money&quot; leftSection={&lt;IconCoin size={14} /&gt;}&gt;
+          &lt;VisuallyHidden&gt;Get money&lt;/VisuallyHidden&gt;
+        &lt;/Tabs.Tab&gt;
+      &lt;/Tabs.List&gt;
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<p>To set tabs list label, set <code>aria-label</code> on <code>Tabs.List</code> component, it will be announced by screen reader:</p>
+<pre><code class="language-tsx">import { Tabs } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tabs defaultValue=&quot;recent&quot;&gt;
+      {/* Tabs.List aria-label will be announced when tab is focused for the first time */}
+      &lt;Tabs.List aria-label=&quot;Chats&quot;&gt;
+        &lt;Tabs.Tab value=&quot;recent&quot;&gt;Most recent&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;recent&quot;&gt;Unanswered&lt;/Tabs.Tab&gt;
+        &lt;Tabs.Tab value=&quot;archived&quot;&gt;Archived&lt;/Tabs.Tab&gt;
+      &lt;/Tabs.List&gt;
+    &lt;/Tabs&gt;
+  );
+}
+</code></pre>
+<h2 id="keyboard-interactions">Keyboard interactions</h2>

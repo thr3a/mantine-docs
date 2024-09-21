@@ -1,0 +1,77 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>Image</code> is a wrapper for <code>img</code> with minimal styles. By default, the image
+will take 100% of parent width. The image size can be controlled with <code>w</code>
+and <code>h</code> style props.</p>
+<pre><code>
+import { Image } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Image
+      radius=&quot;md&quot;
+      src=&quot;https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png&quot;
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="image-height">Image height</h2>
+<p>In most case, you will need to set image height to prevent layout jumps when
+image is loading. You can do so with <code>h</code> style props.</p>
+<pre><code>
+import { Image } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Image
+      radius=&quot;md&quot;
+      h={200}
+      src=&quot;https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-10.png&quot;
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="image-fit">Image fit</h2>
+<p>By default the image has <code>object-fit: cover</code> style - it will
+resize to cover parent element. To change this behavior, set <code>w=&quot;auto&quot;</code> and <code>fit=&quot;contain&quot;</code> props.</p>
+<pre><code>
+import { Image } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Image
+      radius=&quot;md&quot;
+      h={200}
+      w=&quot;auto&quot;
+      fit=&quot;contain&quot;
+      src=&quot;https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-9.png&quot;
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="fallback-image">Fallback image</h2>
+<p>Set <code>fallbackSrc</code> prop to display fallback image when image fails to load:</p>
+<pre><code>
+import { Image } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Image
+      radius=&quot;md&quot;
+      src={null}
+      h={200}
+      fallbackSrc=&quot;https://placehold.co/600x400?text=Placeholder&quot;
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="usage-with-nextjs-image">Usage with Next.js Image</h2>
+<p><code>Image</code> component is a polymorphic component, its root element can be changed with <code>component</code> prop.
+You can use it with <code>next/image</code> and other similar components.</p>
+<pre><code class="language-tsx">import NextImage from &#39;next/image&#39;;
+import { Image } from &#39;@mantine/core&#39;;
+import myImage from &#39;./my-image.jpg&#39;;
+
+function Demo() {
+  return &lt;Image component={NextImage} src={myImage} alt=&quot;My image&quot; /&gt;;
+}
+</code></pre>

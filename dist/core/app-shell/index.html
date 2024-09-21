@@ -1,0 +1,377 @@
+<!DOCTYPE html><h2 id="examples">Examples</h2>
+<p>This page includes only documentation. Since all associated <code>AppShell</code> components have fixed
+position, it is not possible to include demos on this page.</p>
+<h2 id="usage">Usage</h2>
+<p><code>AppShell</code> is a layout component. It can be used to implement a common Header – Navbar – Footer – Aside
+layout pattern. All <code>AppShell</code> components have <code>position: fixed</code> style – they are not scrolled with
+the page.</p>
+<p>Basic AppShell example with header and navbar.
+Navbar is hidden on mobile by default and toggled with the burger button.</p>
+<pre><code class="language-tsx">import { AppShell, Burger } from &#39;@mantine/core&#39;;
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+
+function Demo() {
+  const [opened, { toggle }] = useDisclosure();
+
+  return (
+    &lt;AppShell
+      header={{ height: 60 }}
+      navbar={{
+        width: 300,
+        breakpoint: &#39;sm&#39;,
+        collapsed: { mobile: !opened },
+      }}
+      padding=&quot;md&quot;
+    &gt;
+      &lt;AppShell.Header&gt;
+        &lt;Burger
+          opened={opened}
+          onClick={toggle}
+          hiddenFrom=&quot;sm&quot;
+          size=&quot;sm&quot;
+        /&gt;
+        &lt;div&gt;Logo&lt;/div&gt;
+      &lt;/AppShell.Header&gt;
+
+      &lt;AppShell.Navbar p=&quot;md&quot;&gt;Navbar&lt;/AppShell.Navbar&gt;
+
+      &lt;AppShell.Main&gt;Main&lt;/AppShell.Main&gt;
+    &lt;/AppShell&gt;
+  );
+}
+</code></pre>
+<h2 id="appshell-components">AppShell components</h2>
+<ul>
+<li><code>AppShell</code> – root component, it is required to wrap all other components, used to configure layout properties</li>
+<li><code>AppShell.Header</code> – header section rendered at the top of the page, has fixed position, its height and collapsed state are controlled by the AppShell <code>header</code> prop</li>
+<li><code>AppShell.Navbar</code> – navbar section rendered at the left side of the page, has fixed position, its width and collapsed state are controlled by the AppShell <code>navbar</code> prop</li>
+<li><code>AppShell.Aside</code> – aside section rendered at the right side of the page, has fixed position, its width and collapsed state are controlled by the AppShell <code>aside</code> prop</li>
+<li><code>AppShell.Footer</code> – footer section rendered at the bottom of the page, has fixed position, its height and collapsed state are controlled by the AppShell <code>footer</code> prop</li>
+<li><code>AppShell.Main</code> – main section rendered at the center of the page, has static position, all other sections are offset by its padding</li>
+<li><code>AppShell.Section</code> – utility component that can be used to render group of content inside <code>AppShell.Navbar</code> and <code>AppShell.Aside</code>, can be used to create areas with custom scrollbars</li>
+</ul>
+<h2 id="configuration">Configuration</h2>
+<p><code>AppShell</code> component accepts, <code>header</code>, <code>footer</code>, <code>navbar</code> and <code>aside</code> props to configure
+corresponding sections. It is required to set these props if you want to use corresponding
+components. For example, if you want to use <code>AppShell.Header</code> component, you need to set <code>header</code>
+prop on the <code>AppShell</code> component.</p>
+<p><code>header</code> and <code>footer</code> configuration objects are the same and have the following properties:</p>
+<pre><code class="language-tsx">interface Configuration {
+  /** Height of the section: number, string or
+   ** object with breakpoints as keys and height as value */
+  height: AppShellSize | AppShellResponsiveSize;
+
+  /** If section is collapsed,
+   ** it is hidden from the viewport and is not offset in AppShell.Main */
+  collapsed?: boolean;
+
+  /** Determines whether the section should be offset by the AppShell.Main.
+   ** For example, it is useful if you want to
+   ** hide header based on the scroll position. */
+  offset?: boolean;
+}
+</code></pre>
+<p><code>navbar</code> and <code>aside</code> configuration objects are the same as well and have the following properties:</p>
+<pre><code class="language-tsx">interface Configuration {
+  /** Width of the section: number, string or
+   ** object with breakpoints as keys and width as value */
+  width: AppShellSize | AppShellResponsiveSize;
+
+  /** Breakpoint at which section should switch to mobile mode
+   ** In mobile mode the section always has 100% width and its
+   ** collapsed state is controlled by the `collapsed.mobile`
+   ** instead of `collapsed.desktop` */
+  breakpoint: MantineBreakpoint | (string &amp; {}) | number;
+
+  /** Determines whether the section should be collapsed */
+  collapsed?: { desktop?: boolean; mobile?: boolean };
+}
+</code></pre>
+<h2 id="layout-prop">layout prop</h2>
+<p><code>layout</code> prop controls how <code>AppShell.Header</code>/<code>AppShell.Footer</code> and <code>AppShell.Navbar</code>/<code>AppShell.Aside</code>
+are positioned relative to each other. It accepts <code>alt</code> and <code>default</code> values:</p>
+<ul>
+<li><code>alt</code> – <code>AppShell.Navbar</code>/<code>AppShell.Aside</code> height is equal to viewport height, <code>AppShell.Header</code>/<code>AppShell.Footer</code> width is equal to viewport width - <code>AppShell.Navbar</code> and <code>AppShell.Aside</code> width (example)</li>
+<li><code>default</code> – <code>AppShell.Navbar</code>/<code>AppShell.Aside</code> height is equal to viewport height - <code>AppShell.Header</code>/<code>AppShell.Footer</code> height, <code>AppShell.Header</code>/<code>AppShell.Footer</code> width is equal to viewport width (example)</li>
+</ul>
+<h2 id="height-configuration">Height configuration</h2>
+<p><code>height</code> property in <code>header</code> and <code>footer</code> configuration objects works the following way:</p>
+<ul>
+<li>If you pass a number, the value will be converted to rem and used as
+height at all viewport sizes.</li>
+<li>To change height based on viewport width, use object with breakpoints as keys and height as
+values. It works the same way as style props.</li>
+</ul>
+<p>Examples:</p>
+<pre><code class="language-tsx">import { AppShell } from &#39;@mantine/core&#39;;
+
+// Height is a number, it will be converted to rem
+// and used as height at all viewport sizes
+function Demo() {
+  return (
+    &lt;AppShell header={{ height: 48 }}&gt;
+      &lt;AppShell.Header&gt;Header&lt;/AppShell.Header&gt;
+    &lt;/AppShell&gt;
+  );
+}
+</code></pre>
+<pre><code class="language-tsx">import { AppShell } from &#39;@mantine/core&#39;;
+
+// Height is an object with breakpoints:
+// - height is 48 when viewport width is &lt; theme.breakpoints.sm
+// - height is 60 when viewport width is &gt;= theme.breakpoints.sm and &lt; theme.breakpoints.lg
+// - height is 76 when viewport width is &gt;= theme.breakpoints.lg
+function Demo() {
+  return (
+    &lt;AppShell header={{ height: { base: 48, sm: 60, lg: 76 } }}&gt;
+      &lt;AppShell.Header&gt;Header&lt;/AppShell.Header&gt;
+    &lt;/AppShell&gt;
+  );
+}
+</code></pre>
+<h2 id="width-configuration">Width configuration</h2>
+<p><code>width</code> property in <code>navbar</code> and <code>aside</code> configuration objects works the following way:</p>
+<ul>
+<li>If you pass a number, the value will be converted to rem and used as
+width when the viewport is larger than <code>breakpoint</code>.</li>
+<li>To change width based on viewport width, use object with breakpoints as keys and width as
+values. It works the same way as style props.
+Note that width is always 100% when the viewport is smaller than <code>breakpoint</code>.</li>
+</ul>
+<p>Examples:</p>
+<pre><code class="language-tsx">import { AppShell } from &#39;@mantine/core&#39;;
+
+// Width is a number, it will be converted to rem
+// and used as width when viewport is larger than theme.breakpoints.sm
+function Demo() {
+  return (
+    &lt;AppShell navbar={{ width: 48, breakpoint: &#39;sm&#39; }}&gt;
+      &lt;AppShell.Navbar&gt;Navbar&lt;/AppShell.Navbar&gt;
+    &lt;/AppShell&gt;
+  );
+}
+</code></pre>
+<pre><code class="language-tsx">import { AppShell } from &#39;@mantine/core&#39;;
+
+// Width is an object with breakpoints:
+// - width is 100% when viewport width is &lt; theme.breakpoints.sm
+// - width is 200 when viewport width is &gt;= theme.breakpoints.sm and &lt; theme.breakpoints.lg
+// - width is 300 when viewport width is &gt;= theme.breakpoints.lg
+function Demo() {
+  return (
+    &lt;AppShell
+      navbar={{ width: { sm: 200, lg: 300 }, breakpoint: &#39;sm&#39; }}
+    &gt;
+      &lt;AppShell.Navbar&gt;Navbar&lt;/AppShell.Navbar&gt;
+    &lt;/AppShell&gt;
+  );
+}
+</code></pre>
+<h2 id="padding-prop">padding prop</h2>
+<p><code>padding</code> prop controls the padding of the <code>AppShell.Main</code> component. It is important to use it
+instead of setting padding on the <code>AppShell.Main</code> directly because padding of the <code>AppShell.Main</code> is
+also used to offset <code>AppShell.Header</code>, <code>AppShell.Navbar</code>, <code>AppShell.Aside</code> and <code>AppShell.Footer</code> components.</p>
+<p><code>padding</code> prop works the same way as style props and
+accepts numbers, strings and objects with breakpoints as keys and padding as values. You can
+reference <code>theme.spacing</code> values or use any valid CSS values.</p>
+<pre><code class="language-tsx">import { AppShell } from &#39;@mantine/core&#39;;
+
+// Padding is always theme.spacing.md
+function Demo() {
+  return &lt;AppShell padding=&quot;md&quot;&gt;{/* AppShell content */}&lt;/AppShell&gt;;
+}
+</code></pre>
+<pre><code class="language-tsx">import { AppShell } from &#39;@mantine/core&#39;;
+
+// Padding is:
+// - 10 when viewport width is &lt; theme.breakpoints.sm
+// - 15 when viewport width is &gt;= theme.breakpoints.sm and &lt; theme.breakpoints.lg
+// - theme.spacing.xl when viewport width is &gt;= theme.breakpoints.lg
+function Demo() {
+  return (
+    &lt;AppShell padding={{ base: 10, sm: 15, lg: &#39;xl&#39; }}&gt;
+      {/* AppShell content */}
+    &lt;/AppShell&gt;
+  );
+}
+</code></pre>
+<h2 id="header-offset-configuration">Header offset configuration</h2>
+<p><code>header</code> prop has <code>offset</code> property which allows removing <code>AppShell.Header</code> offset from <code>AppShell.Main</code> component.
+It is useful when you want to collapse <code>AppShell.Header</code> based on the scroll position. For example, you can use
+use-headroom hook to collapse header when user scrolls down and expand it when user scrolls up (example).</p>
+<pre><code class="language-tsx">import { AppShell, rem } from &#39;@mantine/core&#39;;
+import { useHeadroom } from &#39;@mantine/hooks&#39;;
+
+function Demo() {
+  const pinned = useHeadroom({ fixedAt: 120 });
+
+  return (
+    &lt;AppShell
+      header={{ height: 60, collapsed: !pinned, offset: false }}
+      padding=&quot;md&quot;
+    &gt;
+      &lt;AppShell.Header&gt;Header&lt;/AppShell.Header&gt;
+
+      &lt;AppShell.Main
+        pt={`calc(${rem(60)} + var(--mantine-spacing-md))`}
+      &gt;
+        {/* Content */}
+      &lt;/AppShell.Main&gt;
+    &lt;/AppShell&gt;
+  );
+}
+</code></pre>
+<h2 id="collapsed-navbaraside-configuration">Collapsed navbar/aside configuration</h2>
+<p><code>navbar</code> and <code>aside</code> props have <code>collapsed</code> property. The property accepts an object
+<code>{ mobile: boolean; desktop: boolean }</code> which allows to configure collapsed state
+depending on the viewport width.</p>
+<p>Example with separate collapsed state for mobile and desktop:</p>
+<pre><code class="language-tsx">import { AppShell, Button } from &#39;@mantine/core&#39;;
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+
+export function CollapseDesktop() {
+  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
+  const [desktopOpened, { toggle: toggleDesktop }] =
+    useDisclosure(true);
+
+  return (
+    &lt;AppShell
+      padding=&quot;md&quot;
+      header={{ height: 60 }}
+      navbar={{
+        width: 300,
+        breakpoint: &#39;sm&#39;,
+        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
+      }}
+    &gt;
+      &lt;AppShell.Header&gt;Header&lt;/AppShell.Header&gt;
+      &lt;AppShell.Navbar&gt;Navbar&lt;/AppShell.Navbar&gt;
+      &lt;AppShell.Main&gt;
+        &lt;Button onClick={toggleDesktop} visibleFrom=&quot;sm&quot;&gt;
+          Toggle navbar
+        &lt;/Button&gt;
+        &lt;Button onClick={toggleMobile} hiddenFrom=&quot;sm&quot;&gt;
+          Toggle navbar
+        &lt;/Button&gt;
+      &lt;/AppShell.Main&gt;
+    &lt;/AppShell&gt;
+  );
+}
+</code></pre>
+<h2 id="withborder-prop">withBorder prop</h2>
+<p><code>withBorder</code> prop is available on <code>AppShell</code> and associated sections: <code>AppShell.Header</code>, <code>AppShell.Navbar</code>, <code>AppShell.Aside</code> and <code>AppShell.Footer</code>.
+By default, <code>withBorder</code> prop is <code>true</code> – all components have a border on the side that is adjacent to the <code>AppShell.Main</code> component.
+For example, <code>AppShell.Header</code> is located at the top of the page – it has a border on the bottom side,
+<code>AppShell.Navbar</code> is located on the left side of the page – it has a border on the right side.</p>
+<p>To remove the border from all components, set <code>withBorder={false}</code> on the <code>AppShell</code>:</p>
+<pre><code class="language-tsx">import { AppShell } from &#39;@mantine/core&#39;;
+
+// None of the components will have a border
+function Demo() {
+  return (
+    &lt;AppShell withBorder={false}&gt;{/* AppShell content */}&lt;/AppShell&gt;
+  );
+}
+</code></pre>
+<p>To remove the border from a specific component, set <code>withBorder={false}</code> on that component:</p>
+<pre><code class="language-tsx">import { AppShell } from &#39;@mantine/core&#39;;
+
+// AppShell.Header does not have a border
+// AppShell.Navbar and AppShell.Aside have a border
+function Demo() {
+  return (
+    &lt;AppShell&gt;
+      &lt;AppShell.Header withBorder={false}&gt;Header&lt;/AppShell.Header&gt;
+      &lt;AppShell.Navbar&gt;Navbar&lt;/AppShell.Navbar&gt;
+      &lt;AppShell.Aside&gt;Aside&lt;/AppShell.Aside&gt;
+    &lt;/AppShell&gt;
+  );
+}
+</code></pre>
+<h2 id="zindex-prop">zIndex prop</h2>
+<p><code>zIndex</code> prop is available on <code>AppShell</code> and associated sections: <code>AppShell.Header</code>, <code>AppShell.Navbar</code>, <code>AppShell.Aside</code> and <code>AppShell.Footer</code>.
+By default, all sections <code>z-index</code> is <code>200</code>.</p>
+<p>To change <code>z-index</code> of all sections, set <code>zIndex</code> prop on the <code>AppShell</code>:</p>
+<pre><code class="language-tsx">import { AppShell } from &#39;@mantine/core&#39;;
+
+// All sections will have z-index of 100
+function Demo() {
+  return &lt;AppShell zIndex={100}&gt;{/* AppShell content */}&lt;/AppShell&gt;;
+}
+</code></pre>
+<p>To change <code>z-index</code> of a specific section, set <code>zIndex</code> prop on that section:</p>
+<pre><code class="language-tsx">import { AppShell } from &#39;@mantine/core&#39;;
+
+// AppShell.Header has z-index of 100
+// AppShell.Navbar and AppShell.Aside have z-index of 300
+function Demo() {
+  return (
+    &lt;AppShell&gt;
+      &lt;AppShell.Header zIndex={100}&gt;Header&lt;/AppShell.Header&gt;
+      &lt;AppShell.Navbar zIndex={300}&gt;Navbar&lt;/AppShell.Navbar&gt;
+      &lt;AppShell.Aside zIndex={300}&gt;Aside&lt;/AppShell.Aside&gt;
+    &lt;/AppShell&gt;
+  );
+}
+</code></pre>
+<h2 id="control-transitions">Control transitions</h2>
+<p>Set <code>transitionDuration</code> and <code>transitionTimingFunction</code> props on the <code>AppShell</code> to control transitions:</p>
+<pre><code class="language-tsx">import { AppShell } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;AppShell
+      transitionDuration={500}
+      transitionTimingFunction=&quot;ease&quot;
+    &gt;
+      {/* AppShell content */}
+    &lt;/AppShell&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled-prop">disabled prop</h2>
+<p>Set <code>disabled</code> prop on the <code>AppShell</code> to prevent all sections except <code>AppShell.Main</code> from rendering.
+It is useful when you want to hide the shell on some pages of your application.</p>
+<pre><code class="language-tsx">import { AppShell } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;AppShell disabled&gt;{/* AppShell content */}&lt;/AppShell&gt;;
+}
+</code></pre>
+<h2 id="appshellsection-component">AppShell.Section component</h2>
+<p><code>AppShell.Section</code> component can be used to create scrollable areas inside <code>AppShell.Navbar</code> and <code>AppShell.Aside</code>.
+Root elements of <code>AppShell.Navbar</code> and <code>AppShell.Aside</code> are flexbox containers with <code>flex-direction: column</code>,
+<code>AppShell.Section</code> with <code>grow</code> attribute will take all available space and will be scrollable if <code>component={ScrollArea}</code>
+is set.</p>
+<p>In the following example:</p>
+<ul>
+<li>First and last sections (header and footer) will take as much space as they need to render <code>children</code></li>
+<li>Second section will take all available space and will be scrollable if content height exceeds available space</li>
+</ul>
+<pre><code class="language-tsx">import { AppShell, ScrollArea } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;AppShell navbar={{ width: 300, breakpoint: 0 }}&gt;
+      &lt;AppShell.Navbar&gt;
+        &lt;AppShell.Section&gt;Navbar header&lt;/AppShell.Section&gt;
+        &lt;AppShell.Section grow component={ScrollArea}&gt;
+          Navbar main section, it will
+        &lt;/AppShell.Section&gt;
+        &lt;AppShell.Section&gt;
+          Navbar footer – always at the bottom
+        &lt;/AppShell.Section&gt;
+      &lt;/AppShell.Navbar&gt;
+      &lt;AppShell.Main&gt;Main&lt;/AppShell.Main&gt;
+    &lt;/AppShell&gt;
+  );
+}
+</code></pre>
+<h2 id="semantic-elements">Semantic elements</h2>
+<ul>
+<li><code>AppShell.Header</code> root element is <code>header</code></li>
+<li><code>AppShell.Navbar</code> root element is <code>nav</code></li>
+<li><code>AppShell.Aside</code> root element is <code>aside</code></li>
+<li><code>AppShell.Footer</code> root element is <code>footer</code></li>
+<li><code>AppShell.Main</code> root element is <code>main</code> – <strong>!important:</strong> do not use <code>main</code> element inside <code>AppShell.Main</code> component</li>
+</ul>

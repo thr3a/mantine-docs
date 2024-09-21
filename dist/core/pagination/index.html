@@ -1,0 +1,245 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Pagination } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Pagination total={10}{{props}} /&gt;;
+}
+</code></pre>
+<h2 id="example-with-chunked-content">Example with chunked content</h2>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { randomId } from &#39;@mantine/hooks&#39;;
+import { Pagination, Text } from &#39;@mantine/core&#39;;
+
+function chunk&lt;T&gt;(array: T[], size: number): T[][] {
+  if (!array.length) {
+    return [];
+  }
+  const head = array.slice(0, size);
+  const tail = array.slice(size);
+  return [head, ...chunk(tail, size)];
+}
+
+const data = chunk(
+  Array(30)
+    .fill(0)
+    .map((_, index) =&gt; ({ id: index, name: randomId() })),
+  5
+);
+
+function Demo() {
+  const [activePage, setPage] = useState(1);
+  const items = data[activePage - 1].map((item) =&gt; (
+    &lt;Text key={item.id}&gt;
+      id: {item.id}, name: {item.name}
+    &lt;/Text&gt;
+  ));
+
+  return (
+    &lt;&gt;
+      {items}
+      &lt;Pagination total={data.length} value={activePage} onChange={setPage} mt=&quot;sm&quot; /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<p>To control component state provide <code>value</code> and <code>onChange</code> props:</p>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { Pagination } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [activePage, setPage] = useState(1);
+  return (
+    &lt;Pagination value={activePage} onChange={setPage} total={10} /&gt;
+  );
+}
+</code></pre>
+<h2 id="siblings">Siblings</h2>
+<p>Control number of active item siblings with <code>siblings</code> prop:</p>
+<pre><code>
+import { Text, Pagination } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Text mb=&quot;xs&quot;&gt;1 sibling (default)&lt;/Text&gt;
+      &lt;Pagination total={20} siblings={1} defaultValue={10} /&gt;
+
+      &lt;Text mb=&quot;xs&quot; mt=&quot;xl&quot;&gt;2 siblings&lt;/Text&gt;
+      &lt;Pagination total={20} siblings={2} defaultValue={10} /&gt;
+
+      &lt;Text mb=&quot;xs&quot; mt=&quot;xl&quot;&gt;3 siblings&lt;/Text&gt;
+      &lt;Pagination total={20} siblings={3} defaultValue={10} /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="boundaries">Boundaries</h2>
+<p>Control number of items displayed after previous and before next buttons with <code>boundaries</code> prop:</p>
+<pre><code>
+import { Text, Pagination } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Text mb=&quot;xs&quot;&gt;1 boundary (default)&lt;/Text&gt;
+      &lt;Pagination total={20} boundaries={1} defaultValue={10} /&gt;
+
+      &lt;Text mt=&quot;xl&quot; mb=&quot;xs&quot;&gt;2 boundaries&lt;/Text&gt;
+      &lt;Pagination total={20} boundaries={2} defaultValue={10} /&gt;
+
+      &lt;Text mt=&quot;xl&quot; mb=&quot;xs&quot;&gt;3 boundaries&lt;/Text&gt;
+      &lt;Pagination total={20} boundaries={3} defaultValue={10} /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Pagination } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Pagination total={10}{{props}} /&gt;;
+}
+</code></pre>
+<h2 id="compound-components">Compound components</h2>
+<p>You can use the following compound components to have full control over the <code>Pagination</code> rendering:</p>
+<ul>
+<li><code>Pagination.Root</code> – context provider</li>
+<li><code>Pagination.Items</code> – items list</li>
+<li><code>Pagination.Next</code> – next control</li>
+<li><code>Pagination.Previous</code> – previous control</li>
+<li><code>Pagination.First</code> – first control</li>
+<li><code>Pagination.Last</code> – last control</li>
+</ul>
+<pre><code>
+import { Group, Pagination } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Pagination.Root total={10}&gt;
+      &lt;Group gap={5} justify=&quot;center&quot;&gt;
+        &lt;Pagination.First /&gt;
+        &lt;Pagination.Previous /&gt;
+        &lt;Pagination.Items /&gt;
+        &lt;Pagination.Next /&gt;
+        &lt;Pagination.Last /&gt;
+      &lt;/Group&gt;
+    &lt;/Pagination.Root&gt;
+  );
+}
+</code></pre>
+<h2 id="controls-as-links">Controls as links</h2>
+<pre><code>
+import { Group, Pagination } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      {/* Regular pagination */}
+      &lt;Pagination
+        total={10}
+        withEdges
+        getItemProps={(page) =&gt; ({
+          component: &#39;a&#39;,
+          href: `#page-${page}`,
+        })}
+        getControlProps={(control) =&gt; {
+          if (control === &#39;first&#39;) {
+            return { component: &#39;a&#39;, href: &#39;#page-0&#39; };
+          }
+
+          if (control === &#39;last&#39;) {
+            return { component: &#39;a&#39;, href: &#39;#page-10&#39; };
+          }
+
+          if (control === &#39;next&#39;) {
+            return { component: &#39;a&#39;, href: &#39;#page-2&#39; };
+          }
+
+          if (control === &#39;previous&#39;) {
+            return { component: &#39;a&#39;, href: &#39;#page-1&#39; };
+          }
+
+          return {};
+        }}
+      /&gt;
+
+      {/* Compound pagination */}
+      &lt;Pagination.Root
+        total={10}
+        getItemProps={(page) =&gt; ({
+          component: &#39;a&#39;,
+          href: `#page-${page}`,
+        })}
+      &gt;
+        &lt;Group gap={7} mt=&quot;xl&quot;&gt;
+          &lt;Pagination.First component=&quot;a&quot; href=&quot;#page-0&quot; /&gt;
+          &lt;Pagination.Previous component=&quot;a&quot; href=&quot;#page-1&quot; /&gt;
+          &lt;Pagination.Items /&gt;
+          &lt;Pagination.Next component=&quot;a&quot; href=&quot;#page-2&quot; /&gt;
+          &lt;Pagination.Last component=&quot;a&quot; href=&quot;#page-10&quot; /&gt;
+        &lt;/Group&gt;
+      &lt;/Pagination.Root&gt;
+    &lt;/&gt;
+  );
+}
+
+</code></pre>
+<h2 id="change-icons">Change icons</h2>
+<pre><code>
+import { Group, Pagination } from &#39;@mantine/core&#39;;
+import {
+  IconArrowBarToRight,
+  IconArrowBarToLeft,
+  IconArrowLeft,
+  IconArrowRight,
+  IconGripHorizontal,
+} from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      {/* Regular pagination */}
+      &lt;Pagination
+        total={10}
+        withEdges
+        nextIcon={IconArrowRight}
+        previousIcon={IconArrowLeft}
+        firstIcon={IconArrowBarToLeft}
+        lastIcon={IconArrowBarToRight}
+        dotsIcon={IconGripHorizontal}
+      /&gt;
+
+      {/* Compound pagination */}
+      &lt;Pagination.Root total={10}&gt;
+        &lt;Group gap={7} mt=&quot;xl&quot;&gt;
+          &lt;Pagination.First icon={IconArrowBarToLeft} /&gt;
+          &lt;Pagination.Previous icon={IconArrowLeft} /&gt;
+          &lt;Pagination.Items dotsIcon={IconGripHorizontal} /&gt;
+          &lt;Pagination.Next icon={IconArrowRight} /&gt;
+          &lt;Pagination.Last icon={IconArrowBarToRight} /&gt;
+        &lt;/Group&gt;
+      &lt;/Pagination.Root&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Pagination, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Text&gt;autoContrast: off&lt;/Text&gt;
+      &lt;Pagination total={10} color=&quot;lime.4&quot; /&gt;
+
+      &lt;Text mt=&quot;md&quot;&gt;autoContrast: on&lt;/Text&gt;
+      &lt;Pagination total={10} autoContrast color=&quot;lime.4&quot; /&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+<h2 id="use-pagination-hook">use-pagination hook</h2>
+<p>If you need more flexibility <code>@mantine/hooks</code> package exports use-pagination hook,
+you can use it to create custom pagination components.</p>

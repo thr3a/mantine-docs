@@ -1,0 +1,209 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Grid } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Grid&gt;
+      &lt;Grid.Col span={4}&gt;1&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={4}&gt;2&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={4}&gt;3&lt;/Grid.Col&gt;
+    &lt;/Grid&gt;
+  );
+}
+</code></pre>
+<h2 id="columns-span">Columns span</h2>
+<p><code>Grid.Col</code> <code>span</code> prop controls the ratio of column width to the total width of the row.
+By default, grid uses 12 columns layout, so <code>span</code> prop can be any number from 1 to 12.</p>
+<p>Examples:</p>
+<ul>
+<li><code>&lt;Grid.Col span={3} /&gt;</code> – 3 / 12 = 25% of row width</li>
+<li><code>&lt;Grid.Col span={4} /&gt;</code> – 4 / 12 = 33% of row width</li>
+<li><code>&lt;Grid.Col span={6} /&gt;</code> – 6 / 12 = 50% of row width</li>
+<li><code>&lt;Grid.Col span={12} /&gt;</code> – 12 / 12 = 100% of row width</li>
+</ul>
+<p><code>span</code> prop also supports object syntax to change column width based on viewport width,
+it accepts <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code> and <code>xl</code> keys and values from 1 to 12. The syntax
+is the same as in style props.</p>
+<p>In the following example <code>span={{ base: 12, md: 6, lg: 3 }}</code>:</p>
+<ul>
+<li><code>base</code> – 12 / 12 = 100% of row width when viewport width is less than <code>md</code> breakpoint</li>
+<li><code>md</code> – 6 / 12 = 50% of row width when viewport width is between <code>md</code> and <code>lg</code> breakpoints</li>
+<li><code>lg</code> – 3 / 12 = 25% of row width when viewport width is greater than <code>lg</code> breakpoint</li>
+</ul>
+<pre><code>
+import { Grid } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Grid&gt;
+      &lt;Grid.Col span={{ base: 12, md: 6, lg: 3 }}&gt;1&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={{ base: 12, md: 6, lg: 3 }}&gt;2&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={{ base: 12, md: 6, lg: 3 }}&gt;3&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={{ base: 12, md: 6, lg: 3 }}&gt;4&lt;/Grid.Col&gt;
+    &lt;/Grid&gt;
+  );
+}
+</code></pre>
+<h2 id="gutter">Gutter</h2>
+<p>Set <code>gutter</code> prop to control spacing between columns. The prop works the same
+way as style props – you can reference <code>theme.spacing</code> values
+with <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code> and <code>xl</code> strings and use object syntax to change gutter
+based on viewport width:</p>
+<pre><code>
+import { Grid } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Grid gutter={{ base: 5, xs: &#39;md&#39;, md: &#39;xl&#39;, xl: 50 }}&gt;
+      &lt;Grid.Col span={4}&gt;1&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={4}&gt;2&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={4}&gt;3&lt;/Grid.Col&gt;
+    &lt;/Grid&gt;
+  );
+}
+</code></pre>
+<h2 id="grow">Grow</h2>
+<p>If <code>grow</code> prop is set, column will grow to fill the remaining space in the row:</p>
+<pre><code>
+import { Grid } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Grid{{props}}&gt;
+      &lt;Grid.Col span={4}&gt;1&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={4}&gt;2&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={4}&gt;3&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={4}&gt;4&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={4}&gt;5&lt;/Grid.Col&gt;
+    &lt;/Grid&gt;
+  );
+}
+</code></pre>
+<h2 id="column-offset">Column offset</h2>
+<p>Set <code>offset</code> prop on <code>Grid.Col</code> component to add gaps to the grid. <code>offset</code> prop
+supports the same syntax as <code>span</code> prop: a number from 1 to 12 or an object with <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code> and <code>xl</code> keys and values from 1 to 12.</p>
+<pre><code>
+import { Grid } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Grid&gt;
+      &lt;Grid.Col span={3}&gt;1&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={3}&gt;2&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={3} offset={3}&gt;3&lt;/Grid.Col&gt;
+    &lt;/Grid&gt;
+  );
+}
+</code></pre>
+<h2 id="order">Order</h2>
+<p>Set the <code>order</code> prop on <code>Grid.Col</code> component to change the order of columns. <code>order</code> prop
+supports the same syntax as <code>span</code> prop: a number from 1 to 12 or an object with <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code> and <code>xl</code> keys and values from 1 to 12.</p>
+<pre><code>
+import { Grid } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Grid&gt;
+      &lt;Grid.Col span={3} order={{ base: 2, sm: 1, lg: 3 }}&gt;2&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={3} order={{ base: 3, sm: 2, lg: 2 }}&gt;3&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={3} order={{ base: 1, sm: 3, lg: 1 }}&gt;1&lt;/Grid.Col&gt;
+    &lt;/Grid&gt;
+  );
+}
+</code></pre>
+<h2 id="multiple-rows">Multiple rows</h2>
+<p>Once columns <code>span</code> and <code>offset</code> sum exceeds <code>columns</code> prop (12 by default),
+columns are moved to the next row:</p>
+<pre><code>
+import { Grid } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Grid&gt;
+      &lt;Grid.Col span={4}&gt;1&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={4}&gt;2&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={4}&gt;3&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={4}&gt;4&lt;/Grid.Col&gt;
+    &lt;/Grid&gt;
+  );
+}
+</code></pre>
+<h2 id="justify-and-align">Justify and align</h2>
+<p>You can control <code>justify-content</code> and <code>align-items</code> CSS properties with <code>justify</code> and <code>align</code> props on <code>Grid</code> component:</p>
+<pre><code>
+import { Grid, rem } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Grid{{props}}&gt;
+      &lt;Grid.Col span={3} style={{ minHeight: rem(80) }}&gt;1&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={3} style={{ minHeight: rem(120) }}&gt;2&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={3}&gt;3&lt;/Grid.Col&gt;
+    &lt;/Grid&gt;
+  );
+}
+</code></pre>
+<h2 id="auto-sized-columns">Auto sized columns</h2>
+<p>All columns in a row with <code>span=&quot;auto&quot;</code> grow as much as they can to fill the row.
+In the following example, the second column takes up 50% of the row while the other two columns automatically resize to fill the remaining space:</p>
+<pre><code>
+import { Grid } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Grid&gt;
+      &lt;Grid.Col span=&quot;auto&quot;&gt;1&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={6}&gt;2&lt;/Grid.Col&gt;
+      &lt;Grid.Col span=&quot;auto&quot;&gt;3&lt;/Grid.Col&gt;
+    &lt;/Grid&gt;
+  );
+}
+</code></pre>
+<h2 id="fit-column-content">Fit column content</h2>
+<p>If you set <code>span=&quot;content&quot;</code>, the column’s size will automatically adjust to match the width of its content:</p>
+<pre><code>
+import { Grid } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Grid&gt;
+      &lt;Grid.Col span=&quot;content&quot;&gt;fit content&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={6}&gt;2&lt;/Grid.Col&gt;
+    &lt;/Grid&gt;
+  );
+}
+</code></pre>
+<h2 id="change-columns-count">Change columns count</h2>
+<p>By default, grid uses 12 columns layout, you can change it by setting <code>columns</code> prop on <code>Grid</code> component.
+Note that in this case, columns span and offset will be calculated relative to this value.</p>
+<p>In the following example, first column takes 50% with 12 span (12/24), second and third take 25% (6/24):</p>
+<pre><code>
+import { Grid } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Grid columns={24}&gt;
+      &lt;Grid.Col span={12}&gt;1&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={6}&gt;2&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={6}&gt;3&lt;/Grid.Col&gt;
+    &lt;/Grid&gt;
+  );
+}
+</code></pre>
+<h2 id="overflow-hidden">overflow: hidden</h2>
+<p>By default, <code>Grid</code> has <code>overflow: visible</code> style on the root element. In some cases
+you might want to change it to <code>overflow: hidden</code> to prevent negative margins from
+overflowing the grid container. For example, if you use <code>Grid</code> without parent container
+which has padding.</p>
+<pre><code class="language-tsx">import { Grid } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Grid overflow=&quot;hidden&quot;&gt;
+      &lt;Grid.Col span={6}&gt;1&lt;/Grid.Col&gt;
+      &lt;Grid.Col span={6}&gt;2&lt;/Grid.Col&gt;
+    &lt;/Grid&gt;
+  );
+}
+</code></pre>

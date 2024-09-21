@@ -1,0 +1,38 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Pill } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Pill{{props}}&gt;React&lt;/Pill&gt;;
+}
+</code></pre>
+<h2 id="inside-inputs">Inside inputs</h2>
+<p><code>Pill</code> component is designed to be used inside inputs. It can be used to create custom
+multi select or tag inputs.</p>
+<pre><code>
+import { Pill, InputBase } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const pills = Array(10)
+    .fill(0)
+    .map((_, index) =&gt; (
+      &lt;Pill key={index} withRemoveButton&gt;
+        Item {index}
+      &lt;/Pill&gt;
+    ));
+
+  return (
+    &lt;InputBase component=&quot;div&quot; multiline&gt;
+      &lt;Pill.Group&gt;{pills}&lt;/Pill.Group&gt;
+    &lt;/InputBase&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Pill } from &#39;@mantine/core&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+function Demo() {
+  return &lt;Pill{{props}} withRemoveButton&gt;Test pill&lt;/Pill&gt;;
+}
+</code></pre>

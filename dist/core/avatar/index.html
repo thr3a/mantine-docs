@@ -1,0 +1,250 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Avatar } from &#39;@mantine/core&#39;;
+import { IconStar } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      {/* With image */}
+      &lt;Avatar src=&quot;avatar.png&quot; alt=&quot;it&#39;s me&quot; /&gt;
+
+      {/* Default placeholder */}
+      &lt;Avatar radius=&quot;xl&quot; /&gt;
+
+      {/* Letters with xl radius */}
+      &lt;Avatar color=&quot;cyan&quot; radius=&quot;xl&quot;&gt;MK&lt;/Avatar&gt;
+
+      {/* Custom placeholder icon */}
+      &lt;Avatar color=&quot;blue&quot; radius=&quot;sm&quot;&gt;
+        &lt;IconStar size=&quot;1.5rem&quot; /&gt;
+      &lt;/Avatar&gt;
+    &lt;/&gt;
+  );
+}
+
+</code></pre>
+<h2 id="initials">Initials</h2>
+<p>To display initials instead of the default placeholder, set <code>name</code> prop
+to the name of the person, for example, <code>name=&quot;John Doe&quot;</code>. If the name
+is set, you can use <code>color=&quot;initials&quot;</code> to generate color based on the name:</p>
+<pre><code>
+import { Avatar, Group } from &#39;@mantine/core&#39;;
+
+const names = [
+  &#39;John Doe&#39;,
+  &#39;Jane Mol&#39;,
+  &#39;Alex Lump&#39;,
+  &#39;Sarah Condor&#39;,
+  &#39;Mike Johnson&#39;,
+  &#39;Kate Kok&#39;,
+  &#39;Tom Smith&#39;,
+];
+
+function Demo() {
+  const avatars = names.map((name) =&gt; &lt;Avatar key={name} name={name} color=&quot;initials&quot; /&gt;);
+  return &lt;Group&gt;{avatars}&lt;/Group&gt;;
+}
+</code></pre>
+<h2 id="allowed-initials-colors">Allowed initials colors</h2>
+<p>By default, all colors from the default theme are allowed for initials, you can restrict them
+by providing <code>allowedInitialsColors</code> prop with an array of colors. Note that the default colors
+array does not include custom colors defined in the theme, you need to provide them manually
+if needed.</p>
+<pre><code>
+import { Avatar, Group } from &#39;@mantine/core&#39;;
+
+const names = [
+  &#39;John Doe&#39;,
+  &#39;Jane Mol&#39;,
+  &#39;Alex Lump&#39;,
+  &#39;Sarah Condor&#39;,
+  &#39;Mike Johnson&#39;,
+  &#39;Kate Kok&#39;,
+  &#39;Tom Smith&#39;,
+];
+
+function Demo() {
+  const avatars = names.map((name) =&gt; (
+    &lt;Avatar key={name} name={name} color=&quot;initials&quot; allowedInitialsColors={[&#39;blue&#39;, &#39;red&#39;]} /&gt;
+  ));
+  return &lt;Group&gt;{avatars}&lt;/Group&gt;;
+}
+</code></pre>
+<h2 id="placeholder">Placeholder</h2>
+<p>If the image cannot be loaded or not provided, <code>Avatar</code> will display a placeholder instead. By default,
+placeholder is an icon, but it can be changed to any React node:</p>
+<pre><code>
+import { Avatar } from &#39;@mantine/core&#39;;
+import { IconStar } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      {/* Default placeholder */}
+      &lt;Avatar src={null} alt=&quot;no image here&quot; /&gt;
+
+      {/* Default placeholder with custom color */}
+      &lt;Avatar src={null} alt=&quot;no image here&quot; color=&quot;indigo&quot; /&gt;
+
+      {/* Placeholder with initials */}
+      &lt;Avatar src={null} alt=&quot;Vitaly Rtishchev&quot; color=&quot;red&quot;&gt;VR&lt;/Avatar&gt;
+
+      {/* Placeholder with custom icon */}
+      &lt;Avatar color=&quot;blue&quot; radius=&quot;xl&quot;&gt;
+        &lt;IconStar size=&quot;1.5rem&quot; /&gt;
+      &lt;/Avatar&gt;
+    &lt;/&gt;
+  );
+}
+
+</code></pre>
+<h2 id="variants">Variants</h2>
+<pre><code>
+import { Avatar } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Avatar{{props}} /&gt;;
+}
+</code></pre>
+<h2 id="avatargroup">Avatar.Group</h2>
+<p><code>Avatar.Group</code> component combines multiple avatars into a stack:</p>
+<pre><code>
+import { Avatar } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Avatar.Group&gt;
+      &lt;Avatar src=&quot;image.png&quot; /&gt;
+      &lt;Avatar src=&quot;image.png&quot; /&gt;
+      &lt;Avatar src=&quot;image.png&quot; /&gt;
+      &lt;Avatar&gt;+5&lt;/Avatar&gt;
+    &lt;/Avatar.Group&gt;
+  );
+}
+</code></pre>
+<p>Note that you must not wrap child <code>Avatar</code> components with any additional elements,
+but you can use wrap <code>Avatar</code> with components that do not render any HTML elements
+in the current tree, for example Tooltip.</p>
+<pre><code class="language-tsx">import { Avatar } from &#39;@mantine/core&#39;;
+
+// Will not work correctly
+function Demo() {
+  return (
+    &lt;Avatar.Group spacing=&quot;sm&quot;&gt;
+      &lt;div&gt;
+        &lt;Avatar src=&quot;image.png&quot; radius=&quot;xl&quot; /&gt;
+      &lt;/div&gt;
+      &lt;Avatar src=&quot;image.png&quot; radius=&quot;xl&quot; /&gt;
+      &lt;Avatar src=&quot;image.png&quot; radius=&quot;xl&quot; /&gt;
+      &lt;Avatar radius=&quot;xl&quot;&gt;+5&lt;/Avatar&gt;
+    &lt;/Avatar.Group&gt;
+  );
+}
+</code></pre>
+<p>Example of usage with Tooltip:</p>
+<pre><code>
+import { Avatar, Tooltip } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tooltip.Group openDelay={300} closeDelay={100}&gt;
+      &lt;Avatar.Group spacing=&quot;sm&quot;&gt;
+        &lt;Tooltip label=&quot;Salazar Troop&quot; withArrow&gt;
+          &lt;Avatar src=&quot;image.png&quot; radius=&quot;xl&quot; /&gt;
+        &lt;/Tooltip&gt;
+        &lt;Tooltip label=&quot;Bandit Crimes&quot; withArrow&gt;
+          &lt;Avatar src=&quot;image.png&quot; radius=&quot;xl&quot; /&gt;
+        &lt;/Tooltip&gt;
+        &lt;Tooltip label=&quot;Jane Rata&quot; withArrow&gt;
+          &lt;Avatar src=&quot;image.png&quot; radius=&quot;xl&quot; /&gt;
+        &lt;/Tooltip&gt;
+        &lt;Tooltip
+          withArrow
+          label={
+            &lt;&gt;
+              &lt;div&gt;John Outcast&lt;/div&gt;
+              &lt;div&gt;Levi Capitan&lt;/div&gt;
+            &lt;/&gt;
+          }
+        &gt;
+          &lt;Avatar radius=&quot;xl&quot;&gt;+2&lt;/Avatar&gt;
+        &lt;/Tooltip&gt;
+      &lt;/Avatar.Group&gt;
+    &lt;/Tooltip.Group&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Avatar } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Avatar
+      component=&quot;a&quot;
+      href=&quot;https://github.com/rtivital&quot;
+      target=&quot;_blank&quot;
+      src=&quot;avatar.png&quot;
+      alt=&quot;it&#39;s me&quot;
+    /&gt;
+  );
+}
+</code></pre>
+<p>You can combine it with Tooltip or Popover to show additional information on hover</p>
+<pre><code>
+import { Avatar, Tooltip } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tooltip.Group openDelay={300} closeDelay={100}&gt;
+      &lt;Avatar.Group spacing=&quot;sm&quot;&gt;
+        &lt;Tooltip label=&quot;Salazar Troop&quot; withArrow&gt;
+          &lt;Avatar src=&quot;image.png&quot; radius=&quot;xl&quot; /&gt;
+        &lt;/Tooltip&gt;
+        &lt;Tooltip label=&quot;Bandit Crimes&quot; withArrow&gt;
+          &lt;Avatar src=&quot;image.png&quot; radius=&quot;xl&quot; /&gt;
+        &lt;/Tooltip&gt;
+        &lt;Tooltip label=&quot;Jane Rata&quot; withArrow&gt;
+          &lt;Avatar src=&quot;image.png&quot; radius=&quot;xl&quot; /&gt;
+        &lt;/Tooltip&gt;
+        &lt;Tooltip
+          withArrow
+          label={
+            &lt;&gt;
+              &lt;div&gt;John Outcast&lt;/div&gt;
+              &lt;div&gt;Levi Capitan&lt;/div&gt;
+            &lt;/&gt;
+          }
+        &gt;
+          &lt;Avatar radius=&quot;xl&quot;&gt;+2&lt;/Avatar&gt;
+        &lt;/Tooltip&gt;
+      &lt;/Avatar.Group&gt;
+    &lt;/Tooltip.Group&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p>Avatar renders <code>&lt;img /&gt;</code> HTML element. Set <code>alt</code> prop to describe image,
+it is also used as <code>title</code> attribute for avatar placeholder when the image cannot be loaded.</p>
+<pre><code class="language-tsx">import { Avatar } from &#39;@mantine/core&#39;;
+
+function NotOk() {
+  // Not ok, no alt for image
+  return &lt;Avatar src=&quot;./image.png&quot; /&gt;;
+}
+
+function Ok() {
+  // Ok, alt is set on &lt;img /&gt; tag
+  return &lt;Avatar src=&quot;./image.png&quot; alt=&quot;Rob Johnson&quot; /&gt;;
+}
+
+function Ehh() {
+  // Ehh, title is not required, but still recommended
+  return &lt;Avatar&gt;RJ&lt;/Avatar&gt;;
+}
+
+function OkPlaceholder() {
+  // Ok, title is set on placeholder
+  return &lt;Avatar alt=&quot;Rob Johnson&quot;&gt;RJ&lt;/Avatar&gt;;
+}
+</code></pre>

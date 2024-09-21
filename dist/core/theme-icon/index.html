@@ -1,0 +1,123 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { ThemeIcon } from &#39;@mantine/core&#39;;
+import { IconPhoto } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;ThemeIcon{{props}}&gt;
+      &lt;IconPhoto style={{ width: &#39;70%&#39;, height: &#39;70%&#39; }} /&gt;
+    &lt;/ThemeIcon&gt;
+  );
+}
+</code></pre>
+<pre><code>(props) => `
+import { ThemeIcon } from '@mantine/core';
+import { IconHeart } from '@tabler/icons-react';
+
+function Demo() {
+  return (
+    <ThemeIcon
+      variant="gradient"
+      size="xl"
+      aria-label="Gradient action icon"
+      gradient={{ from: '${props.gradientFrom}', to: '${props.gradientTo}', deg: ${props.gradientDegree} }}
+    >
+      <IconHeart />
+    </ThemeIcon>
+  );
+}
+`</code></pre>
+<h2 id="customize-variants-colors">Customize variants colors</h2>
+<p>You can customize colors for <code>ThemeIcon</code> and other components variants by adding
+variantColorResolver to your theme.</p>
+<pre><code>
+import { IconPhoto, IconFingerprint, IconError404 } from &#39;@tabler/icons-react&#39;;
+import {
+  ThemeIcon,
+  Group,
+  MantineProvider,
+  defaultVariantColorsResolver,
+  VariantColorsResolver,
+  parseThemeColor,
+  rem,
+  rgba,
+  darken,
+} from &#39;@mantine/core&#39;;
+
+const variantColorResolver: VariantColorsResolver = (input) =&gt; {
+  const defaultResolvedColors = defaultVariantColorsResolver(input);
+  const parsedColor = parseThemeColor({
+    color: input.color || input.theme.primaryColor,
+    theme: input.theme,
+  });
+
+  // Override some properties for variant
+  if (parsedColor.isThemeColor &amp;&amp; parsedColor.color === &#39;lime&#39; &amp;&amp; input.variant === &#39;filled&#39;) {
+    return {
+      ...defaultResolvedColors,
+      color: &#39;var(--mantine-color-black)&#39;,
+      hoverColor: &#39;var(--mantine-color-black)&#39;,
+    };
+  }
+
+  // Completely override variant
+  if (input.variant === &#39;light&#39;) {
+    return {
+      background: rgba(parsedColor.value, 0.1),
+      hover: rgba(parsedColor.value, 0.15),
+      border: `${rem(1)} solid ${parsedColor.value}`,
+      color: darken(parsedColor.value, 0.1),
+    };
+  }
+
+  // Add new variants support
+  if (input.variant === &#39;danger&#39;) {
+    return {
+      background: &#39;var(--mantine-color-red-9)&#39;,
+      hover: &#39;var(--mantine-color-red-8)&#39;,
+      color: &#39;var(--mantine-color-white)&#39;,
+      border: &#39;none&#39;,
+    };
+  }
+
+  return defaultResolvedColors;
+};
+
+function Demo() {
+  return (
+    &lt;MantineProvider theme={{ variantColorResolver }}&gt;
+      &lt;Group&gt;
+        &lt;ThemeIcon color=&quot;lime.4&quot; variant=&quot;filled&quot;&gt;
+          &lt;IconPhoto size={20} /&gt;
+        &lt;/ThemeIcon&gt;
+
+        &lt;ThemeIcon color=&quot;orange&quot; variant=&quot;light&quot;&gt;
+          &lt;IconFingerprint size={20} /&gt;
+        &lt;/ThemeIcon&gt;
+
+        &lt;ThemeIcon variant=&quot;danger&quot;&gt;
+          &lt;IconError404 size={20} /&gt;
+        &lt;/ThemeIcon&gt;
+      &lt;/Group&gt;
+    &lt;/MantineProvider&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { IconFingerprint } from &#39;@tabler/icons-react&#39;;
+import { ThemeIcon, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Group&gt;
+      &lt;ThemeIcon size=&quot;lg&quot; color=&quot;lime.4&quot;&gt;
+        &lt;IconFingerprint size={20} /&gt;
+      &lt;/ThemeIcon&gt;
+      &lt;ThemeIcon size=&quot;lg&quot; color=&quot;lime.4&quot; autoContrast&gt;
+        &lt;IconFingerprint size={20} /&gt;
+      &lt;/ThemeIcon&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>

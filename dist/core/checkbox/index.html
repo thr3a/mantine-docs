@@ -1,0 +1,473 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Checkbox } from &#39;@mantine/core&#39;;
+
+
+function Demo() {
+  return (
+    &lt;Checkbox
+      defaultChecked
+      {{props}}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { Checkbox } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [checked, setChecked] = useState(false);
+  return (
+    &lt;Checkbox
+      checked={checked}
+      onChange={(event) =&gt; setChecked(event.currentTarget.checked)}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="states">States</h2>
+<pre><code>
+import { Checkbox, Stack } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Stack&gt;
+      &lt;Checkbox checked={false} onChange={() =&gt; {}} label=&quot;Default checkbox&quot; /&gt;
+      &lt;Checkbox checked={false} onChange={() =&gt; {}} indeterminate label=&quot;Indeterminate checkbox&quot; /&gt;
+      &lt;Checkbox checked onChange={() =&gt; {}} label=&quot;Checked checkbox&quot; /&gt;
+      &lt;Checkbox checked variant=&quot;outline&quot; onChange={() =&gt; {}} label=&quot;Outline checked checkbox&quot; /&gt;
+      &lt;Checkbox
+        variant=&quot;outline&quot;
+        onChange={() =&gt; {}}
+        indeterminate
+        label=&quot;Outline indeterminate checkbox&quot;
+      /&gt;
+      &lt;Checkbox disabled label=&quot;Disabled checkbox&quot; /&gt;
+      &lt;Checkbox disabled checked onChange={() =&gt; {}} label=&quot;Disabled checked checkbox&quot; /&gt;
+      &lt;Checkbox disabled indeterminate label=&quot;Disabled indeterminate checkbox&quot; /&gt;
+    &lt;/Stack&gt;
+  );
+}
+</code></pre>
+<h2 id="change-icons">Change icons</h2>
+<pre><code>
+import { Checkbox, CheckboxProps } from &#39;@mantine/core&#39;;
+import { IconBiohazard, IconRadioactive } from &#39;@tabler/icons-react&#39;;
+
+const CheckboxIcon: CheckboxProps[&#39;icon&#39;] = ({ indeterminate, ...others }) =&gt;
+  indeterminate ? &lt;IconRadioactive {...others} /&gt; : &lt;IconBiohazard {...others} /&gt;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Checkbox icon={CheckboxIcon} label=&quot;Custom icon&quot; defaultChecked /&gt;
+      &lt;Checkbox icon={CheckboxIcon} label=&quot;Custom icon: indeterminate&quot; indeterminate mt=&quot;sm&quot; /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="change-icon-color">Change icon color</h2>
+<p>Use <code>iconColor</code> prop to change icon color. You can reference colors from <code>theme.colors</code> or use any valid CSS color:</p>
+<pre><code>
+import { Checkbox } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Checkbox
+      defaultChecked
+      color=&quot;lime.4&quot;
+      iconColor=&quot;dark.8&quot;
+      size=&quot;md&quot;
+      label=&quot;Bright lime checkbox&quot;
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="indeterminate-state">Indeterminate state</h2>
+<p><code>Checkbox</code> supports indeterminate state. When <code>indeterminate</code> prop is set,
+<code>checked</code> prop is ignored (checkbox always has checked styles):</p>
+<pre><code>
+import { useListState, randomId } from &#39;@mantine/hooks&#39;;
+import { Checkbox } from &#39;@mantine/core&#39;;
+
+const initialValues = [
+  { label: &#39;Receive email notifications&#39;, checked: false, key: randomId() },
+  { label: &#39;Receive sms notifications&#39;, checked: false, key: randomId() },
+  { label: &#39;Receive push notifications&#39;, checked: false, key: randomId() },
+];
+
+export function IndeterminateCheckbox() {
+  const [values, handlers] = useListState(initialValues);
+
+  const allChecked = values.every((value) =&gt; value.checked);
+  const indeterminate = values.some((value) =&gt; value.checked) &amp;&amp; !allChecked;
+
+  const items = values.map((value, index) =&gt; (
+    &lt;Checkbox
+      mt=&quot;xs&quot;
+      ml={33}
+      label={value.label}
+      key={value.key}
+      checked={value.checked}
+      onChange={(event) =&gt; handlers.setItemProp(index, &#39;checked&#39;, event.currentTarget.checked)}
+    /&gt;
+  ));
+
+  return (
+    &lt;&gt;
+      &lt;Checkbox
+        checked={allChecked}
+        indeterminate={indeterminate}
+        label=&quot;Receive all notifications&quot;
+        onChange={() =&gt;
+          handlers.setState((current) =&gt;
+            current.map((value) =&gt; ({ ...value, checked: !allChecked }))
+          )
+        }
+      /&gt;
+      {items}
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="label-with-link">Label with link</h2>
+<pre><code>
+import { Checkbox, Anchor } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Checkbox
+      label={
+        &lt;&gt;
+          I accept{&#39; &#39;}
+          &lt;Anchor href=&quot;https://mantine.dev&quot; target=&quot;_blank&quot; inherit&gt;
+            terms and conditions
+          &lt;/Anchor&gt;
+        &lt;/&gt;
+      }
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="checkbox-with-tooltip">Checkbox with tooltip</h2>
+<p>You can change target element to which tooltip is attached with <code>refProp</code>:</p>
+<ul>
+<li>If <code>refProp</code> is not set, the tooltip is attached to the checkbox input</li>
+<li>If <code>refProp=&quot;rootRef&quot;</code> is set, the tooltip is attached to the root element (contains label, input and other elements)</li>
+</ul>
+<pre><code>
+import { Tooltip, Checkbox } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Tooltip label=&quot;Checkbox with tooltip&quot;&gt;
+        &lt;Checkbox label=&quot;Tooltip on checkbox only&quot; /&gt;
+      &lt;/Tooltip&gt;
+
+      &lt;Tooltip label=&quot;Checkbox with tooltip&quot; refProp=&quot;rootRef&quot;&gt;
+        &lt;Checkbox label=&quot;Tooltip the entire element&quot; mt=&quot;md&quot; /&gt;
+      &lt;/Tooltip&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="pointer-cursor">Pointer cursor</h2>
+<p>By default, checkbox input and label have <code>cursor: default</code> (same as native <code>input[type=&quot;checkbox&quot;]</code>).
+To change cursor to pointer, set <code>cursorType</code> on theme:</p>
+<pre><code>
+import { MantineProvider, createTheme, Checkbox } from &#39;@mantine/core&#39;;
+
+const theme = createTheme({
+  cursorType: &#39;pointer&#39;,
+});
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Checkbox label=&quot;Default cursor&quot; /&gt;
+
+      &lt;MantineProvider theme={theme}&gt;
+        &lt;Checkbox label=&quot;Pointer cursor&quot; mt=&quot;md&quot; /&gt;
+      &lt;/MantineProvider&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="add-custom-sizes">Add custom sizes</h2>
+<p>You can add any number of custom sizes with data-size attribute:</p>
+<pre><code>
+import { MantineProvider, Checkbox, createTheme } from &#39;@mantine/core&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+const theme = createTheme({
+  components: {
+    Checkbox: Checkbox.extend({ classNames: classes }),
+  },
+});
+
+function Demo() {
+  return (
+    &lt;MantineProvider theme={theme}&gt;
+      &lt;Checkbox size=&quot;xxs&quot; label=&quot;Extra small checkbox&quot; /&gt;
+      &lt;Checkbox size=&quot;xxl&quot; label=&quot;Extra large checkbox&quot; mt=&quot;md&quot; /&gt;
+    &lt;/MantineProvider&gt;
+  );
+}
+</code></pre>
+<h2 id="checkboxgroup">Checkbox.Group</h2>
+<pre><code>
+import { Checkbox, Group } from &#39;@mantine/core&#39;;
+
+
+function Demo() {
+  return (
+    &lt;Checkbox.Group
+      defaultValue={[&#39;react&#39;]}
+      {{props}}
+    &gt;
+      &lt;Group mt=&quot;xs&quot;&gt;
+        &lt;Checkbox value=&quot;react&quot; label=&quot;React&quot; /&gt;
+        &lt;Checkbox value=&quot;svelte&quot; label=&quot;Svelte&quot; /&gt;
+        &lt;Checkbox value=&quot;ng&quot; label=&quot;Angular&quot; /&gt;
+        &lt;Checkbox value=&quot;vue&quot; label=&quot;Vue&quot; /&gt;
+      &lt;/Group&gt;
+    &lt;/Checkbox.Group&gt;
+  );
+}
+</code></pre>
+<h2 id="controlled-checkboxgroup">Controlled Checkbox.Group</h2>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { Checkbox } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState&lt;string[]&gt;([]);
+
+  return (
+    &lt;Checkbox.Group value={value} onChange={setValue}&gt;
+      &lt;Checkbox value=&quot;react&quot; label=&quot;React&quot; /&gt;
+      &lt;Checkbox value=&quot;svelte&quot; label=&quot;Svelte&quot; /&gt;
+    &lt;/Checkbox.Group&gt;
+  );
+}
+</code></pre>
+<h2 id="checkboxindicator">Checkbox.Indicator</h2>
+<p><code>Checkbox.Indicator</code> looks exactly the same as <code>Checkbox</code> component, but it does not
+have any semantic meaning, it’s just a visual representation of checkbox state. You
+can use it in any place where you need to display checkbox state without any interaction
+related to the indicator. For example, it is useful in cards based on buttons, trees, etc.</p>
+<p>Note that <code>Checkbox.Indicator</code> cannot be focused or selected with keyboard. It is not
+accessible and should not be used as a replacement for <code>Checkbox</code> component.</p>
+<pre><code>
+import { Checkbox, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Group&gt;
+      &lt;Checkbox.Indicator /&gt;
+      &lt;Checkbox.Indicator checked /&gt;
+      &lt;Checkbox.Indicator indeterminate /&gt;
+      &lt;Checkbox.Indicator disabled /&gt;
+      &lt;Checkbox.Indicator disabled checked /&gt;
+      &lt;Checkbox.Indicator disabled indeterminate /&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>
+<h2 id="checkboxcard-component">Checkbox.Card component</h2>
+<p><code>Checkbox.Card</code> component can be used as a replacement for <code>Checkbox</code> to build custom
+cards/buttons/other things that work as checkboxes. The root element of the component
+has <code>role=&quot;checkbox&quot;</code> attribute, it is accessible by default and supports the same
+keyboard interactions as <code>input[type=&quot;checkbox&quot;]</code>.</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Checkbox, Group, Text } from &#39;@mantine/core&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+function Demo() {
+  const [checked, setChecked] = useState(false);
+
+  return (
+    &lt;Checkbox.Card
+      className={classes.root}
+      radius=&quot;md&quot;
+      checked={checked}
+      onClick={() =&gt; setChecked((c) =&gt; !c)}
+    &gt;
+      &lt;Group wrap=&quot;nowrap&quot; align=&quot;flex-start&quot;&gt;
+        &lt;Checkbox.Indicator /&gt;
+        &lt;div&gt;
+          &lt;Text className={classes.label}&gt;@mantine/core&lt;/Text&gt;
+          &lt;Text className={classes.description}&gt;
+            Core components library: inputs, buttons, overlays, etc.
+          &lt;/Text&gt;
+        &lt;/div&gt;
+      &lt;/Group&gt;
+    &lt;/Checkbox.Card&gt;
+  );
+}
+</code></pre>
+<p>You can use <code>Checkbox.Card</code> with <code>Checkbox.Group</code> the same way as <code>Checkbox</code> component:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Checkbox, Group, Stack, Text } from &#39;@mantine/core&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+const data = [
+  {
+    name: &#39;@mantine/core&#39;,
+    description: &#39;Core components library: inputs, buttons, overlays, etc.&#39;,
+  },
+  { name: &#39;@mantine/hooks&#39;, description: &#39;Collection of reusable hooks for React applications.&#39; },
+  { name: &#39;@mantine/notifications&#39;, description: &#39;Notifications system&#39; },
+];
+
+function Demo() {
+  const [value, setValue] = useState&lt;string[]&gt;([]);
+
+  const cards = data.map((item) =&gt; (
+    &lt;Checkbox.Card className={classes.root} radius=&quot;md&quot; value={item.name} key={item.name}&gt;
+      &lt;Group wrap=&quot;nowrap&quot; align=&quot;flex-start&quot;&gt;
+        &lt;Checkbox.Indicator /&gt;
+        &lt;div&gt;
+          &lt;Text className={classes.label}&gt;{item.name}&lt;/Text&gt;
+          &lt;Text className={classes.description}&gt;{item.description}&lt;/Text&gt;
+        &lt;/div&gt;
+      &lt;/Group&gt;
+    &lt;/Checkbox.Card&gt;
+  ));
+
+  return (
+    &lt;&gt;
+      &lt;Checkbox.Group
+        value={value}
+        onChange={setValue}
+        label=&quot;Pick packages to install&quot;
+        description=&quot;Choose all packages that you will need in your application&quot;
+      &gt;
+        &lt;Stack pt=&quot;md&quot; gap=&quot;xs&quot;&gt;
+          {cards}
+        &lt;/Stack&gt;
+      &lt;/Checkbox.Group&gt;
+
+      &lt;Text fz=&quot;xs&quot; mt=&quot;md&quot;&gt;
+        CurrentValue: {value.join(&#39;, &#39;) || &#39;–&#39;}
+      &lt;/Text&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Checkbox } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Checkbox
+      label=&quot;Checkbox&quot;
+      description=&quot;Checkbox description&quot;
+      error=&quot;Checkbox error&quot;
+      defaultChecked
+     {{props}}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="example-table-with-row-selection">Example: Table with row selection</h2>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Table, Checkbox } from &#39;@mantine/core&#39;;
+
+const elements = [
+  { position: 6, mass: 12.011, symbol: &#39;C&#39;, name: &#39;Carbon&#39; },
+  { position: 7, mass: 14.007, symbol: &#39;N&#39;, name: &#39;Nitrogen&#39; },
+  { position: 39, mass: 88.906, symbol: &#39;Y&#39;, name: &#39;Yttrium&#39; },
+  { position: 56, mass: 137.33, symbol: &#39;Ba&#39;, name: &#39;Barium&#39; },
+  { position: 58, mass: 140.12, symbol: &#39;Ce&#39;, name: &#39;Cerium&#39; },
+];
+
+function Demo() {
+  const [selectedRows, setSelectedRows] = useState&lt;number[]&gt;([]);
+
+  const rows = elements.map((element) =&gt; (
+    &lt;Table.Tr
+      key={element.name}
+      bg={selectedRows.includes(element.position) ? &#39;var(--mantine-color-blue-light)&#39; : undefined}
+    &gt;
+      &lt;Table.Td&gt;
+        &lt;Checkbox
+          aria-label=&quot;Select row&quot;
+          checked={selectedRows.includes(element.position)}
+          onChange={(event) =&gt;
+            setSelectedRows(
+              event.currentTarget.checked
+                ? [...selectedRows, element.position]
+                : selectedRows.filter((position) =&gt; position !== element.position)
+            )
+          }
+        /&gt;
+      &lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.position}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.name}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.symbol}&lt;/Table.Td&gt;
+      &lt;Table.Td&gt;{element.mass}&lt;/Table.Td&gt;
+    &lt;/Table.Tr&gt;
+  ));
+
+  return (
+    &lt;Table&gt;
+      &lt;Table.Thead&gt;
+        &lt;Table.Tr&gt;
+          &lt;Table.Th /&gt;
+          &lt;Table.Th&gt;Element position&lt;/Table.Th&gt;
+          &lt;Table.Th&gt;Element name&lt;/Table.Th&gt;
+          &lt;Table.Th&gt;Symbol&lt;/Table.Th&gt;
+          &lt;Table.Th&gt;Atomic mass&lt;/Table.Th&gt;
+        &lt;/Table.Tr&gt;
+      &lt;/Table.Thead&gt;
+      &lt;Table.Tbody&gt;{rows}&lt;/Table.Tbody&gt;
+    &lt;/Table&gt;
+  );
+}
+</code></pre>
+<h2 id="example-customize-with-styles-api">Example: Customize with Styles API</h2>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Checkbox } from &#39;@mantine/core&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+function Demo() {
+  const [checked, setChecked] = useState(false);
+
+  return (
+    &lt;Checkbox
+      classNames={classes}
+      label=&quot;Checkbox button&quot;
+      checked={checked}
+      onChange={(event) =&gt; setChecked(event.currentTarget.checked)}
+      wrapperProps={{
+        onClick: () =&gt; setChecked((c) =&gt; !c),
+      }}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p>Set <code>aria-label</code> or <code>label</code> prop to make the checkbox accessible:</p>
+<pre><code class="language-tsx">import { Checkbox } from &#39;@mantine/core&#39;;
+
+// Not ok, input is not labeled
+function Bad() {
+  return &lt;Checkbox /&gt;;
+}
+
+// Ok, input is labelled by aria-label
+function GoodAriaLabel() {
+  return &lt;Checkbox aria-label=&quot;My checkbox&quot; /&gt;;
+}
+
+// Ok, input is labelled by label element
+function GoodLabel() {
+  return &lt;Checkbox label=&quot;My checkbox&quot; /&gt;;
+}
+</code></pre>

@@ -1,0 +1,115 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>Container</code> centers content and limits its <code>max-width</code> to the value specified in <code>size</code> prop.
+Note that the <code>size</code> prop does not make <code>max-width</code> responsive, for example,
+when it set to <code>lg</code> it will always be <code>lg</code> regardless of screen size.</p>
+<pre><code>
+import { Container } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const demoProps = {
+    bg: &#39;var(--mantine-color-blue-light)&#39;,
+    h: 50,
+    mt: &#39;md&#39;,
+  };
+
+  return (
+    &lt;&gt;
+      &lt;Container {...demoProps}&gt;Default Container&lt;/Container&gt;
+
+      &lt;Container size=&quot;xs&quot; {...demoProps}&gt;
+        xs Container
+      &lt;/Container&gt;
+
+      &lt;Container px={0} size=&quot;30rem&quot; {...demoProps}&gt;
+        30rem Container without padding
+      &lt;/Container&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="fluid">Fluid</h2>
+<p>Set <code>fluid</code> prop to make container fluid, it will take 100% of available width,
+it is the same as setting <code>size=&quot;100%&quot;</code>.</p>
+<pre><code>
+import { Container } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Container fluid h={50} bg=&quot;var(--mantine-color-blue-light)&quot;&gt;
+      Fluid container has 100% max-width
+    &lt;/Container&gt;
+  );
+}
+</code></pre>
+<h2 id="customize-sizes">Customize sizes</h2>
+<p>You can customize existing <code>Container</code> sizes and add new ones with CSS variables
+on theme:</p>
+<pre><code>
+import { Container, MantineProvider, createTheme, rem } from &#39;@mantine/core&#39;;
+
+const CONTAINER_SIZES: Record&lt;string, string&gt; = {
+  xxs: rem(300),
+  xs: rem(400),
+  sm: rem(500),
+  md: rem(600),
+  lg: rem(700),
+  xl: rem(800),
+  xxl: rem(900),
+};
+
+const theme = createTheme({
+  components: {
+    Container: Container.extend({
+      vars: (_, { size, fluid }) =&gt; ({
+        root: {
+          &#39;--container-size&#39;: fluid
+            ? &#39;100%&#39;
+            : size !== undefined &amp;&amp; size in CONTAINER_SIZES
+            ? CONTAINER_SIZES[size]
+            : rem(size),
+        },
+      }),
+    }),
+  },
+});
+
+function Demo() {
+  return (
+    &lt;MantineProvider theme={theme}&gt;
+      &lt;Container size=&quot;xxs&quot; bg=&quot;var(--mantine-color-blue-light)&quot;&gt;
+        Container with custom size
+      &lt;/Container&gt;
+    &lt;/MantineProvider&gt;
+  );
+}
+
+</code></pre>
+<h2 id="responsive-max-width">Responsive max-width</h2>
+<p>To make <code>Container</code> <code>max-width</code> responsive, use Styles API to set
+<code>classNames</code>. For example, you can add <code>responsive</code> size that will make <code>Container</code>
+<code>max-width</code> different depending on screen size:</p>
+<pre><code>
+import cx from &#39;clsx&#39;;
+import { MantineProvider, Container, createTheme } from &#39;@mantine/core&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+const theme = createTheme({
+  components: {
+    Container: Container.extend({
+      classNames: (_, { size }) =&gt; ({
+        root: cx({ [classes.responsiveContainer]: size === &#39;responsive&#39; }),
+      }),
+    }),
+  },
+});
+
+function Demo() {
+  return (
+    &lt;MantineProvider theme={theme}&gt;
+      &lt;Container size=&quot;responsive&quot; bg=&quot;var(--mantine-color-blue-light)&quot;&gt;
+        Container with responsive size
+      &lt;/Container&gt;
+    &lt;/MantineProvider&gt;
+  );
+}
+</code></pre>

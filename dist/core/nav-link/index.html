@@ -1,0 +1,162 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Badge, NavLink } from &#39;@mantine/core&#39;;
+import { IconHome2, IconGauge, IconChevronRight, IconActivity, IconCircleOff } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;NavLink
+        href=&quot;#required-for-focus&quot;
+        label=&quot;With icon&quot;
+        leftSection={&lt;IconHome2 size=&quot;1rem&quot; stroke={1.5} /&gt;}
+      /&gt;
+      &lt;NavLink
+        href=&quot;#required-for-focus&quot;
+        label=&quot;With right section&quot;
+        leftSection={&lt;IconGauge size=&quot;1rem&quot; stroke={1.5} /&gt;}
+        rightSection={
+          &lt;IconChevronRight size=&quot;0.8rem&quot; stroke={1.5} className=&quot;mantine-rotate-rtl&quot; /&gt;
+        }
+      /&gt;
+      &lt;NavLink
+        href=&quot;#required-for-focus&quot;
+        label=&quot;Disabled&quot;
+        leftSection={&lt;IconCircleOff size=&quot;1rem&quot; stroke={1.5} /&gt;}
+        disabled
+      /&gt;
+      &lt;NavLink
+        href=&quot;#required-for-focus&quot;
+        label=&quot;With description&quot;
+        description=&quot;Additional information&quot;
+        leftSection={
+          &lt;Badge size=&quot;xs&quot; color=&quot;red&quot; circle&gt;
+            3
+          &lt;/Badge&gt;
+        }
+      /&gt;
+      &lt;NavLink
+        href=&quot;#required-for-focus&quot;
+        label=&quot;Active subtle&quot;
+        leftSection={&lt;IconActivity size=&quot;1rem&quot; stroke={1.5} /&gt;}
+        rightSection={
+          &lt;IconChevronRight size=&quot;0.8rem&quot; stroke={1.5} className=&quot;mantine-rotate-rtl&quot; /&gt;
+        }
+        variant=&quot;subtle&quot;
+        active
+      /&gt;
+      &lt;NavLink
+        href=&quot;#required-for-focus&quot;
+        label=&quot;Active light&quot;
+        leftSection={&lt;IconActivity size=&quot;1rem&quot; stroke={1.5} /&gt;}
+        rightSection={
+          &lt;IconChevronRight size=&quot;0.8rem&quot; stroke={1.5} className=&quot;mantine-rotate-rtl&quot; /&gt;
+        }
+        active
+      /&gt;
+      &lt;NavLink
+        href=&quot;#required-for-focus&quot;
+        label=&quot;Active filled&quot;
+        leftSection={&lt;IconActivity size=&quot;1rem&quot; stroke={1.5} /&gt;}
+        rightSection={
+          &lt;IconChevronRight size=&quot;0.8rem&quot; stroke={1.5} className=&quot;mantine-rotate-rtl&quot; /&gt;
+        }
+        variant=&quot;filled&quot;
+        active
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="active">Active</h2>
+<p>Set <code>active</code> prop to add active styles to <code>NavLink</code>.</p>
+<p>Note that if you’re using a React Router or Remix <code>NavLink</code> inside <code>renderRoot</code>, the active styles will be based on the
+<a href="https://reactrouter.com/en/main/components/nav-link#aria-current"><code>aria-current</code> attribute that’s set by React Router</a>
+so you won’t need to explicitly set the <code>active</code> prop.</p>
+<p>You can customize active styles with <code>color</code> and <code>variant</code> props:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { IconGauge, IconFingerprint, IconActivity, IconChevronRight } from &#39;@tabler/icons-react&#39;;
+import { Box, NavLink } from &#39;@mantine/core&#39;;
+
+const data = [
+  { icon: IconGauge, label: &#39;Dashboard&#39;, description: &#39;Item with description&#39; },
+  {
+    icon: IconFingerprint,
+    label: &#39;Security&#39;,
+    rightSection: &lt;IconChevronRight size=&quot;1rem&quot; stroke={1.5} /&gt;,
+  },
+  { icon: IconActivity, label: &#39;Activity&#39; },
+];
+
+function Demo() {
+  const [active, setActive] = useState(0);
+
+  const items = data.map((item, index) =&gt; (
+    &lt;NavLink
+      href=&quot;#required-for-focus&quot;
+      key={item.label}
+      active={index === active}
+      label={item.label}
+      description={item.description}
+      rightSection={item.rightSection}
+      leftSection={&lt;item.icon size=&quot;1rem&quot; stroke={1.5} /&gt;}
+      onClick={() =&gt; setActive(index)}
+      {{props}}
+    /&gt;
+  ));
+
+  return &lt;Box w={220}&gt;{items}&lt;/Box&gt;;
+}
+</code></pre>
+<pre><code>
+import { NavLink } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;NavLink color=&quot;lime.4&quot; variant=&quot;filled&quot; active label=&quot;Default&quot; /&gt;
+      &lt;NavLink color=&quot;lime.4&quot; variant=&quot;filled&quot; active autoContrast label=&quot;Auto contrast&quot; /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="nested-navlinks">Nested NavLinks</h2>
+<p>To create nested links put <code>NavLink</code> as children of another <code>NavLink</code>:</p>
+<pre><code>
+import { NavLink } from &#39;@mantine/core&#39;;
+import { IconGauge, IconFingerprint } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;NavLink
+        href=&quot;#required-for-focus&quot;
+        label=&quot;First parent link&quot;
+        leftSection={&lt;IconGauge size=&quot;1rem&quot; stroke={1.5} /&gt;}
+        childrenOffset={28}
+      &gt;
+        &lt;NavLink href=&quot;#required-for-focus&quot; label=&quot;First child link&quot; /&gt;
+        &lt;NavLink label=&quot;Second child link&quot; href=&quot;#required-for-focus&quot; /&gt;
+        &lt;NavLink label=&quot;Nested parent link&quot; childrenOffset={28} href=&quot;#required-for-focus&quot;&gt;
+          &lt;NavLink label=&quot;First child link&quot; href=&quot;#required-for-focus&quot; /&gt;
+          &lt;NavLink label=&quot;Second child link&quot; href=&quot;#required-for-focus&quot; /&gt;
+          &lt;NavLink label=&quot;Third child link&quot; href=&quot;#required-for-focus&quot; /&gt;
+        &lt;/NavLink&gt;
+      &lt;/NavLink&gt;
+
+      &lt;NavLink
+        href=&quot;#required-for-focus&quot;
+        label=&quot;Second parent link&quot;
+        leftSection={&lt;IconFingerprint size=&quot;1rem&quot; stroke={1.5} /&gt;}
+        childrenOffset={28}
+        defaultOpened
+      &gt;
+        &lt;NavLink label=&quot;First child link&quot; href=&quot;#required-for-focus&quot; /&gt;
+        &lt;NavLink label=&quot;Second child link&quot; href=&quot;#required-for-focus&quot; /&gt;
+        &lt;NavLink label=&quot;Third child link&quot; href=&quot;#required-for-focus&quot; /&gt;
+      &lt;/NavLink&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>

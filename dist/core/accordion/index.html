@@ -1,0 +1,437 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p>Data used in Accordion examples:</p>
+<pre><code class="language-tsx">const groceries = [
+  {
+    emoji: &#39;🍎&#39;,
+    value: &#39;Apples&#39;,
+    description:
+      &#39;Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.&#39;,
+  },
+  {
+    emoji: &#39;🍌&#39;,
+    value: &#39;Bananas&#39;,
+    description:
+      &#39;Naturally sweet and potassium-rich fruit. Bananas are a popular choice for their energy-boosting properties and can be enjoyed as a quick snack, added to smoothies, or used in baking.&#39;,
+  },
+  {
+    emoji: &#39;🥦&#39;,
+    value: &#39;Broccoli&#39;,
+    description:
+      &#39;Nutrient-packed green vegetable. Broccoli is packed with vitamins, minerals, and fiber. It has a distinct flavor and can be enjoyed steamed, roasted, or added to stir-fries.&#39;,
+  },
+];
+</code></pre>
+<pre><code>
+import { Accordion } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  // See groceries data above
+  const items = groceries.map((item) =&gt; (
+    &lt;Accordion.Item key={item.value} value={item.value}&gt;
+      &lt;Accordion.Control icon={item.emoji}&gt;{item.value}&lt;/Accordion.Control&gt;
+      &lt;Accordion.Panel&gt;{item.description}&lt;/Accordion.Panel&gt;
+    &lt;/Accordion.Item&gt;
+  ));
+
+  return (
+    &lt;Accordion{{props}} defaultValue=&quot;Apples&quot;&gt;
+      {items}
+    &lt;/Accordion&gt;
+  );
+}
+</code></pre>
+<h2 id="custom-control-label">Custom control label</h2>
+<pre><code>
+import { Group, Avatar, Text, Accordion } from &#39;@mantine/core&#39;;
+
+const charactersList = [
+  {
+    id: &#39;bender&#39;,
+    image: &#39;https://img.icons8.com/clouds/256/000000/futurama-bender.png&#39;,
+    label: &#39;Bender Bending Rodríguez&#39;,
+    description: &#39;Fascinated with cooking, though has no sense of taste&#39;,
+    content: &quot;Bender Bending Rodríguez, (born September 4, 2996), designated Bending Unit 22, and commonly known as Bender, is a bending unit created by a division of MomCorp in Tijuana, Mexico, and his serial number is 2716057. His mugshot id number is 01473. He is Fry&#39;s best friend.&quot;,
+  },
+
+  {
+    id: &#39;carol&#39;,
+    image: &#39;https://img.icons8.com/clouds/256/000000/futurama-mom.png&#39;,
+    label: &#39;Carol Miller&#39;,
+    description: &#39;One of the richest people on Earth&#39;,
+    content: &quot;Carol Miller (born January 30, 2880), better known as Mom, is the evil chief executive officer and shareholder of 99.7% of Momcorp, one of the largest industrial conglomerates in the universe and the source of most of Earth&#39;s robots. She is also one of the main antagonists of the Futurama series.&quot;,
+  },
+
+  {
+    id: &#39;homer&#39;,
+    image: &#39;https://img.icons8.com/clouds/256/000000/homer-simpson.png&#39;,
+    label: &#39;Homer Simpson&#39;,
+    description: &#39;Overweight, lazy, and often ignorant&#39;,
+    content: &#39;Homer Jay Simpson (born May 12) is the main protagonist and one of the five main characters of The Simpsons series(or show). He is the spouse of Marge Simpson and father of Bart, Lisa and Maggie Simpson.&#39;,
+  },
+];
+
+interface AccordionLabelProps {
+  label: string;
+  image: string;
+  description: string;
+}
+
+function AccordionLabel({ label, image, description }: AccordionLabelProps) {
+  return (
+    &lt;Group wrap=&quot;nowrap&quot;&gt;
+      &lt;Avatar src={image} radius=&quot;xl&quot; size=&quot;lg&quot; /&gt;
+      &lt;div&gt;
+        &lt;Text&gt;{label}&lt;/Text&gt;
+        &lt;Text size=&quot;sm&quot; c=&quot;dimmed&quot; fw={400}&gt;
+          {description}
+        &lt;/Text&gt;
+      &lt;/div&gt;
+    &lt;/Group&gt;
+  );
+}
+
+function Demo() {
+  const items = charactersList.map((item) =&gt; (
+    &lt;Accordion.Item value={item.id} key={item.label}&gt;
+      &lt;Accordion.Control&gt;
+        &lt;AccordionLabel {...item} /&gt;
+      &lt;/Accordion.Control&gt;
+      &lt;Accordion.Panel&gt;
+        &lt;Text size=&quot;sm&quot;&gt;{item.content}&lt;/Text&gt;
+      &lt;/Accordion.Panel&gt;
+    &lt;/Accordion.Item&gt;
+  ));
+
+  return (
+    &lt;Accordion chevronPosition=&quot;right&quot; variant=&quot;contained&quot;&gt;
+      {items}
+    &lt;/Accordion&gt;
+  );
+}
+</code></pre>
+<h2 id="change-chevron">Change chevron</h2>
+<pre><code>
+import { IconPlus } from &#39;@tabler/icons-react&#39;;
+import { Accordion } from &#39;@mantine/core&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+function Demo() {
+  // See groceries data above
+  const items = groceries.map((item) =&gt; (
+    &lt;Accordion.Item key={item.value} value={item.value}&gt;
+      &lt;Accordion.Control icon={item.emoji} disabled={item.value === &#39;Bananas&#39;}&gt;
+        {item.value}
+      &lt;/Accordion.Control&gt;
+      &lt;Accordion.Panel&gt;{item.description}&lt;/Accordion.Panel&gt;
+    &lt;/Accordion.Item&gt;
+  ));
+
+  return (
+    &lt;Accordion
+      defaultValue=&quot;Apples&quot;
+      classNames={{ chevron: classes.chevron }}
+      chevron={&lt;IconPlus className={classes.icon} /&gt;}
+    &gt;
+      {items}
+    &lt;/Accordion&gt;
+  );
+}
+</code></pre>
+<h2 id="with-icons">With icons</h2>
+<pre><code>
+import { IconPhoto, IconPrinter, IconCameraSelfie } from &#39;@tabler/icons-react&#39;;
+import { Accordion, rem } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Accordion variant=&quot;contained&quot;&gt;
+      &lt;Accordion.Item value=&quot;photos&quot;&gt;
+        &lt;Accordion.Control
+          icon={
+            &lt;IconPhoto
+              style={{ color: &#39;var(--mantine-color-red-6&#39;, width: rem(20), height: rem(20) }}
+            /&gt;
+          }
+        &gt;
+          Recent photos
+        &lt;/Accordion.Control&gt;
+        &lt;Accordion.Panel&gt;Content&lt;/Accordion.Panel&gt;
+      &lt;/Accordion.Item&gt;
+
+      &lt;Accordion.Item value=&quot;print&quot;&gt;
+        &lt;Accordion.Control
+          icon={
+            &lt;IconPrinter
+              style={{ color: &#39;var(--mantine-color-blue-6&#39;, width: rem(20), height: rem(20) }}
+            /&gt;
+          }
+        &gt;
+          Print photos
+        &lt;/Accordion.Control&gt;
+        &lt;Accordion.Panel&gt;Content&lt;/Accordion.Panel&gt;
+      &lt;/Accordion.Item&gt;
+
+      &lt;Accordion.Item value=&quot;camera&quot;&gt;
+        &lt;Accordion.Control
+          icon={
+            &lt;IconCameraSelfie
+              style={{ color: &#39;var(--mantine-color-teal-6)&#39;, width: rem(20), height: rem(20) }}
+            /&gt;
+          }
+        &gt;
+          Camera settings
+        &lt;/Accordion.Control&gt;
+        &lt;Accordion.Panel&gt;Content&lt;/Accordion.Panel&gt;
+      &lt;/Accordion.Item&gt;
+    &lt;/Accordion&gt;
+  );
+}
+</code></pre>
+<h2 id="change-transition">Change transition</h2>
+<p>To change transition duration, set <code>transitionDuration</code> prop:</p>
+<pre><code>
+import { Accordion } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Accordion transitionDuration={1000}&gt;
+      {/* ...content */}
+    &lt;/Accordion&gt;
+  )
+}
+</code></pre>
+<p>To disable transitions, set <code>transitionDuration</code> to 0:</p>
+<pre><code>
+import { Accordion } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Accordion transitionDuration={0}&gt;
+      {/* ...content */}
+    &lt;/Accordion&gt;
+  )
+}
+</code></pre>
+<h2 id="default-opened-items">Default opened items</h2>
+<p>When <code>multiple={false}</code>, set <code>defaultValue</code> as string:</p>
+<pre><code class="language-tsx">import { Accordion } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  // Second item will be opened by default
+  return (
+    &lt;Accordion defaultValue=&quot;item-2&quot;&gt;
+      &lt;Accordion.Item value=&quot;item-1&quot;&gt;
+        &lt;Accordion.Control&gt;control-1&lt;/Accordion.Control&gt;
+        &lt;Accordion.Panel&gt;panel-1&lt;/Accordion.Panel&gt;
+      &lt;/Accordion.Item&gt;
+
+      &lt;Accordion.Item value=&quot;item-2&quot;&gt;
+        &lt;Accordion.Control&gt;control-2&lt;/Accordion.Control&gt;
+        &lt;Accordion.Panel&gt;panel-2&lt;/Accordion.Panel&gt;
+      &lt;/Accordion.Item&gt;
+    &lt;/Accordion&gt;
+  );
+}
+</code></pre>
+<p>When <code>multiple={true}</code>, set <code>defaultValue</code> as an array of strings:</p>
+<pre><code class="language-tsx">import { Accordion } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  // Both items will be opened by default
+  return (
+    &lt;Accordion multiple defaultValue={[&#39;item-1&#39;, &#39;item-2&#39;]}&gt;
+      &lt;Accordion.Item value=&quot;item-1&quot;&gt;
+        &lt;Accordion.Control&gt;control-1&lt;/Accordion.Control&gt;
+        &lt;Accordion.Panel&gt;panel-1&lt;/Accordion.Panel&gt;
+      &lt;/Accordion.Item&gt;
+
+      &lt;Accordion.Item value=&quot;item-2&quot;&gt;
+        &lt;Accordion.Control&gt;control-2&lt;/Accordion.Control&gt;
+        &lt;Accordion.Panel&gt;panel-2&lt;/Accordion.Panel&gt;
+      &lt;/Accordion.Item&gt;
+    &lt;/Accordion&gt;
+  );
+}
+</code></pre>
+<h2 id="control-state">Control state</h2>
+<p>When <code>multiple={false}</code>, set <code>value</code> as string:</p>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { Accordion } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState&lt;string | null&gt;(null);
+
+  return (
+    &lt;Accordion value={value} onChange={setValue}&gt;
+      &lt;Accordion.Item value=&quot;item-1&quot;&gt;
+        &lt;Accordion.Control&gt;control-1&lt;/Accordion.Control&gt;
+        &lt;Accordion.Panel&gt;panel-1&lt;/Accordion.Panel&gt;
+      &lt;/Accordion.Item&gt;
+
+      &lt;Accordion.Item value=&quot;item-2&quot;&gt;
+        &lt;Accordion.Control&gt;control-2&lt;/Accordion.Control&gt;
+        &lt;Accordion.Panel&gt;panel-2&lt;/Accordion.Panel&gt;
+      &lt;/Accordion.Item&gt;
+    &lt;/Accordion&gt;
+  );
+}
+</code></pre>
+<p>When <code>multiple={true}</code>, set <code>value</code> as an array of strings:</p>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { Accordion } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState&lt;string[]&gt;([]);
+
+  return (
+    &lt;Accordion multiple value={value} onChange={setValue}&gt;
+      &lt;Accordion.Item value=&quot;item-1&quot;&gt;
+        &lt;Accordion.Control&gt;control-1&lt;/Accordion.Control&gt;
+        &lt;Accordion.Panel&gt;panel-1&lt;/Accordion.Panel&gt;
+      &lt;/Accordion.Item&gt;
+
+      &lt;Accordion.Item value=&quot;item-2&quot;&gt;
+        &lt;Accordion.Control&gt;control-2&lt;/Accordion.Control&gt;
+        &lt;Accordion.Panel&gt;panel-2&lt;/Accordion.Panel&gt;
+      &lt;/Accordion.Item&gt;
+    &lt;/Accordion&gt;
+  );
+}
+</code></pre>
+<h2 id="compose-controls">Compose controls</h2>
+<p>You can add any additional elements that will be displayed next to <code>Accordion.Control</code>,
+for example, you can add ActionIcon or Menu:</p>
+<pre><code>
+import { Accordion, ActionIcon, AccordionControlProps, Center } from &#39;@mantine/core&#39;;
+import { IconDots } from &#39;@tabler/icons-react&#39;;
+
+function AccordionControl(props: AccordionControlProps) {
+  return (
+    &lt;Center&gt;
+      &lt;Accordion.Control {...props} /&gt;
+      &lt;ActionIcon size=&quot;lg&quot; variant=&quot;subtle&quot; color=&quot;gray&quot;&gt;
+        &lt;IconDots size=&quot;1rem&quot; /&gt;
+      &lt;/ActionIcon&gt;
+    &lt;/Center&gt;
+  );
+}
+
+function Demo() {
+  return (
+    &lt;Accordion chevronPosition=&quot;left&quot; maw={400} mx=&quot;auto&quot;&gt;
+      &lt;Accordion.Item value=&quot;item-1&quot;&gt;
+        &lt;AccordionControl&gt;Control 1&lt;/AccordionControl&gt;
+        &lt;Accordion.Panel&gt;Panel 1&lt;/Accordion.Panel&gt;
+      &lt;/Accordion.Item&gt;
+
+      &lt;Accordion.Item value=&quot;item-2&quot;&gt;
+        &lt;AccordionControl&gt;Control 2&lt;/AccordionControl&gt;
+        &lt;Accordion.Panel&gt;Panel 2&lt;/Accordion.Panel&gt;
+      &lt;/Accordion.Item&gt;
+
+      &lt;Accordion.Item value=&quot;item-3&quot;&gt;
+        &lt;AccordionControl&gt;Control 3&lt;/AccordionControl&gt;
+        &lt;Accordion.Panel&gt;Panel 3&lt;/Accordion.Panel&gt;
+      &lt;/Accordion.Item&gt;
+    &lt;/Accordion&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled-items">Disabled items</h2>
+<p>Set <code>disabled</code> prop on <code>Accordion.Control</code> component to disable it.
+Disabled items cannot be activated with mouse or keyboard, will be skipped when user navigates with arrow keys:</p>
+<pre><code>
+import { Accordion } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  // See groceries data above
+  const items = groceries.map((item) =&gt; (
+    &lt;Accordion.Item key={item.value} value={item.value}&gt;
+      &lt;Accordion.Control icon={item.emoji} disabled={item.value === &#39;Bananas&#39;}&gt;
+        {item.value}
+      &lt;/Accordion.Control&gt;
+      &lt;Accordion.Panel&gt;{item.description}&lt;/Accordion.Panel&gt;
+    &lt;/Accordion.Item&gt;
+  ));
+
+  return (
+    &lt;Accordion maw={400} defaultValue=&quot;Apples&quot;&gt;
+      {items}
+    &lt;/Accordion&gt;
+  );
+}
+</code></pre>
+<h2 id="unstyled-accordion">Unstyled Accordion</h2>
+<p>Set <code>unstyled</code> prop on Accordion component to remove all non-essential library styles.
+It can be used to style component with Styles API without overriding any styles.</p>
+<pre><code>
+import { Accordion } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Accordion unstyled&gt;
+      {/* ... Accordion items */}
+    &lt;/Accordion&gt;
+  );
+}
+</code></pre>
+<p>Use Styles API to customize Accordion styles:</p>
+<pre><code>
+import { Accordion } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  // See groceries data above
+  const items = groceries.map((item) =&gt; (
+    &lt;Accordion.Item key={item.value} value={item.value}&gt;
+      &lt;Accordion.Control icon={item.emoji}&gt;{item.value}&lt;/Accordion.Control&gt;
+      &lt;Accordion.Panel&gt;{item.description}&lt;/Accordion.Panel&gt;
+    &lt;/Accordion.Item&gt;
+  ));
+
+  return (
+    &lt;Accordion defaultValue=&quot;Apples&quot; order={2}{{props}}&gt;
+      {items}
+    &lt;/Accordion&gt;
+  );
+}
+</code></pre>
+<p>Use Styles API to customize Accordion styles:</p>
+<pre><code>
+import { Accordion } from &#39;@mantine/core&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+function Demo() {
+  // See groceries data above
+  const items = groceries.map((item) =&gt; (
+    &lt;Accordion.Item key={item.value} value={item.value}&gt;
+      &lt;Accordion.Control icon={item.emoji}&gt;{item.value}&lt;/Accordion.Control&gt;
+      &lt;Accordion.Panel&gt;{item.description}&lt;/Accordion.Panel&gt;
+    &lt;/Accordion.Item&gt;
+  ));
+
+  return (
+    &lt;Accordion maw={400} defaultValue=&quot;Apples&quot; classNames={classes}&gt;
+      {items}
+    &lt;/Accordion&gt;
+  );
+}
+</code></pre>
+<h2 id="typescript">TypeScript</h2>
+<p><code>AccordionProps</code> type exported from <code>@mantine/core</code> is a generic, it accepts boolean type that
+describes <code>multiple</code> state:</p>
+<pre><code class="language-tsx">import type { AccordionProps } from &#39;@mantine/core&#39;;
+
+type MultipleAccordionProps = AccordionProps&lt;true&gt;;
+type DefaultAccordionProps = AccordionProps&lt;false&gt;;
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p>Accordion component follows WAI-ARIA recommendations on accessibility.</p>
+<p>Set <code>order</code> on <code>Accordion</code> component to wrap accordion controls with h2-h6 heading.
+The following example will wrap controls with h3 tag:</p>
+<pre><code class="language-tsx">import { Accordion } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Accordion order={3}&gt;{/* ...items */}&lt;/Accordion&gt;;
+}
+</code></pre>
+<p>Keyboard interactions:</p>

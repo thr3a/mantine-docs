@@ -1,0 +1,58 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>Dialog</code> is a simplified version of Modal component.
+It does not include most of accessibility and usability Modal features:</p>
+<ul>
+<li>Focus trap is not available</li>
+<li>Does not close on click outside</li>
+<li>Does not have overlay</li>
+</ul>
+<p>Use <code>Dialog</code> to attract attention with not important information or action,
+for example, you can create an email subscription form:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Dialog, Group, Button, TextInput, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { toggle, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Group justify=&quot;center&quot;&gt;
+        &lt;Button onClick={toggle}&gt;Toggle dialog&lt;/Button&gt;
+      &lt;/Group&gt;
+
+      &lt;Dialog opened={opened} withCloseButton onClose={close} size=&quot;lg&quot; radius=&quot;md&quot;&gt;
+        &lt;Text size=&quot;sm&quot; mb=&quot;xs&quot; fw={500}&gt;
+          Subscribe to email newsletter
+        &lt;/Text&gt;
+
+        &lt;Group align=&quot;flex-end&quot;&gt;
+          &lt;TextInput placeholder=&quot;hello@gluesticker.com&quot; style={{ flex: 1 }} /&gt;
+          &lt;Button onClick={close}&gt;Subscribe&lt;/Button&gt;
+        &lt;/Group&gt;
+      &lt;/Dialog&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="change-position">Change position</h2>
+<p><code>Dialog</code> is rendered in Portal and has fixed position, set <code>position</code> prop to control dialog’s position:</p>
+<pre><code class="language-tsx">import { Dialog } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Dialog position={{ top: 20, left: 20 }} opened&gt;
+        Dialog in top left corner
+      &lt;/Dialog&gt;
+      &lt;Dialog position={{ bottom: 20, left: 20 }} opened&gt;
+        Dialog in bottom left corner
+      &lt;/Dialog&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p><code>Dialog</code> is not accessible and most likely will not be announced by screen reader,
+make sure you do not put any important information. In most cases it would be better
+to select Modal, Drawer or Notifications.</p>

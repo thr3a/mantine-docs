@@ -1,0 +1,261 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { SegmentedControl } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;SegmentedControl{{props}} data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;]} /&gt;;
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { SegmentedControl } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState(&#39;react&#39;);
+
+  return (
+    &lt;SegmentedControl
+      value={value}
+      onChange={setValue}
+      data={[
+        { label: &#39;React&#39;, value: &#39;react&#39; },
+        { label: &#39;Angular&#39;, value: &#39;ng&#39; },
+        { label: &#39;Vue&#39;, value: &#39;vue&#39; },
+        { label: &#39;Svelte&#39;, value: &#39;svelte&#39; },
+      ]}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="data-prop">Data prop</h2>
+<p><code>SegmentedControl</code> support two different data formats:</p>
+<ol>
+<li>An array of strings – used when <code>value</code> and <code>label</code> are the same</li>
+<li>An array of objects – used when <code>value</code> and <code>label</code> are different</li>
+</ol>
+<pre><code class="language-tsx">import { SegmentedControl } from &#39;@mantine/core&#39;;
+
+function ArrayOfStrings() {
+  return (
+    &lt;SegmentedControl data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Svelte&#39;, &#39;Vue&#39;]} /&gt;
+  );
+}
+
+function ArrayOfObjects() {
+  return (
+    &lt;SegmentedControl
+      data={[
+        { value: &#39;React&#39;, label: &#39;React&#39; },
+        { value: &#39;Angular&#39;, label: &#39;Angular&#39; },
+        { value: &#39;Svelte&#39;, label: &#39;Svelte&#39; },
+        { value: &#39;Vue&#39;, label: &#39;Vue&#39; },
+      ]}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled">Disabled</h2>
+<p>To disable <code>SegmentedControl</code> item, use array of objects <code>data</code> format and set <code>disabled: true</code>
+on the item that you want to disable. To disable the entire component, use <code>disabled</code> prop.</p>
+<pre><code>
+import { SegmentedControl } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Stack align=&quot;center&quot;&gt;
+      &lt;div&gt;
+        &lt;Text size=&quot;sm&quot; fw={500} mb={3}&gt;
+          Disabled control
+        &lt;/Text&gt;
+        &lt;SegmentedControl
+          disabled
+          data={[
+            {
+              value: &#39;preview&#39;,
+              label: &#39;Preview&#39;,
+            },
+            {
+              value: &#39;code&#39;,
+              label: &#39;Code&#39;,
+            },
+            {
+              value: &#39;export&#39;,
+              label: &#39;Export&#39;,
+            },
+          ]}
+        /&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;Text size=&quot;sm&quot; fw={500} mb={3}&gt;
+          Disabled option
+        &lt;/Text&gt;
+        &lt;SegmentedControl
+          data={[
+            {
+              value: &#39;preview&#39;,
+              label: &#39;Preview&#39;,
+              disabled: true,
+            },
+            {
+              value: &#39;code&#39;,
+              label: &#39;Code&#39;,
+            },
+            {
+              value: &#39;export&#39;,
+              label: &#39;Export&#39;,
+            },
+          ]}
+        /&gt;
+      &lt;/div&gt;
+    &lt;/Stack&gt;
+  );
+}
+</code></pre>
+<h2 id="react-node-as-label">React node as label</h2>
+<p>You can use any React node as label:</p>
+<pre><code>
+import { Center, SegmentedControl, rem } from &#39;@mantine/core&#39;;
+import { IconEye, IconCode, IconExternalLink } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;SegmentedControl
+      data={[
+        {
+          value: &#39;preview&#39;,
+          label: (
+            &lt;Center style={{ gap: 10 }}&gt;
+              &lt;IconEye style={{ width: rem(16), height: rem(16) }} /&gt;
+              &lt;span&gt;Preview&lt;/span&gt;
+            &lt;/Center&gt;
+          ),
+        },
+        {
+          value: &#39;code&#39;,
+          label: (
+            &lt;Center style={{ gap: 10 }}&gt;
+              &lt;IconCode style={{ width: rem(16), height: rem(16) }} /&gt;
+              &lt;span&gt;Code&lt;/span&gt;
+            &lt;/Center&gt;
+          ),
+        },
+        {
+          value: &#39;export&#39;,
+          label: (
+            &lt;Center style={{ gap: 10 }}&gt;
+              &lt;IconExternalLink style={{ width: rem(16), height: rem(16) }} /&gt;
+              &lt;span&gt;Export&lt;/span&gt;
+            &lt;/Center&gt;
+          ),
+        },
+      ]}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="color">Color</h2>
+<p>By default, <code>SegmentedControl</code> uses <code>theme.white</code> with shadow in light color scheme and <code>var(--mantine-color-dark-6)</code> background color for indicator.
+Set <code>color</code> prop to change indicator <code>background-color</code>:</p>
+<pre><code>
+import { SegmentedControl } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;SegmentedControl{{props}} data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;, &#39;Svelte&#39;]} /&gt;;
+}
+</code></pre>
+<h2 id="transitions">Transitions</h2>
+<p>Change transition properties with:</p>
+<ul>
+<li><code>transitionDuration</code> – all transitions duration in ms, <code>200</code> by default</li>
+<li><code>transitionTimingFunction</code> – all transitions timing function, <code>ease</code> by default</li>
+</ul>
+<pre><code>
+import { SegmentedControl, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Text size=&quot;sm&quot; fw={500} mt={3}&gt;
+        No transitions
+      &lt;/Text&gt;
+      &lt;SegmentedControl data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;, &#39;Svelte&#39;]} transitionDuration={0} /&gt;
+
+      &lt;Text size=&quot;sm&quot; fw={500} mt=&quot;md&quot;&gt;
+        500ms linear transition
+      &lt;/Text&gt;
+      &lt;SegmentedControl
+        data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;, &#39;Svelte&#39;]}
+        transitionDuration={500}
+        transitionTimingFunction=&quot;linear&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="readonly">readOnly</h2>
+<p>Set <code>readOnly</code> prop to prevent value from being changed:</p>
+<pre><code>
+import { SegmentedControl } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;SegmentedControl readOnly defaultValue=&quot;Angular&quot; data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;]} /&gt;;
+}
+</code></pre>
+<pre><code>
+import { SegmentedControl } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;SegmentedControl{{props}} data={[&#39;React&#39;, &#39;Angular&#39;, &#39;Vue&#39;]} /&gt;;
+}
+</code></pre>
+<h2 id="accessibility-and-usability">Accessibility and usability</h2>
+<p><code>SegmentedControl</code> uses radio inputs under the hood, it is accessible by default with no extra steps required if you have text in labels.
+Component support the same keyboard events as a regular radio group.</p>
+<p>In case you do not have text in labels (for example, when you want to use <code>SegmentedControl</code> with icons only),
+use VisuallyHidden to make component accessible:</p>
+<pre><code>
+import { SegmentedControl, VisuallyHidden, rem } from &#39;@mantine/core&#39;;
+import { IconEye, IconCode, IconExternalLink } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  const iconProps = {
+    style: { width: rem(20), height: rem(20), display: &#39;block&#39; },
+    stroke: 1.5,
+  };
+
+  return (
+    &lt;SegmentedControl
+      data={[
+        {
+          value: &#39;preview&#39;,
+          label: (
+            &lt;&gt;
+              &lt;IconEye {...iconProps} /&gt;
+              &lt;VisuallyHidden&gt;Preview&lt;/VisuallyHidden&gt;
+            &lt;/&gt;
+          ),
+        },
+        {
+          value: &#39;code&#39;,
+          label: (
+            &lt;&gt;
+              &lt;IconCode {...iconProps} /&gt;
+              &lt;VisuallyHidden&gt;Code&lt;/VisuallyHidden&gt;
+            &lt;/&gt;
+          ),
+        },
+        {
+          value: &#39;export&#39;,
+          label: (
+            &lt;&gt;
+              &lt;IconExternalLink {...iconProps} /&gt;
+              &lt;VisuallyHidden&gt;Export&lt;/VisuallyHidden&gt;
+            &lt;/&gt;
+          ),
+        },
+      ]}
+    /&gt;
+  );
+}
+</code></pre>

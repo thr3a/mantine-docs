@@ -1,0 +1,460 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Stepper, Button, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [active, setActive] = useState(1);
+  const nextStep = () =&gt; setActive((current) =&gt; (current &lt; 3 ? current + 1 : current));
+  const prevStep = () =&gt; setActive((current) =&gt; (current &gt; 0 ? current - 1 : current));
+
+  return (
+    &lt;&gt;
+      &lt;Stepper active={active} onStepClick={setActive}&gt;
+        &lt;Stepper.Step label=&quot;First step&quot; description=&quot;Create an account&quot;&gt;
+          Step 1 content: Create an account
+        &lt;/Stepper.Step&gt;
+        &lt;Stepper.Step label=&quot;Second step&quot; description=&quot;Verify email&quot;&gt;
+          Step 2 content: Verify email
+        &lt;/Stepper.Step&gt;
+        &lt;Stepper.Step label=&quot;Final step&quot; description=&quot;Get full access&quot;&gt;
+          Step 3 content: Get full access
+        &lt;/Stepper.Step&gt;
+        &lt;Stepper.Completed&gt;
+          Completed, click back button to get to previous step
+        &lt;/Stepper.Completed&gt;
+      &lt;/Stepper&gt;
+
+      &lt;Group justify=&quot;center&quot; mt=&quot;xl&quot;&gt;
+        &lt;Button variant=&quot;default&quot; onClick={prevStep}&gt;Back&lt;/Button&gt;
+        &lt;Button onClick={nextStep}&gt;Next step&lt;/Button&gt;
+      &lt;/Group&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="allow-step-select">Allow step select</h2>
+<p>To disable step selection, set <code>allowStepSelect</code> prop on <code>Stepper.Step</code> component.
+It can be used to prevent the user from reaching next steps while letting them go back and forth between steps they’ve already reached before:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Stepper, Button, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [active, setActive] = useState(1);
+  const [highestStepVisited, setHighestStepVisited] = useState(active);
+
+  const handleStepChange = (nextStep: number) =&gt; {
+    const isOutOfBounds = nextStep &gt; 3 || nextStep &lt; 0;
+
+    if (isOutOfBounds) {
+      return;
+    }
+
+    setActive(nextStep);
+    setHighestStepVisited((hSC) =&gt; Math.max(hSC, nextStep));
+  };
+
+  // Allow the user to freely go back and forth between visited steps.
+  const shouldAllowSelectStep = (step: number) =&gt; highestStepVisited &gt;= step &amp;&amp; active !== step;
+
+  return (
+    &lt;&gt;
+      &lt;Stepper active={active} onStepClick={setActive}&gt;
+        &lt;Stepper.Step
+          label=&quot;First step&quot;
+          description=&quot;Create an account&quot;
+          allowStepSelect={shouldAllowSelectStep(0)}
+        &gt;
+          Step 1 content: Create an account
+        &lt;/Stepper.Step&gt;
+        &lt;Stepper.Step
+          label=&quot;Second step&quot;
+          description=&quot;Verify email&quot;
+          allowStepSelect={shouldAllowSelectStep(1)}
+        &gt;
+          Step 2 content: Verify email
+        &lt;/Stepper.Step&gt;
+        &lt;Stepper.Step
+          label=&quot;Final step&quot;
+          description=&quot;Get full access&quot;
+          allowStepSelect={shouldAllowSelectStep(2)}
+        &gt;
+          Step 3 content: Get full access
+        &lt;/Stepper.Step&gt;
+
+        &lt;Stepper.Completed&gt;
+          Completed, click back button to get to previous step
+        &lt;/Stepper.Completed&gt;
+      &lt;/Stepper&gt;
+
+      &lt;Group justify=&quot;center&quot; mt=&quot;xl&quot;&gt;
+        &lt;Button variant=&quot;default&quot; onClick={() =&gt; handleStepChange(active - 1)}&gt;
+          Back
+        &lt;/Button&gt;
+        &lt;Button onClick={() =&gt; handleStepChange(active + 1)}&gt;Next step&lt;/Button&gt;
+      &lt;/Group&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="disable-next-steps-selection">Disable next steps selection</h2>
+<p>Another way to disable selection of upcoming steps is to use the <code>allowNextStepsSelect</code> directly on the <code>Stepper</code> component.
+This is useful when you don’t need to control the behavior specifically for each step.</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Stepper, Button, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [active, setActive] = useState(1);
+  const nextStep = () =&gt; setActive((current) =&gt; (current &lt; 3 ? current + 1 : current));
+  const prevStep = () =&gt; setActive((current) =&gt; (current &gt; 0 ? current - 1 : current));
+
+  return (
+    &lt;&gt;
+      &lt;Stepper active={active} onStepClick={setActive} allowNextStepsSelect={false}&gt;
+        &lt;Stepper.Step label=&quot;First step&quot; description=&quot;Create an account&quot;&gt;
+          Step 1 content: Create an account
+        &lt;/Stepper.Step&gt;
+        &lt;Stepper.Step label=&quot;Second step&quot; description=&quot;Verify email&quot;&gt;
+          Step 2 content: Verify email
+        &lt;/Stepper.Step&gt;
+        &lt;Stepper.Step label=&quot;Final step&quot; description=&quot;Get full access&quot;&gt;
+          Step 3 content: Get full access
+        &lt;/Stepper.Step&gt;
+        &lt;Stepper.Completed&gt;
+          Completed, click back button to get to previous step
+        &lt;/Stepper.Completed&gt;
+      &lt;/Stepper&gt;
+
+      &lt;Group justify=&quot;center&quot; mt=&quot;xl&quot;&gt;
+        &lt;Button variant=&quot;default&quot; onClick={prevStep}&gt;Back&lt;/Button&gt;
+        &lt;Button onClick={nextStep}&gt;Next step&lt;/Button&gt;
+      &lt;/Group&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="color-radius-and-size">Color, radius and size</h2>
+<pre><code>
+import { Stepper } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Stepper{{props}} active={1}&gt;
+      &lt;Stepper.Step label=&quot;Step 1&quot; description=&quot;Create an account&quot; /&gt;
+      &lt;Stepper.Step label=&quot;Step 2&quot; description=&quot;Verify email&quot; /&gt;
+    &lt;/Stepper&gt;
+  );
+}
+</code></pre>
+<p>Component size is controlled by two props: <code>size</code> and <code>iconSize</code>.
+<code>size</code> prop controls icon size, label and description font size.
+<code>iconSize</code> allows to overwrite icon size separately from other size values:</p>
+<pre><code>
+import { Stepper } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Stepper{{props}} active={1}&gt;
+      &lt;Stepper.Step label=&quot;Step 1&quot; description=&quot;Create an account&quot; /&gt;
+      &lt;Stepper.Step label=&quot;Step 2&quot; description=&quot;Verify email&quot; /&gt;
+    &lt;/Stepper&gt;
+  );
+}
+</code></pre>
+<h2 id="with-custom-icons">With custom icons</h2>
+<p>You can replace the step icon by setting <code>icon</code> prop on <code>Stepper.Step</code> component.
+To change completed check icon set <code>completedIcon</code> on <code>Stepper</code> component.
+You can use any React node as an icon: component, string, number:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import {
+  IconUserCheck,
+  IconMailOpened,
+  IconShieldCheck,
+  IconCircleCheck,
+} from &#39;@tabler/icons-react&#39;;
+import { Stepper, rem } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [active, setActive] = useState(1);
+
+  return (
+    &lt;Stepper
+      active={active}
+      onStepClick={setActive}
+      completedIcon={&lt;IconCircleCheck style={{ width: rem(18), height: rem(18) }} /&gt;}
+    &gt;
+      &lt;Stepper.Step
+        icon={&lt;IconUserCheck style={{ width: rem(18), height: rem(18) }} /&gt;}
+        label=&quot;Step 1&quot;
+        description=&quot;Create an account&quot;
+      /&gt;
+      &lt;Stepper.Step
+        icon={&lt;IconMailOpened style={{ width: rem(18), height: rem(18) }} /&gt;}
+        label=&quot;Step 2&quot;
+        description=&quot;Verify email&quot;
+      /&gt;
+      &lt;Stepper.Step
+        icon={&lt;IconShieldCheck style={{ width: rem(18), height: rem(18) }} /&gt;}
+        label=&quot;Step 3&quot;
+        description=&quot;Get full access&quot;
+      /&gt;
+    &lt;/Stepper&gt;
+  );
+}
+</code></pre>
+<p>You can use <code>Stepper</code> with icons only. Note that in this case, you will have to
+set <code>aria-label</code> or <code>title</code> on <code>Stepper.Step</code> component to make it accessible:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Stepper, rem } from &#39;@mantine/core&#39;;
+import { IconUserCheck, IconMailOpened, IconShieldCheck } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  const [active, setActive] = useState(0);
+
+  return (
+    &lt;Stepper active={active} onStepClick={setActive}&gt;
+      &lt;Stepper.Step icon={&lt;IconUserCheck style={{ width: rem(18), height: rem(18) }} /&gt;} /&gt;
+      &lt;Stepper.Step icon={&lt;IconMailOpened style={{ width: rem(18), height: rem(18) }} /&gt;} /&gt;
+      &lt;Stepper.Step icon={&lt;IconShieldCheck style={{ width: rem(18), height: rem(18) }} /&gt;} /&gt;
+    &lt;/Stepper&gt;
+  );
+}
+</code></pre>
+<p>You can also change the completed icon for each step, for example, to indicate error state:</p>
+<pre><code>
+import { Stepper, rem } from &#39;@mantine/core&#39;;
+import { IconCircleX } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;Stepper active={2}&gt;
+      &lt;Stepper.Step label=&quot;Step 1&quot; description=&quot;Create an account&quot; /&gt;
+      &lt;Stepper.Step
+        label=&quot;Step 2&quot;
+        description=&quot;Verify email&quot;
+        color=&quot;red&quot;
+        completedIcon={&lt;IconCircleX style={{ width: rem(20), height: rem(20) }} /&gt;}
+      /&gt;
+      &lt;Stepper.Step label=&quot;Step 3&quot; description=&quot;Get full access&quot; /&gt;
+    &lt;/Stepper&gt;
+  );
+}
+</code></pre>
+<h2 id="vertical-orientation">Vertical orientation</h2>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Stepper } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [active, setActive] = useState(1);
+
+  return (
+    &lt;Stepper active={active} onStepClick={setActive} orientation=&quot;vertical&quot;&gt;
+      &lt;Stepper.Step label=&quot;Step 1&quot; description=&quot;Create an account&quot; /&gt;
+      &lt;Stepper.Step label=&quot;Step 2&quot; description=&quot;Verify email&quot; /&gt;
+      &lt;Stepper.Step label=&quot;Step 3&quot; description=&quot;Get full access&quot; /&gt;
+    &lt;/Stepper&gt;
+  );
+}
+</code></pre>
+<h2 id="icon-position">Icon position</h2>
+<p>To change step icon and body arrangement, set <code>iconPosition=&quot;right&quot;</code>:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Stepper } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [active, setActive] = useState(1);
+
+  return (
+    &lt;Stepper active={active} onStepClick={setActive} iconPosition=&quot;right&quot;&gt;
+      &lt;Stepper.Step label=&quot;Step 1&quot; description=&quot;Create an account&quot; /&gt;
+      &lt;Stepper.Step label=&quot;Step 2&quot; description=&quot;Verify email&quot; /&gt;
+      &lt;Stepper.Step label=&quot;Step 3&quot; description=&quot;Get full access&quot; /&gt;
+    &lt;/Stepper&gt;
+  );
+}
+</code></pre>
+<h2 id="loading-state">Loading state</h2>
+<p>To indicate loading state set <code>loading</code> prop on Step component, <code>Loader</code> will replace step icon.
+You can configure the default loader in the theme.</p>
+<pre><code>
+import { Stepper } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Stepper active={1}&gt;
+      &lt;Stepper.Step label=&quot;Step 1&quot; description=&quot;Create an account&quot; /&gt;
+      &lt;Stepper.Step label=&quot;Step 2&quot; description=&quot;Verify email&quot; loading /&gt;
+      &lt;Stepper.Step label=&quot;Step 3&quot; description=&quot;Get full access&quot; /&gt;
+    &lt;/Stepper&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Stepper } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [active, setActive] = useState(1);
+  const nextStep = () =&gt; setActive((current) =&gt; (current &lt; 2 ? current + 1 : current));
+  const prevStep = () =&gt; setActive((current) =&gt; (current &gt; 0 ? current - 1 : current));
+
+  return (
+    &lt;&gt;
+      &lt;Stepper active={active} onStepClick={setActive}{{props}}&gt;
+        &lt;Stepper.Step label=&quot;First step&quot; description=&quot;Create an account&quot; loading&gt;
+          &lt;Content&gt;Step 1 content: Create an account&lt;/Content&gt;
+        &lt;/Stepper.Step&gt;
+        &lt;Stepper.Step label=&quot;Second step&quot; description=&quot;Verify email&quot;&gt;
+          &lt;Content&gt;Step 2 content: Verify email&lt;/Content&gt;
+        &lt;/Stepper.Step&gt;
+
+        &lt;Stepper.Completed&gt;
+          &lt;Content&gt;Completed, click back button to get to previous step&lt;/Content&gt;
+        &lt;/Stepper.Completed&gt;
+      &lt;/Stepper&gt;
+
+      &lt;Group justify=&quot;center&quot; mt=&quot;xl&quot;&gt;
+        &lt;Button variant=&quot;default&quot; onClick={prevStep}&gt;
+          Back
+        &lt;/Button&gt;
+        &lt;Button onClick={nextStep}&gt;Next step&lt;/Button&gt;
+      &lt;/Group&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<p>Examples of styles customization with Styles API:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Stepper, StepperProps, rem } from &#39;@mantine/core&#39;;
+
+function StyledStepper(props: StepperProps) {
+  return (
+    &lt;Stepper
+      styles={{
+        stepBody: {
+          display: &#39;none&#39;,
+        },
+
+        step: {
+          padding: 0,
+        },
+
+        stepIcon: {
+          borderWidth: rem(4),
+        },
+
+        separator: {
+          marginLeft: rem(-2),
+          marginRight: rem(-2),
+          height: rem(10),
+        },
+      }}
+      {...props}
+    /&gt;
+  );
+}
+
+function Demo() {
+  const [active, setActive] = useState(1);
+  return (
+    &lt;StyledStepper active={active} onStepClick={setActive}&gt;
+      &lt;Stepper.Step label=&quot;Step 1&quot; description=&quot;Create an account&quot; /&gt;
+      &lt;Stepper.Step label=&quot;Step 2&quot; description=&quot;Verify email&quot; /&gt;
+      &lt;Stepper.Step label=&quot;Step 3&quot; description=&quot;Get full access&quot; /&gt;
+    &lt;/StyledStepper&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Stepper } from &#39;@mantine/core&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+function Demo() {
+  const [active, setActive] = useState(1);
+
+  return (
+    &lt;Stepper classNames={classes} active={active} onStepClick={setActive}&gt;
+      &lt;Stepper.Step label=&quot;Step 1&quot; description=&quot;Create an account&quot; /&gt;
+      &lt;Stepper.Step label=&quot;Step 2&quot; description=&quot;Verify email&quot; /&gt;
+      &lt;Stepper.Step label=&quot;Step 3&quot; description=&quot;Get full access&quot; /&gt;
+    &lt;/Stepper&gt;
+  );
+}
+</code></pre>
+<h2 id="get-step-ref">Get step ref</h2>
+<p>You can get refs of step button and stepper root element (div):</p>
+<pre><code class="language-tsx">import { useRef } from &#39;react&#39;;
+import { Stepper } from &#39;@mantine/core&#39;;
+
+function MyStepper() {
+  const firstStep = useRef&lt;HTMLButtonElement&gt;(null);
+  const stepper = useRef&lt;HTMLDivElement&gt;(null);
+
+  return (
+    &lt;Stepper ref={stepper} active={0}&gt;
+      &lt;Stepper.Step label=&quot;First step&quot; ref={firstStep} /&gt;
+      &lt;Stepper.Step label=&quot;Second step&quot; /&gt;
+    &lt;/Stepper&gt;
+  );
+}
+</code></pre>
+<h2 id="wrap-stepperstep">Wrap Stepper.Step</h2>
+<p><code>Stepper</code> component relies on <code>Stepper.Step</code> order. Wrapping <code>Stepper.Step</code> is not supported,
+Instead you will need to use different approaches:</p>
+<pre><code class="language-tsx">import { Stepper } from &#39;@mantine/core&#39;;
+
+// This will not work, step children will not render
+function WillNotWork() {
+  return (
+    &lt;Stepper.Step label=&quot;Nope&quot; description=&quot;It will not work&quot;&gt;
+      This part will not render
+    &lt;/Stepper.Step&gt;
+  );
+}
+
+// Create a separate component for children
+function WillWork() {
+  return &lt;div&gt;This will work as expected!&lt;/div&gt;;
+}
+
+function Demo() {
+  return (
+    &lt;Stepper active={1}&gt;
+      &lt;Stepper.Step label=&quot;Regular step&quot;&gt;First step&lt;/Stepper.Step&gt;
+      {/* Wrapped Stepper.Step will not render children, do not do that */}
+      &lt;WillNotWork /&gt;
+      &lt;Stepper.Step label=&quot;Step with custom content&quot;&gt;
+        &lt;WillWork /&gt;
+      &lt;/Stepper.Step&gt;
+      &lt;Stepper.Step label=&quot;Regular step&quot;&gt;Third step&lt;/Stepper.Step&gt;
+    &lt;/Stepper&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p><code>&lt;Stepper.Step /&gt;</code> components render button element, set <code>aria-label</code> or <code>title</code> props
+to make component visible for screen readers in case you do not specify <code>label</code> or <code>description</code>:</p>
+<pre><code class="language-tsx">import { Stepper } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Stepper active={0}&gt;
+      {/* Not ok, no label for screen reader */}
+      &lt;Stepper.Step /&gt;
+
+      {/* Ok, label and description */}
+      &lt;Stepper.Step label=&quot;Step 1&quot; description=&quot;Create an account&quot; /&gt;
+
+      {/* Ok, aria-label */}
+      &lt;Stepper.Step aria-label=&quot;Create an account&quot; /&gt;
+    &lt;/Stepper&gt;
+  );
+}
+</code></pre>

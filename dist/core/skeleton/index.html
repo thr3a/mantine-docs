@@ -1,0 +1,47 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p>Use <code>Skeleton</code> to create a placeholder for loading content. <code>Skeleton</code> support the following props:</p>
+<ul>
+<li><code>height</code> – height – any valid CSS value</li>
+<li><code>width</code> – width - any valid CSS value</li>
+<li><code>radius</code> – key of <code>theme.radius</code> or any valid CSS value to set border-radius</li>
+<li><code>circle</code> – if true width, height and border-radius will equal to value specified in <code>height</code> prop</li>
+<li><code>animate</code> – true by default, controls animation</li>
+</ul>
+<pre><code>(props) => `
+  import { Skeleton } from '@mantine/core';
+
+  function Demo() {
+    return (
+      <>
+        <Skeleton${props.animate ? "" : " animate={false}"} height={50} circle mb="xl" />
+        <Skeleton${props.animate ? "" : " animate={false}"} height={8} radius="xl" />
+        <Skeleton${props.animate ? "" : " animate={false}"} height={8} mt={6} radius="xl" />
+        <Skeleton${props.animate ? "" : " animate={false}"} height={8} mt={6} width="70%" radius="xl" />
+      </>
+    );
+  }
+  `</code></pre>
+<h2 id="with-content">With content</h2>
+<p>If you want to indicate the loading state of content that is already on page, wrap it with Skeleton
+and control loading overlay visibility with <code>visible</code> prop:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Skeleton, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [loading, setLoading] = useState(true);
+
+  return (
+    &lt;&gt;
+      &lt;Skeleton visible={loading}&gt;
+        Lorem ipsum dolor sit amet...
+        {/* other content */}
+      &lt;/Skeleton&gt;
+
+      &lt;Button onClick={() =&gt; setLoading((l) =&gt; !l)}&gt;
+        Toggle Skeleton
+      &lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>

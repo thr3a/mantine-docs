@@ -1,0 +1,71 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>JsonInput</code> is based on Textarea component,
+it includes json validation logic and option to format input value on blur:</p>
+<pre><code>
+import { JsonInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;JsonInput
+      label=&quot;Your package.json&quot;
+      placeholder=&quot;Textarea will autosize to fit the content&quot;
+      validationError=&quot;Invalid JSON&quot;
+      formatOnBlur
+      autosize
+      minRows={4}
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { JsonInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState(&#39;&#39;);
+  return &lt;JsonInput value={value} onChange={setValue} /&gt;;
+}
+</code></pre>
+<h2 id="input-props">Input props</h2>
+<pre><code>
+import { JsonInput } from &#39;@mantine/core&#39;;
+
+
+function Demo() {
+  return (
+    &lt;JsonInput
+      {{props}}
+      placeholder=&quot;Input placeholder&quot;
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled-state">Disabled state</h2>
+<pre><code>
+import { JsonInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;JsonInput disabled defaultValue=&#39;{ &quot;a&quot;: 1, &quot;B&quot;: 2 }&#39; label=&quot;Disabled&quot; placeholder=&quot;Disabled&quot; /&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { IconAt } from &#39;@tabler/icons-react&#39;;
+import { JsonInput, rem } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;JsonInput
+      label=&quot;Label&quot;
+      placeholder=&quot;JsonInput&quot;
+      description=&quot;Description&quot;
+      error=&quot;Error&quot;
+      withAsterisk
+      leftSection={&lt;IconAt style={{ width: rem(18), height: rem(18) }} /&gt;}
+      autosize
+      {{props}}
+    /&gt;
+  );
+}
+</code></pre>

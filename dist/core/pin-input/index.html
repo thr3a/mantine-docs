@@ -1,0 +1,46 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { PinInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;PinInput{{props}} /&gt;
+}
+</code></pre>
+<h2 id="regex-type">Regex type</h2>
+<p>You can use regular expression to validate user input. Characters that do not match given expression
+will be disregarded. For example, to create a <code>PinInput</code> that will accept only numbers from <code>0</code> to <code>3</code>,
+set <code>type={/^[0-3]+/}</code>:</p>
+<pre><code>
+import { PinInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;PinInput type={/^[0-3]*$/} inputType=&quot;tel&quot; inputMode=&quot;numeric&quot; /&gt;;
+}
+</code></pre>
+<h2 id="one-time-code">One time code</h2>
+<p>Some operating systems expose the last received SMS code to be used by applications like your keyboard.
+If the current form input asks for this code, your keyboard adapts and proposes the code as keyboard-suggestion.
+Prop <code>oneTimeCode</code> makes your input setting <code>autocomplete=&quot;one-time-code&quot;</code> which allows using that feature.</p>
+<pre><code class="language-tsx">import { PinInput } from &#39;@mantine/core&#39;;
+
+function OneTimeCodeInput() {
+  return &lt;PinInput oneTimeCode /&gt;;
+}
+</code></pre>
+<pre><code>
+import { PinInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;PinInput{{props}} /&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p>Inputs do not have associated labels, set <code>aria-label</code> to make component visible to the screen reader:</p>
+<pre><code class="language-tsx">import { PinInput } from &#39;@mantine/core&#39;;
+
+function Accessibility() {
+  return &lt;PinInput aria-label=&quot;One time code&quot; /&gt;;
+}
+</code></pre>

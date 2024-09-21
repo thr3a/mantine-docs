@@ -1,0 +1,31 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>Affix</code> renders a div element with a fixed position inside the Portal component.
+Use it to display elements fixed at any position on the screen, for example, scroll to top button:</p>
+<pre><code>
+import { IconArrowUp } from &#39;@tabler/icons-react&#39;;
+import { useWindowScroll } from &#39;@mantine/hooks&#39;;
+import { Affix, Button, Text, Transition, rem } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [scroll, scrollTo] = useWindowScroll();
+
+  return (
+    &lt;&gt;
+      &lt;Text ta=&quot;center&quot;&gt;Affix is located at the bottom of the screen, scroll to see it&lt;/Text&gt;
+      &lt;Affix position={{ bottom: 20, right: 20 }}&gt;
+        &lt;Transition transition=&quot;slide-up&quot; mounted={scroll.y &gt; 0}&gt;
+          {(transitionStyles) =&gt; (
+            &lt;Button
+              leftSection={&lt;IconArrowUp style={{ width: rem(16), height: rem(16) }} /&gt;}
+              style={transitionStyles}
+              onClick={() =&gt; scrollTo({ y: 0 })}
+            &gt;
+              Scroll to top
+            &lt;/Button&gt;
+          )}
+        &lt;/Transition&gt;
+      &lt;/Affix&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>

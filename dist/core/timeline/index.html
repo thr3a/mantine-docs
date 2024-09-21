@@ -1,0 +1,132 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Timeline, Text } from &#39;@mantine/core&#39;;
+import { IconGitBranch, IconGitPullRequest, IconGitCommit, IconMessageDots } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;Timeline active={1} bulletSize={24} lineWidth={2}&gt;
+      &lt;Timeline.Item bullet={&lt;IconGitBranch size={12} /&gt;} title=&quot;New branch&quot;&gt;
+        &lt;Text c=&quot;dimmed&quot; size=&quot;sm&quot;&gt;You&amp;apos;ve created new branch &lt;Text variant=&quot;link&quot; component=&quot;span&quot; inherit&gt;fix-notifications&lt;/Text&gt; from master&lt;/Text&gt;
+        &lt;Text size=&quot;xs&quot; mt={4}&gt;2 hours ago&lt;/Text&gt;
+      &lt;/Timeline.Item&gt;
+
+      &lt;Timeline.Item bullet={&lt;IconGitCommit size={12} /&gt;} title=&quot;Commits&quot;&gt;
+        &lt;Text c=&quot;dimmed&quot; size=&quot;sm&quot;&gt;You&amp;apos;ve pushed 23 commits to&lt;Text variant=&quot;link&quot; component=&quot;span&quot; inherit&gt;fix-notifications branch&lt;/Text&gt;&lt;/Text&gt;
+        &lt;Text size=&quot;xs&quot; mt={4}&gt;52 minutes ago&lt;/Text&gt;
+      &lt;/Timeline.Item&gt;
+
+      &lt;Timeline.Item title=&quot;Pull request&quot; bullet={&lt;IconGitPullRequest size={12} /&gt;} lineVariant=&quot;dashed&quot;&gt;
+        &lt;Text c=&quot;dimmed&quot; size=&quot;sm&quot;&gt;You&amp;apos;ve submitted a pull request&lt;Text variant=&quot;link&quot; component=&quot;span&quot; inherit&gt;Fix incorrect notification message (#187)&lt;/Text&gt;&lt;/Text&gt;
+        &lt;Text size=&quot;xs&quot; mt={4}&gt;34 minutes ago&lt;/Text&gt;
+      &lt;/Timeline.Item&gt;
+
+      &lt;Timeline.Item title=&quot;Code review&quot; bullet={&lt;IconMessageDots size={12} /&gt;}&gt;
+        &lt;Text c=&quot;dimmed&quot; size=&quot;sm&quot;&gt;&lt;Text variant=&quot;link&quot; component=&quot;span&quot; inherit&gt;Robert Gluesticker&lt;/Text&gt; left a code review on your pull request&lt;/Text&gt;
+        &lt;Text size=&quot;xs&quot; mt={4}&gt;12 minutes ago&lt;/Text&gt;
+      &lt;/Timeline.Item&gt;
+    &lt;/Timeline&gt;
+  );
+}
+</code></pre>
+<h2 id="line-and-bullet-props">Line and bullet props</h2>
+<p>Control timeline appearance with the following props:</p>
+<ul>
+<li><code>active</code> – index of current active element, all elements before this index will be highlighted with <code>color</code></li>
+<li><code>color</code> – color from theme that should be used to highlight active items, defaults to <code>theme.primaryColor</code></li>
+<li><code>lineWidth</code> – controls line width and bullet border</li>
+<li><code>bulletSize</code> – bullet width, height and border-radius</li>
+<li><code>align</code> – defines line and bullets position relative to content, also sets text-align</li>
+</ul>
+<pre><code>
+import { Timeline } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Timeline{{props}}&gt;
+      {/* items */}
+    &lt;/Timeline&gt;
+  );
+}
+</code></pre>
+<h2 id="bullet-as-react-node">Bullet as React node</h2>
+<pre><code>
+import { ThemeIcon, Text, Avatar, Timeline } from &#39;@mantine/core&#39;;
+import { IconSun, IconVideo } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;Timeline bulletSize={24}&gt;
+      &lt;Timeline.Item title=&quot;Default bullet&quot;&gt;
+        &lt;Text c=&quot;dimmed&quot; size=&quot;sm&quot;&gt;
+          Default bullet without anything
+        &lt;/Text&gt;
+      &lt;/Timeline.Item&gt;
+      &lt;Timeline.Item
+        title=&quot;Avatar&quot;
+        bullet={
+          &lt;Avatar
+            size={22}
+            radius=&quot;xl&quot;
+            src=&quot;https://avatars0.githubusercontent.com/u/10353856?s=460&amp;u=88394dfd67727327c1f7670a1764dc38a8a24831&amp;v=4&quot;
+          /&gt;
+        }
+      &gt;
+        &lt;Text c=&quot;dimmed&quot; size=&quot;sm&quot;&gt;
+          Timeline bullet as avatar image
+        &lt;/Text&gt;
+      &lt;/Timeline.Item&gt;
+      &lt;Timeline.Item title=&quot;Icon&quot; bullet={&lt;IconSun size=&quot;0.8rem&quot; /&gt;}&gt;
+        &lt;Text c=&quot;dimmed&quot; size=&quot;sm&quot;&gt;
+          Timeline bullet as icon
+        &lt;/Text&gt;
+      &lt;/Timeline.Item&gt;
+      &lt;Timeline.Item
+        title=&quot;ThemeIcon&quot;
+        bullet={
+          &lt;ThemeIcon
+            size={22}
+            variant=&quot;gradient&quot;
+            gradient={{ from: &#39;lime&#39;, to: &#39;cyan&#39; }}
+            radius=&quot;xl&quot;
+          &gt;
+            &lt;IconVideo size=&quot;0.8rem&quot; /&gt;
+          &lt;/ThemeIcon&gt;
+        }
+      &gt;
+        &lt;Text c=&quot;dimmed&quot; size=&quot;sm&quot;&gt;
+          Timeline bullet as ThemeIcon component
+        &lt;/Text&gt;
+      &lt;/Timeline.Item&gt;
+    &lt;/Timeline&gt;
+  );
+}
+</code></pre>
+<h2 id="wrap-timelineitem">Wrap Timeline.Item</h2>
+<p><code>Timeline</code> component relies on <code>Timeline.Item</code> order. Wrapping <code>Timeline.Item</code> is not supported,
+Instead you will need to use different approaches:</p>
+<pre><code class="language-tsx">import { Timeline } from &#39;@mantine/core&#39;;
+
+// This will not work, step children will not render
+function WillNotWork() {
+  return &lt;Timeline.Item title=&quot;Nope&quot;&gt;It will not work&lt;/Timeline.Item&gt;;
+}
+
+// Create a separate component for children
+function WillWork() {
+  return &lt;div&gt;This will work as expected!&lt;/div&gt;;
+}
+
+function Demo() {
+  return (
+    &lt;Timeline active={1}&gt;
+      &lt;Timeline.Item title=&quot;Regular item&quot;&gt;First item&lt;/Timeline.Item&gt;
+      &lt;WillNotWork /&gt;
+      &lt;Timeline.Item title=&quot;Works as expected&quot;&gt;
+        &lt;WillWork /&gt;
+      &lt;/Timeline.Item&gt;
+      &lt;Timeline.Item title=&quot;Regular item&quot;&gt;Third item&lt;/Timeline.Item&gt;
+    &lt;/Timeline&gt;
+  );
+}
+</code></pre>

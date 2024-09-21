@@ -1,0 +1,88 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { List } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;List{{props}}&gt;
+      &lt;List.Item&gt;Clone or download repository from GitHub&lt;/List.Item&gt;
+      &lt;List.Item&gt;Install dependencies with yarn&lt;/List.Item&gt;
+      &lt;List.Item&gt;To start development server run npm start command&lt;/List.Item&gt;
+      &lt;List.Item&gt;Run tests to make sure your changes do not break the build&lt;/List.Item&gt;
+      &lt;List.Item&gt;Submit a pull request once you are done&lt;/List.Item&gt;
+    &lt;/List&gt;
+  );
+}
+</code></pre>
+<h2 id="with-icons">With icons</h2>
+<p>You can replace list bullets with icon. To do so provide following props:</p>
+<ul>
+<li><code>icon</code> on List component will be used as default icon for all list elements</li>
+<li><code>icon</code> on List.Item component will override context icon from List</li>
+<li><code>spacing</code> – spacing between list items from theme or any valid CSS value to set spacing, defaults to <code>0</code></li>
+<li><code>center</code> – center item content with icon</li>
+<li><code>size</code> – set font size from theme</li>
+</ul>
+<pre><code>
+import { List, ThemeIcon, rem } from &#39;@mantine/core&#39;;
+import { IconCircleCheck, IconCircleDashed } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;List
+      spacing=&quot;xs&quot;
+      size=&quot;sm&quot;
+      center
+      icon={
+        &lt;ThemeIcon color=&quot;teal&quot; size={24} radius=&quot;xl&quot;&gt;
+          &lt;IconCircleCheck style={{ width: rem(16), height: rem(16) }} /&gt;
+        &lt;/ThemeIcon&gt;
+      }
+    &gt;
+      &lt;List.Item&gt;Clone or download repository from GitHub&lt;/List.Item&gt;
+      &lt;List.Item&gt;Install dependencies with yarn&lt;/List.Item&gt;
+      &lt;List.Item&gt;To start development server run npm start command&lt;/List.Item&gt;
+      &lt;List.Item&gt;Run tests to make sure your changes do not break the build&lt;/List.Item&gt;
+      &lt;List.Item
+        icon={
+          &lt;ThemeIcon color=&quot;blue&quot; size={24} radius=&quot;xl&quot;&gt;
+            &lt;IconCircleDashed style={{ width: rem(16), height: rem(16) }} /&gt;
+          &lt;/ThemeIcon&gt;
+        }
+      &gt;
+        Submit a pull request once you are done
+      &lt;/List.Item&gt;
+    &lt;/List&gt;
+  );
+}
+</code></pre>
+<h2 id="nested-lists">Nested lists</h2>
+<p>Set <code>withPadding</code> prop to offset nested lists and <code>listStyleType</code> to control bullet type:</p>
+<pre><code>
+import { List } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;List listStyleType=&quot;disc&quot;&gt;
+      &lt;List.Item&gt;First order item&lt;/List.Item&gt;
+      &lt;List.Item&gt;First order item&lt;/List.Item&gt;
+      &lt;List.Item&gt;
+        First order item with list
+        &lt;List withPadding listStyleType=&quot;disc&quot;&gt;
+          &lt;List.Item&gt;Nested item&lt;/List.Item&gt;
+          &lt;List.Item&gt;Nested item&lt;/List.Item&gt;
+          &lt;List.Item&gt;
+            Nested item with list
+            &lt;List withPadding listStyleType=&quot;disc&quot;&gt;
+              &lt;List.Item&gt;Event more nested&lt;/List.Item&gt;
+              &lt;List.Item&gt;Event more nested&lt;/List.Item&gt;
+            &lt;/List&gt;
+          &lt;/List.Item&gt;
+          &lt;List.Item&gt;Nested item&lt;/List.Item&gt;
+        &lt;/List&gt;
+      &lt;/List.Item&gt;
+      &lt;List.Item&gt;First order item&lt;/List.Item&gt;
+    &lt;/List&gt;
+  );
+}
+</code></pre>

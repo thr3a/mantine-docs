@@ -1,0 +1,167 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>FloatingIndicator</code> is designed to highlight active element in a group.
+It can be used to create custom segmented controls, tabs and other similar components.</p>
+<p><code>FloatingIndicator</code> renders an element over the <code>target</code> element. To calculate the position it is
+required to pass <code>parent</code> element which has a relative position.</p>
+<p>By default, <code>FloatingIndicator</code> does not have any visible styles. You can use <code>className</code> prop
+or Styles API to apply styles.</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { FloatingIndicator, UnstyledButton } from &#39;@mantine/core&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+const data = [&#39;React&#39;, &#39;Vue&#39;, &#39;Angular&#39;, &#39;Svelte&#39;];
+
+function Demo() {
+  const [rootRef, setRootRef] = useState&lt;HTMLDivElement | null&gt;(null);
+  const [controlsRefs, setControlsRefs] = useState&lt;Record&lt;string, HTMLButtonElement | null&gt;&gt;({});
+  const [active, setActive] = useState(0);
+
+  const setControlRef = (index: number) =&gt; (node: HTMLButtonElement) =&gt; {
+    controlsRefs[index] = node;
+    setControlsRefs(controlsRefs);
+  };
+
+  const controls = data.map((item, index) =&gt; (
+    &lt;UnstyledButton
+      key={item}
+      className={classes.control}
+      ref={setControlRef(index)}
+      onClick={() =&gt; setActive(index)}
+      mod={{ active: active === index }}
+    &gt;
+      &lt;span className={classes.controlLabel}&gt;{item}&lt;/span&gt;
+    &lt;/UnstyledButton&gt;
+  ));
+
+  return (
+    &lt;div className={classes.root} ref={setRootRef}&gt;
+      {controls}
+
+      &lt;FloatingIndicator
+        target={controlsRefs[active]}
+        parent={rootRef}
+        className={classes.indicator}
+      /&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h2 id="multiple-rows">Multiple rows</h2>
+<p><code>FloatingIndicator</code> can be used to highlight active element in a group with multiple rows:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import {
+  IconArrowDown,
+  IconArrowDownLeft,
+  IconArrowDownRight,
+  IconArrowLeft,
+  IconArrowRight,
+  IconArrowUp,
+  IconArrowUpLeft,
+  IconArrowUpRight,
+  IconCircle,
+} from &#39;@tabler/icons-react&#39;;
+import { FloatingIndicator, UnstyledButton } from &#39;@mantine/core&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+function Demo() {
+  const [rootRef, setRootRef] = useState&lt;HTMLDivElement | null&gt;(null);
+  const [controlsRefs, setControlsRefs] = useState&lt;Record&lt;string, HTMLButtonElement | null&gt;&gt;({});
+  const [active, setActive] = useState(&#39;center&#39;);
+
+  const setControlRef = (name: string) =&gt; (node: HTMLButtonElement) =&gt; {
+    controlsRefs[name] = node;
+    setControlsRefs(controlsRefs);
+  };
+
+  return (
+    &lt;div className={classes.root} dir=&quot;ltr&quot; ref={setRootRef}&gt;
+      &lt;FloatingIndicator
+        target={controlsRefs[active]}
+        parent={rootRef}
+        className={classes.indicator}
+      /&gt;
+
+      &lt;div className={classes.controlsGroup}&gt;
+        &lt;UnstyledButton
+          className={classes.control}
+          onClick={() =&gt; setActive(&#39;up-left&#39;)}
+          ref={setControlRef(&#39;up-left&#39;)}
+          mod={{ active: active === &#39;up-left&#39; }}
+        &gt;
+          &lt;IconArrowUpLeft size={26} stroke={1.5} /&gt;
+        &lt;/UnstyledButton&gt;
+        &lt;UnstyledButton
+          className={classes.control}
+          onClick={() =&gt; setActive(&#39;up&#39;)}
+          ref={setControlRef(&#39;up&#39;)}
+          mod={{ active: active === &#39;up&#39; }}
+        &gt;
+          &lt;IconArrowUp size={26} stroke={1.5} /&gt;
+        &lt;/UnstyledButton&gt;
+        &lt;UnstyledButton
+          className={classes.control}
+          onClick={() =&gt; setActive(&#39;up-right&#39;)}
+          ref={setControlRef(&#39;up-right&#39;)}
+          mod={{ active: active === &#39;up-right&#39; }}
+        &gt;
+          &lt;IconArrowUpRight size={26} stroke={1.5} /&gt;
+        &lt;/UnstyledButton&gt;
+      &lt;/div&gt;
+      &lt;div className={classes.controlsGroup}&gt;
+        &lt;UnstyledButton
+          className={classes.control}
+          onClick={() =&gt; setActive(&#39;left&#39;)}
+          ref={setControlRef(&#39;left&#39;)}
+          mod={{ active: active === &#39;left&#39; }}
+        &gt;
+          &lt;IconArrowLeft size={26} stroke={1.5} /&gt;
+        &lt;/UnstyledButton&gt;
+        &lt;UnstyledButton
+          className={classes.control}
+          onClick={() =&gt; setActive(&#39;center&#39;)}
+          ref={setControlRef(&#39;center&#39;)}
+          mod={{ active: active === &#39;center&#39; }}
+        &gt;
+          &lt;IconCircle size={26} stroke={1.5} /&gt;
+        &lt;/UnstyledButton&gt;
+        &lt;UnstyledButton
+          className={classes.control}
+          onClick={() =&gt; setActive(&#39;right&#39;)}
+          ref={setControlRef(&#39;right&#39;)}
+          mod={{ active: active === &#39;right&#39; }}
+        &gt;
+          &lt;IconArrowRight size={26} stroke={1.5} /&gt;
+        &lt;/UnstyledButton&gt;
+      &lt;/div&gt;
+      &lt;div className={classes.controlsGroup}&gt;
+        &lt;UnstyledButton
+          className={classes.control}
+          onClick={() =&gt; setActive(&#39;down-left&#39;)}
+          ref={setControlRef(&#39;down-left&#39;)}
+          mod={{ active: active === &#39;down-left&#39; }}
+        &gt;
+          &lt;IconArrowDownLeft size={26} stroke={1.5} /&gt;
+        &lt;/UnstyledButton&gt;
+        &lt;UnstyledButton
+          className={classes.control}
+          onClick={() =&gt; setActive(&#39;down&#39;)}
+          ref={setControlRef(&#39;down&#39;)}
+          mod={{ active: active === &#39;down&#39; }}
+        &gt;
+          &lt;IconArrowDown size={26} stroke={1.5} /&gt;
+        &lt;/UnstyledButton&gt;
+        &lt;UnstyledButton
+          className={classes.control}
+          onClick={() =&gt; setActive(&#39;down-right&#39;)}
+          ref={setControlRef(&#39;down-right&#39;)}
+          mod={{ active: active === &#39;down-right&#39; }}
+        &gt;
+          &lt;IconArrowDownRight size={26} stroke={1.5} /&gt;
+        &lt;/UnstyledButton&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>

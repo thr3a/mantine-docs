@@ -1,0 +1,178 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Progress } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Progress{{props}} /&gt;;
+}
+</code></pre>
+<h2 id="compound-components">Compound components</h2>
+<pre><code>
+import { Progress } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Progress.Root size=&quot;xl&quot;&gt;
+      &lt;Progress.Section value={35} color=&quot;cyan&quot;&gt;
+        &lt;Progress.Label&gt;Documents&lt;/Progress.Label&gt;
+      &lt;/Progress.Section&gt;
+      &lt;Progress.Section value={28} color=&quot;pink&quot;&gt;
+        &lt;Progress.Label&gt;Photos&lt;/Progress.Label&gt;
+      &lt;/Progress.Section&gt;
+      &lt;Progress.Section value={15} color=&quot;orange&quot;&gt;
+        &lt;Progress.Label&gt;Other&lt;/Progress.Label&gt;
+      &lt;/Progress.Section&gt;
+    &lt;/Progress.Root&gt;
+  );
+}
+</code></pre>
+<h2 id="with-tooltips">With tooltips</h2>
+<pre><code>
+import { Progress, Tooltip } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Progress.Root size={40}&gt;
+      &lt;Tooltip label=&quot;Documents – 33Gb&quot;&gt;
+        &lt;Progress.Section value={33} color=&quot;cyan&quot;&gt;
+          &lt;Progress.Label&gt;Documents&lt;/Progress.Label&gt;
+        &lt;/Progress.Section&gt;
+      &lt;/Tooltip&gt;
+
+      &lt;Tooltip label=&quot;Photos – 28Gb&quot;&gt;
+        &lt;Progress.Section value={28} color=&quot;pink&quot;&gt;
+          &lt;Progress.Label&gt;Photos&lt;/Progress.Label&gt;
+        &lt;/Progress.Section&gt;
+      &lt;/Tooltip&gt;
+
+      &lt;Tooltip label=&quot;Other – 15Gb&quot;&gt;
+        &lt;Progress.Section value={15} color=&quot;orange&quot;&gt;
+          &lt;Progress.Label&gt;Other&lt;/Progress.Label&gt;
+        &lt;/Progress.Section&gt;
+      &lt;/Tooltip&gt;
+    &lt;/Progress.Root&gt;
+  );
+}
+</code></pre>
+<h2 id="section-width-transition">Section width transition</h2>
+<p>Set <code>transitionDuration</code> to a number of ms to enable width transition:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Button, Progress } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState(50);
+  return (
+    &lt;&gt;
+      &lt;Progress value={value} size=&quot;lg&quot; transitionDuration={200} /&gt;
+      &lt;Button onClick={() =&gt; setValue(Math.random() * 100)} mt=&quot;md&quot;&gt;
+        Set random value
+      &lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="example-progress-with-segments">Example: progress with segments</h2>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Group, PasswordInput, Progress } from &#39;@mantine/core&#39;;
+
+const requirements = [
+  { re: /[0-9]/, label: &#39;Includes number&#39; },
+  { re: /[a-z]/, label: &#39;Includes lowercase letter&#39; },
+  { re: /[A-Z]/, label: &#39;Includes uppercase letter&#39; },
+  { re: /[$&amp;+,:;=?@#|&#39;&lt;&gt;.^*()%!-]/, label: &#39;Includes special symbol&#39; },
+];
+
+function getStrength(password: string) {
+  if (password.length &lt; 5) {
+    return 10;
+  }
+
+  let multiplier = password.length &gt; 5 ? 0 : 1;
+
+  requirements.forEach((requirement) =&gt; {
+    if (!requirement.re.test(password)) {
+      multiplier += 1;
+    }
+  });
+
+  return Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 10);
+}
+
+function getStrengthColor(strength: number) {
+  switch (true) {
+    case strength &lt; 30:
+      return &#39;red&#39;;
+    case strength &lt; 50:
+      return &#39;orange&#39;;
+    case strength &lt; 70:
+      return &#39;yellow&#39;;
+    default:
+      return &#39;teal&#39;;
+  }
+}
+
+function Demo() {
+  const [value, setValue] = useState(&#39;&#39;);
+  const strength = getStrength(value);
+  const color = getStrengthColor(strength);
+
+  return (
+    &lt;div&gt;
+      &lt;PasswordInput
+        value={value}
+        onChange={(event) =&gt; setValue(event.currentTarget.value)}
+        placeholder=&quot;Enter password&quot;
+        label=&quot;Enter password&quot;
+      /&gt;
+
+      &lt;Group grow gap={5} mt=&quot;xs&quot;&gt;
+        &lt;Progress
+          size=&quot;xs&quot;
+          color={color}
+          value={value.length &gt; 0 ? 100 : 0}
+          transitionDuration={0}
+        /&gt;
+        &lt;Progress size=&quot;xs&quot; color={color} transitionDuration={0} value={strength &lt; 30 ? 0 : 100} /&gt;
+        &lt;Progress size=&quot;xs&quot; color={color} transitionDuration={0} value={strength &lt; 50 ? 0 : 100} /&gt;
+        &lt;Progress size=&quot;xs&quot; color={color} transitionDuration={0} value={strength &lt; 70 ? 0 : 100} /&gt;
+      &lt;/Group&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Progress } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Progress.Root size=&quot;xl&quot;{{props}}&gt;
+      &lt;Progress.Section value={35}&gt;
+        &lt;Progress.Label&gt;Documents&lt;/Progress.Label&gt;
+      &lt;/Progress.Section&gt;
+    &lt;/Progress.Root&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<ul>
+<li>Progress section has <code>role=&quot;progressbar&quot;</code> attribute</li>
+<li>Progress section has <code>aria-valuenow</code> attribute with current value</li>
+<li><code>aria-valuemin</code> and <code>aria-valuemax</code> attributes are always set to <code>0</code> and <code>100</code> as component does not support other values</li>
+</ul>
+<p>Set <code>aria-label</code> attribute to label progress:</p>
+<pre><code class="language-tsx">import { Progress } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Progress aria-label=&quot;Uploading progress&quot; value={10} /&gt;;
+}
+
+function DemoCompound() {
+  return (
+    &lt;Progress.Root&gt;
+      &lt;Progress.Section aria-label=&quot;Uploading progress&quot; value={10} /&gt;
+    &lt;/Progress.Root&gt;
+  );
+}
+</code></pre>

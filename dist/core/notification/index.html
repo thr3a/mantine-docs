@@ -1,0 +1,58 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p>Notification is a base component for notification system.
+Build your own or use @mantine/notifications package.</p>
+<pre><code>
+import { Notification } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Notification{{props}}&gt;
+      {{children}}
+    &lt;/Notification&gt;
+  );
+}
+</code></pre>
+<h2 id="with-icon">With icon</h2>
+<pre><code>
+import { IconX, IconCheck } from &#39;@tabler/icons-react&#39;;
+import { Notification, rem } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const xIcon = &lt;IconX style={{ width: rem(20), height: rem(20) }} /&gt;;
+  const checkIcon = &lt;IconCheck style={{ width: rem(20), height: rem(20) }} /&gt;;
+
+  return (
+    &lt;&gt;
+      &lt;Notification icon={xIcon} color=&quot;red&quot; title=&quot;Bummer!&quot;&gt;
+        Something went wrong
+      &lt;/Notification&gt;
+      &lt;Notification icon={checkIcon} color=&quot;teal&quot; title=&quot;All good!&quot; mt=&quot;md&quot;&gt;
+        Everything is fine
+      &lt;/Notification&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Notification } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Notification{{props}} title=&quot;We notify you that&quot;&gt;
+      You are now obligated to give a star to Mantine project on GitHub
+    &lt;/Notification&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p>To support screen readers, set close button aria-label or title with <code>closeButtonProps</code>:</p>
+<pre><code class="language-tsx">import { Notification } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Notification
+      closeButtonProps={{ &#39;aria-label&#39;: &#39;Hide notification&#39; }}
+    /&gt;
+  );
+}
+</code></pre>

@@ -1,0 +1,31 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Fieldset, TextInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Fieldset legend=&quot;Personal information&quot;{{props}}&gt;
+      &lt;TextInput label=&quot;Your name&quot; placeholder=&quot;Your name&quot; /&gt;
+      &lt;TextInput label=&quot;Email&quot; placeholder=&quot;Email&quot; mt=&quot;md&quot; /&gt;
+    &lt;/Fieldset&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled">Disabled</h2>
+<p>Set <code>disabled</code> prop to disable all inputs and buttons inside the fieldset:</p>
+<pre><code>
+import { Fieldset, TextInput, Button, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Fieldset legend=&quot;Personal information&quot; disabled&gt;
+      &lt;TextInput label=&quot;Your name&quot; placeholder=&quot;Your name&quot; /&gt;
+      &lt;TextInput label=&quot;Email&quot; placeholder=&quot;Email&quot; mt=&quot;md&quot; /&gt;
+
+      &lt;Group justify=&quot;flex-end&quot; mt=&quot;md&quot;&gt;
+        &lt;Button&gt;Submit&lt;/Button&gt;
+      &lt;/Group&gt;
+    &lt;/Fieldset&gt;
+  );
+}
+</code></pre>

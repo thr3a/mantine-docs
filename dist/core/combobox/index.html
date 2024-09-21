@@ -1,0 +1,1117 @@
+<!DOCTYPE html><h2 id="examples">Examples</h2>
+<p>This page contains only a small set of examples, as the full code of the demos is long.
+You can find all 50+ examples on a separate page.</p>
+<h2 id="usage">Usage</h2>
+<p><code>Combobox</code> provides a set of components and hooks to custom select, multiselect or autocomplete components.
+The component is very flexible – you have full control of the rendering and logic.</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Input, InputBase, Combobox, useCombobox } from &#39;@mantine/core&#39;;
+
+const groceries = [&#39;🍎 Apples&#39;, &#39;🍌 Bananas&#39;, &#39;🥦 Broccoli&#39;, &#39;🥕 Carrots&#39;, &#39;🍫 Chocolate&#39;];
+
+function Demo() {
+  const combobox = useCombobox({
+    onDropdownClose: () =&gt; combobox.resetSelectedOption(),
+  });
+
+  const [value, setValue] = useState&lt;string | null&gt;(null);
+
+  const options = groceries.map((item) =&gt; (
+    &lt;Combobox.Option value={item} key={item}&gt;
+      {item}
+    &lt;/Combobox.Option&gt;
+  ));
+
+  return (
+    &lt;Combobox
+      store={combobox}
+      onOptionSubmit={(val) =&gt; {
+        setValue(val);
+        combobox.closeDropdown();
+      }}
+    &gt;
+      &lt;Combobox.Target&gt;
+        &lt;InputBase
+          component=&quot;button&quot;
+          type=&quot;button&quot;
+          pointer
+          rightSection={&lt;Combobox.Chevron /&gt;}
+          rightSectionPointerEvents=&quot;none&quot;
+          onClick={() =&gt; combobox.toggleDropdown()}
+        &gt;
+          {value || &lt;Input.Placeholder&gt;Pick value&lt;/Input.Placeholder&gt;}
+        &lt;/InputBase&gt;
+      &lt;/Combobox.Target&gt;
+
+      &lt;Combobox.Dropdown&gt;
+        &lt;Combobox.Options&gt;{options}&lt;/Combobox.Options&gt;
+      &lt;/Combobox.Dropdown&gt;
+    &lt;/Combobox&gt;
+  );
+}
+</code></pre>
+<h2 id="usecombobox-hook">useCombobox hook</h2>
+<p><code>useCombobox</code> hook provides combobox store. The store contains the current state of the component
+and handlers to update it. Created store must be passed to the <code>store</code> prop of <code>Combobox</code>:</p>
+<pre><code class="language-tsx">import { Combobox, useCombobox } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const combobox = useCombobox();
+  return (
+    &lt;Combobox store={combobox}&gt;{/* Your implementation */}&lt;/Combobox&gt;
+  );
+}
+</code></pre>
+<h2 id="usecombobox-options">useCombobox options</h2>
+<p><code>useCombobox</code> hooks accepts an options object with the following properties:</p>
+<pre><code class="language-tsx">interface UseComboboxOptions {
+  /** Default value for `dropdownOpened`, `false` by default */
+  defaultOpened?: boolean;
+
+  /** Controlled `dropdownOpened` state */
+  opened?: boolean;
+
+  /** Called when `dropdownOpened` state changes */
+  onOpenedChange?(opened: boolean): void;
+
+  /** Called when dropdown closes with event source: keyboard, mouse or unknown */
+  onDropdownClose?(eventSource: ComboboxDropdownEventSource): void;
+
+  /** Called when dropdown opens with event source: keyboard, mouse or unknown */
+  onDropdownOpen?(eventSource: ComboboxDropdownEventSource): void;
+
+  /** Determines whether arrow key presses should loop though items (first to last and last to first), `true` by default */
+  loop?: boolean;
+
+  /** `behavior` passed down to `element.scrollIntoView`, `&#39;instant&#39;` by default */
+  scrollBehavior?: ScrollBehavior;
+}
+</code></pre>
+<p>You can import <code>UseComboboxOptions</code> type from <code>@mantine/core</code> package:</p>
+<pre><code class="language-tsx">import type { UseComboboxOptions } from &#39;@mantine/core&#39;;
+</code></pre>
+<h2 id="combobox-store">Combobox store</h2>
+<p>Combobox store is an object with the following properties:</p>
+<pre><code class="language-tsx">interface ComboboxStore {
+  /** Current dropdown opened state */
+  dropdownOpened: boolean;
+
+  /** Opens dropdown */
+  openDropdown(eventSource?: &#39;keyboard&#39; | &#39;mouse&#39; | &#39;unknown&#39;): void;
+
+  /** Closes dropdown */
+  closeDropdown(eventSource?: &#39;keyboard&#39; | &#39;mouse&#39; | &#39;unknown&#39;): void;
+
+  /** Toggles dropdown opened state */
+  toggleDropdown(
+    eventSource?: &#39;keyboard&#39; | &#39;mouse&#39; | &#39;unknown&#39;
+  ): void;
+
+  /** Selected option index */
+  selectedOptionIndex: number;
+
+  /** Selects `Combobox.Option` by index */
+  selectOption(index: number): void;
+
+  /** Selects first `Combobox.Option` with `active` prop.
+   *  If there are no such options, the function does nothing.
+   */
+  selectActiveOption(): string | null;
+
+  /** Selects first `Combobox.Option` that is not disabled.
+   *  If there are no such options, the function does nothing.
+   * */
+  selectFirstOption(): string | null;
+
+  /** Selects next `Combobox.Option` that is not disabled.
+   *  If the current option is the last one, the function selects first option, if `loop` is true.
+   */
+  selectNextOption(): string | null;
+
+  /** Selects previous `Combobox.Option` that is not disabled.
+   *  If the current option is the first one, the function selects last option, if `loop` is true.
+   * */
+  selectPreviousOption(): string | null;
+
+  /** Resets selected option index to -1, removes `data-combobox-selected` from selected option */
+  resetSelectedOption(): void;
+
+  /** Triggers `onClick` event of selected option.
+   *  If there is no selected option, the function does nothing.
+   */
+  clickSelectedOption(): void;
+
+  /** Updates selected option index to currently selected or active option.
+   *  The function is required to be used with searchable components to update selected option index
+   *  when options list changes based on search query.
+   */
+  updateSelectedOptionIndex(target?: &#39;active&#39; | &#39;selected&#39;): void;
+
+  /** List id, used for `aria-*` attributes */
+  listId: string | null;
+
+  /** Sets list id */
+  setListId(id: string): void;
+
+  /** Ref of `Combobox.Search` input */
+  searchRef: React.MutableRefObject&lt;HTMLInputElement | null&gt;;
+
+  /** Moves focus to `Combobox.Search` input */
+  focusSearchInput(): void;
+
+  /** Ref of the target element */
+  targetRef: React.MutableRefObject&lt;HTMLElement | null&gt;;
+
+  /** Moves focus to the target element */
+  focusTarget(): void;
+}
+</code></pre>
+<p>You can import <code>ComboboxStore</code> type from <code>@mantine/core</code> package:</p>
+<pre><code class="language-tsx">import type { ComboboxStore } from &#39;@mantine/core&#39;;
+</code></pre>
+<h2 id="usecombobox-handlers">useCombobox handlers</h2>
+<p>Combobox store handlers can be used to control <code>Combobox</code> state.
+For example, to open the dropdown, call <code>openDropdown</code> handler:</p>
+<pre><code class="language-tsx">import { Button, Combobox, useCombobox } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const combobox = useCombobox();
+
+  return (
+    &lt;Combobox&gt;
+      &lt;Combobox.Target&gt;
+        &lt;Button onClick={() =&gt; combobox.openDropdown()}&gt;
+          Open dropdown
+        &lt;/Button&gt;
+      &lt;/Combobox.Target&gt;
+
+      {/* Your implementation */}
+    &lt;/Combobox&gt;
+  );
+}
+</code></pre>
+<p>You can use store handlers in <code>useCombobox</code> options. For example, you can
+call <code>selectFirstOption</code> when the dropdown is opened and <code>resetSelectedOption</code>
+when it is closed:</p>
+<pre><code class="language-tsx">import { Combobox, useCombobox } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const combobox = useCombobox({
+    onDropdownOpen: () =&gt; combobox.selectFirstOption(),
+    onDropdownClose: () =&gt; combobox.resetSelectedOption(),
+  });
+
+  return (
+    &lt;Combobox store={combobox}&gt;{/* Your implementation */}&lt;/Combobox&gt;
+  );
+}
+</code></pre>
+<h2 id="comboboxtarget">Combobox.Target</h2>
+<p><code>Combobox.Target</code> should be used as a wrapper for the target element or component.
+<code>Combobox.Target</code> marks its child as a target for dropdown and sets <code>aria-*</code> attributes
+and adds keyboard event listeners to it.</p>
+<p><code>Combobox.Target</code> requires a single child element or component. The child component
+must accept <code>ref</code> and <code>...others</code> props. You can use any Mantine component as a target without
+any additional configuration, for example, Button, TextInput
+or InputBase.</p>
+<p>Example of using <code>Combobox.Target</code> with TextInput component:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Combobox, TextInput, useCombobox } from &#39;@mantine/core&#39;;
+
+const groceries = [&#39;🍎 Apples&#39;, &#39;🍌 Bananas&#39;, &#39;🥦 Broccoli&#39;, &#39;🥕 Carrots&#39;, &#39;🍫 Chocolate&#39;];
+
+function Demo() {
+  const combobox = useCombobox();
+  const [value, setValue] = useState(&#39;&#39;);
+  const shouldFilterOptions = !groceries.some((item) =&gt; item === value);
+  const filteredOptions = shouldFilterOptions
+    ? groceries.filter((item) =&gt; item.toLowerCase().includes(value.toLowerCase().trim()))
+    : groceries;
+
+  const options = filteredOptions.map((item) =&gt; (
+    &lt;Combobox.Option value={item} key={item}&gt;
+      {item}
+    &lt;/Combobox.Option&gt;
+  ));
+
+  return (
+    &lt;Combobox
+      onOptionSubmit={(optionValue) =&gt; {
+        setValue(optionValue);
+        combobox.closeDropdown();
+      }}
+      store={combobox}
+    &gt;
+      &lt;Combobox.Target&gt;
+        &lt;TextInput
+          label=&quot;Pick value or type anything&quot;
+          placeholder=&quot;Pick value or type anything&quot;
+          value={value}
+          onChange={(event) =&gt; {
+            setValue(event.currentTarget.value);
+            combobox.openDropdown();
+            combobox.updateSelectedOptionIndex();
+          }}
+          onClick={() =&gt; combobox.openDropdown()}
+          onFocus={() =&gt; combobox.openDropdown()}
+          onBlur={() =&gt; combobox.closeDropdown()}
+        /&gt;
+      &lt;/Combobox.Target&gt;
+
+      &lt;Combobox.Dropdown&gt;
+        &lt;Combobox.Options&gt;
+          {options.length === 0 ? &lt;Combobox.Empty&gt;Nothing found&lt;/Combobox.Empty&gt; : options}
+        &lt;/Combobox.Options&gt;
+      &lt;/Combobox.Dropdown&gt;
+    &lt;/Combobox&gt;
+  );
+}
+</code></pre>
+<p>Example of using <code>Combobox.Target</code> with Button component:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Button, Combobox, useCombobox, Text, Box } from &#39;@mantine/core&#39;;
+
+const groceries = [&#39;🍎 Apples&#39;, &#39;🍌 Bananas&#39;, &#39;🥦 Broccoli&#39;, &#39;🥕 Carrots&#39;, &#39;🍫 Chocolate&#39;];
+
+function Demo() {
+  const [selectedItem, setSelectedItem] = useState&lt;string | null&gt;(null);
+  const combobox = useCombobox({
+    onDropdownClose: () =&gt; combobox.resetSelectedOption(),
+  });
+
+  const options = groceries.map((item) =&gt; (
+    &lt;Combobox.Option value={item} key={item}&gt;
+      {item}
+    &lt;/Combobox.Option&gt;
+  ));
+
+  return (
+    &lt;&gt;
+      &lt;Box mb=&quot;xs&quot;&gt;
+        &lt;Text span size=&quot;sm&quot; c=&quot;dimmed&quot;&gt;
+          Selected item:{&#39; &#39;}
+        &lt;/Text&gt;
+
+        &lt;Text span size=&quot;sm&quot;&gt;
+          {selectedItem || &#39;Nothing selected&#39;}
+        &lt;/Text&gt;
+      &lt;/Box&gt;
+
+      &lt;Combobox
+        store={combobox}
+        width={250}
+        position=&quot;bottom-start&quot;
+        withArrow
+        onOptionSubmit={(val) =&gt; {
+          setSelectedItem(val);
+          combobox.closeDropdown();
+        }}
+      &gt;
+        &lt;Combobox.Target&gt;
+          &lt;Button onClick={() =&gt; combobox.toggleDropdown()}&gt;Pick item&lt;/Button&gt;
+        &lt;/Combobox.Target&gt;
+
+        &lt;Combobox.Dropdown&gt;
+          &lt;Combobox.Options&gt;{options}&lt;/Combobox.Options&gt;
+        &lt;/Combobox.Dropdown&gt;
+      &lt;/Combobox&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="split-events-and-dropdown-targets">Split events and dropdown targets</h2>
+<p>In some cases, you might need to use different elements as an events target and as a dropdown.
+Use <code>Combobox.EventsTarget</code> to add <code>aria-*</code> attributes and keyboard event handlers, and
+<code>Combobox.DropdownTarget</code> to position the dropdown relative to the target.</p>
+<p>You can have as many <code>Combobox.EventsTarget</code> as you need, but only one <code>Combobox.DropdownTarget</code>
+per <code>Combobox</code>.</p>
+<p>Example of using <code>Combobox.EventsTarget</code> and <code>Combobox.DropdownTarget</code> with PillsInput component
+to create a searchable multiselect component:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { PillsInput, Pill, Combobox, CheckIcon, Group, useCombobox } from &#39;@mantine/core&#39;;
+
+const groceries = [&#39;🍎 Apples&#39;, &#39;🍌 Bananas&#39;, &#39;🥦 Broccoli&#39;, &#39;🥕 Carrots&#39;, &#39;🍫 Chocolate&#39;];
+
+function Demo() {
+  const combobox = useCombobox({
+    onDropdownClose: () =&gt; combobox.resetSelectedOption(),
+    onDropdownOpen: () =&gt; combobox.updateSelectedOptionIndex(&#39;active&#39;),
+  });
+
+  const [search, setSearch] = useState(&#39;&#39;);
+  const [value, setValue] = useState&lt;string[]&gt;([]);
+
+  const handleValueSelect = (val: string) =&gt;
+    setValue((current) =&gt;
+      current.includes(val) ? current.filter((v) =&gt; v !== val) : [...current, val]
+    );
+
+  const handleValueRemove = (val: string) =&gt;
+    setValue((current) =&gt; current.filter((v) =&gt; v !== val));
+
+  const values = value.map((item) =&gt; (
+    &lt;Pill key={item} withRemoveButton onRemove={() =&gt; handleValueRemove(item)}&gt;
+      {item}
+    &lt;/Pill&gt;
+  ));
+
+  const options = groceries
+    .filter((item) =&gt; item.toLowerCase().includes(search.trim().toLowerCase()))
+    .map((item) =&gt; (
+      &lt;Combobox.Option value={item} key={item} active={value.includes(item)}&gt;
+        &lt;Group gap=&quot;sm&quot;&gt;
+          {value.includes(item) ? &lt;CheckIcon size={12} /&gt; : null}
+          &lt;span&gt;{item}&lt;/span&gt;
+        &lt;/Group&gt;
+      &lt;/Combobox.Option&gt;
+    ));
+
+  return (
+    &lt;Combobox store={combobox} onOptionSubmit={handleValueSelect}&gt;
+      &lt;Combobox.DropdownTarget&gt;
+        &lt;PillsInput onClick={() =&gt; combobox.openDropdown()}&gt;
+          &lt;Pill.Group&gt;
+            {values}
+
+            &lt;Combobox.EventsTarget&gt;
+              &lt;PillsInput.Field
+                onFocus={() =&gt; combobox.openDropdown()}
+                onBlur={() =&gt; combobox.closeDropdown()}
+                value={search}
+                placeholder=&quot;Search values&quot;
+                onChange={(event) =&gt; {
+                  combobox.updateSelectedOptionIndex();
+                  setSearch(event.currentTarget.value);
+                }}
+                onKeyDown={(event) =&gt; {
+                  if (event.key === &#39;Backspace&#39; &amp;&amp; search.length === 0) {
+                    event.preventDefault();
+                    handleValueRemove(value[value.length - 1]);
+                  }
+                }}
+              /&gt;
+            &lt;/Combobox.EventsTarget&gt;
+          &lt;/Pill.Group&gt;
+        &lt;/PillsInput&gt;
+      &lt;/Combobox.DropdownTarget&gt;
+
+      &lt;Combobox.Dropdown&gt;
+        &lt;Combobox.Options&gt;
+          {options.length &gt; 0 ? options : &lt;Combobox.Empty&gt;Nothing found...&lt;/Combobox.Empty&gt;}
+        &lt;/Combobox.Options&gt;
+      &lt;/Combobox.Dropdown&gt;
+    &lt;/Combobox&gt;
+  );
+}
+</code></pre>
+<h2 id="update-selected-option-index">Update selected option index</h2>
+<p><code>updateSelectedOptionIndex</code> handler is required to be called when options list changes.
+Usually, the options list changes when options are filtered based on the search query. In this case,
+you need to call <code>updateSelectedOptionIndex</code> in <code>onChange</code> handler of the search input.</p>
+<p>Example of using <code>updateSelectedOptionIndex</code> handler in searchable select component:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { InputBase, Combobox, useCombobox } from &#39;@mantine/core&#39;;
+
+const groceries = [&#39;🍎 Apples&#39;, &#39;🍌 Bananas&#39;, &#39;🥦 Broccoli&#39;, &#39;🥕 Carrots&#39;, &#39;🍫 Chocolate&#39;];
+
+function Demo() {
+  const combobox = useCombobox({
+    onDropdownClose: () =&gt; combobox.resetSelectedOption(),
+  });
+
+  const [value, setValue] = useState&lt;string | null&gt;(null);
+  const [search, setSearch] = useState(&#39;&#39;);
+
+  const shouldFilterOptions = groceries.every((item) =&gt; item !== search);
+  const filteredOptions = shouldFilterOptions
+    ? groceries.filter((item) =&gt; item.toLowerCase().includes(search.toLowerCase().trim()))
+    : groceries;
+
+  const options = filteredOptions.map((item) =&gt; (
+    &lt;Combobox.Option value={item} key={item}&gt;
+      {item}
+    &lt;/Combobox.Option&gt;
+  ));
+
+  return (
+    &lt;Combobox
+      store={combobox}
+      onOptionSubmit={(val) =&gt; {
+        setValue(val);
+        setSearch(val);
+        combobox.closeDropdown();
+      }}
+    &gt;
+      &lt;Combobox.Target&gt;
+        &lt;InputBase
+          rightSection={&lt;Combobox.Chevron /&gt;}
+          rightSectionPointerEvents=&quot;none&quot;
+          onClick={() =&gt; combobox.openDropdown()}
+          onFocus={() =&gt; combobox.openDropdown()}
+          onBlur={() =&gt; {
+            combobox.closeDropdown();
+            setSearch(value || &#39;&#39;);
+          }}
+          placeholder=&quot;Search value&quot;
+          value={search}
+          onChange={(event) =&gt; {
+            combobox.updateSelectedOptionIndex();
+            setSearch(event.currentTarget.value);
+          }}
+        /&gt;
+      &lt;/Combobox.Target&gt;
+
+      &lt;Combobox.Dropdown&gt;
+        &lt;Combobox.Options&gt;
+          {options.length &gt; 0 ? options : &lt;Combobox.Empty&gt;Nothing found&lt;/Combobox.Empty&gt;}
+        &lt;/Combobox.Options&gt;
+      &lt;/Combobox.Dropdown&gt;
+    &lt;/Combobox&gt;
+  );
+}
+</code></pre>
+<h2 id="search-input">Search input</h2>
+<p>If you prefer search input inside the dropdown, use <code>Combobox.Search</code> component.
+To focus the search input, call <code>combobox.focusSearchInput</code>, usually it is done
+when the dropdown is opened. To prevent focus loss after the dropdown is closed,
+call <code>combobox.focusTarget</code>:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Button, Combobox, useCombobox, Text, Box } from &#39;@mantine/core&#39;;
+
+const groceries = [&#39;🍎 Apples&#39;, &#39;🍌 Bananas&#39;, &#39;🥦 Broccoli&#39;, &#39;🥕 Carrots&#39;, &#39;🍫 Chocolate&#39;];
+
+function Demo() {
+  const [search, setSearch] = useState(&#39;&#39;);
+  const [selectedItem, setSelectedItem] = useState&lt;string | null&gt;(null);
+  const combobox = useCombobox({
+    onDropdownClose: () =&gt; {
+      combobox.resetSelectedOption();
+      combobox.focusTarget();
+      setSearch(&#39;&#39;);
+    },
+
+    onDropdownOpen: () =&gt; {
+      combobox.focusSearchInput();
+    },
+  });
+
+  const options = groceries
+    .filter((item) =&gt; item.toLowerCase().includes(search.toLowerCase().trim()))
+    .map((item) =&gt; (
+      &lt;Combobox.Option value={item} key={item}&gt;
+        {item}
+      &lt;/Combobox.Option&gt;
+    ));
+
+  return (
+    &lt;&gt;
+      &lt;Box mb=&quot;xs&quot;&gt;
+        &lt;Text span size=&quot;sm&quot; c=&quot;dimmed&quot;&gt;
+          Selected item:{&#39; &#39;}
+        &lt;/Text&gt;
+
+        &lt;Text span size=&quot;sm&quot;&gt;
+          {selectedItem || &#39;Nothing selected&#39;}
+        &lt;/Text&gt;
+      &lt;/Box&gt;
+
+      &lt;Combobox
+        store={combobox}
+        width={250}
+        position=&quot;bottom-start&quot;
+        withArrow
+        onOptionSubmit={(val) =&gt; {
+          setSelectedItem(val);
+          combobox.closeDropdown();
+        }}
+      &gt;
+        &lt;Combobox.Target withAriaAttributes={false}&gt;
+          &lt;Button onClick={() =&gt; combobox.toggleDropdown()}&gt;Pick item&lt;/Button&gt;
+        &lt;/Combobox.Target&gt;
+
+        &lt;Combobox.Dropdown&gt;
+          &lt;Combobox.Search
+            value={search}
+            onChange={(event) =&gt; setSearch(event.currentTarget.value)}
+            placeholder=&quot;Search groceries&quot;
+          /&gt;
+          &lt;Combobox.Options&gt;
+            {options.length &gt; 0 ? options : &lt;Combobox.Empty&gt;Nothing found&lt;/Combobox.Empty&gt;}
+          &lt;/Combobox.Options&gt;
+        &lt;/Combobox.Dropdown&gt;
+      &lt;/Combobox&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="select-first-option">Select first option</h2>
+<p>Use <code>combobox.selectFirstOption</code> function to select the first option. It is useful
+if you want to select the first option when user searching for options in the list.
+If there are no options available, it will do nothing.</p>
+<pre><code>
+import { useState, useEffect } from &#39;react&#39;;
+import { Combobox, TextInput, useCombobox } from &#39;@mantine/core&#39;;
+
+const groceries = [&#39;🍎 Apples&#39;, &#39;🍌 Bananas&#39;, &#39;🥦 Broccoli&#39;, &#39;🥕 Carrots&#39;, &#39;🍫 Chocolate&#39;];
+
+function Demo() {
+  const combobox = useCombobox({
+    onDropdownClose: () =&gt; combobox.resetSelectedOption(),
+  });
+
+  const [value, setValue] = useState(&#39;&#39;);
+  const shouldFilterOptions = !groceries.some((item) =&gt; item === value);
+  const filteredOptions = shouldFilterOptions
+    ? groceries.filter((item) =&gt; item.toLowerCase().includes(value.toLowerCase().trim()))
+    : groceries;
+
+  const options = filteredOptions.map((item) =&gt; (
+    &lt;Combobox.Option value={item} key={item}&gt;
+      {item}
+    &lt;/Combobox.Option&gt;
+  ));
+
+  useEffect(() =&gt; {
+    // we need to wait for options to render before we can select first one
+    combobox.selectFirstOption();
+  }, [value]);
+
+  return (
+    &lt;Combobox
+      onOptionSubmit={(optionValue) =&gt; {
+        setValue(optionValue);
+        combobox.closeDropdown();
+      }}
+      store={combobox}
+    &gt;
+      &lt;Combobox.Target&gt;
+        &lt;TextInput
+          label=&quot;Pick value or type anything&quot;
+          placeholder=&quot;Pick value or type anything&quot;
+          value={value}
+          onChange={(event) =&gt; {
+            setValue(event.currentTarget.value);
+            combobox.openDropdown();
+          }}
+          onClick={() =&gt; combobox.openDropdown()}
+          onFocus={() =&gt; combobox.openDropdown()}
+          onBlur={() =&gt; combobox.closeDropdown()}
+        /&gt;
+      &lt;/Combobox.Target&gt;
+
+      &lt;Combobox.Dropdown&gt;
+        &lt;Combobox.Options&gt;
+          {options.length === 0 ? &lt;Combobox.Empty&gt;Nothing found&lt;/Combobox.Empty&gt; : options}
+        &lt;/Combobox.Options&gt;
+      &lt;/Combobox.Dropdown&gt;
+    &lt;/Combobox&gt;
+  );
+}
+</code></pre>
+<h2 id="active-option">Active option</h2>
+<p>Set <code>active</code> prop on <code>Combobox.Option</code> component to mark it as active.
+By default, an active option does not have any styles, you can use <code>data-combobox-active</code>
+data attribute to style it.</p>
+<p><code>combobox.selectActiveOption</code> function selects active option. Usually, it is called
+when the dropdown is opened:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Input, InputBase, Combobox, useCombobox, CheckIcon, Group } from &#39;@mantine/core&#39;;
+
+const groceries = [&#39;🍎 Apples&#39;, &#39;🍌 Bananas&#39;, &#39;🥦 Broccoli&#39;, &#39;🥕 Carrots&#39;, &#39;🍫 Chocolate&#39;];
+
+function Demo() {
+  const combobox = useCombobox({
+    onDropdownClose: () =&gt; combobox.resetSelectedOption(),
+    onDropdownOpen: (eventSource) =&gt; {
+      if (eventSource === &#39;keyboard&#39;) {
+        combobox.selectActiveOption();
+      } else {
+        combobox.updateSelectedOptionIndex(&#39;active&#39;);
+      }
+    },
+  });
+
+  const [value, setValue] = useState&lt;string | null&gt;(&#39;🥦 Broccoli&#39;);
+
+  const options = groceries.map((item) =&gt; (
+    &lt;Combobox.Option value={item} key={item} active={item === value}&gt;
+      &lt;Group gap=&quot;xs&quot;&gt;
+        {item === value &amp;&amp; &lt;CheckIcon size={12} /&gt;}
+        &lt;span&gt;{item}&lt;/span&gt;
+      &lt;/Group&gt;
+    &lt;/Combobox.Option&gt;
+  ));
+
+  return (
+    &lt;Combobox
+      store={combobox}
+      resetSelectionOnOptionHover
+      onOptionSubmit={(val) =&gt; {
+        setValue(val);
+        combobox.updateSelectedOptionIndex(&#39;active&#39;);
+      }}
+    &gt;
+      &lt;Combobox.Target targetType=&quot;button&quot;&gt;
+        &lt;InputBase
+          component=&quot;button&quot;
+          type=&quot;button&quot;
+          pointer
+          rightSection={&lt;Combobox.Chevron /&gt;}
+          rightSectionPointerEvents=&quot;none&quot;
+          onClick={() =&gt; combobox.toggleDropdown()}
+        &gt;
+          {value || &lt;Input.Placeholder&gt;Pick value&lt;/Input.Placeholder&gt;}
+        &lt;/InputBase&gt;
+      &lt;/Combobox.Target&gt;
+
+      &lt;Combobox.Dropdown&gt;
+        &lt;Combobox.Options&gt;{options}&lt;/Combobox.Options&gt;
+      &lt;/Combobox.Dropdown&gt;
+    &lt;/Combobox&gt;
+  );
+}
+</code></pre>
+<h2 id="options-groups">Options groups</h2>
+<p>Render <code>Combobox.Option</code> components inside <code>Combobox.Group</code> to create options group.
+<code>Combobox.Group</code> label will be automatically hidden if the group does not have any
+children.</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Input, InputBase, Combobox, useCombobox } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const combobox = useCombobox({
+    onDropdownClose: () =&gt; combobox.resetSelectedOption(),
+  });
+
+  const [value, setValue] = useState&lt;string | null&gt;(null);
+
+  return (
+    &lt;Combobox
+      store={combobox}
+      onOptionSubmit={(val) =&gt; {
+        setValue(val);
+        combobox.closeDropdown();
+      }}
+    &gt;
+      &lt;Combobox.Target&gt;
+        &lt;InputBase
+          component=&quot;button&quot;
+          type=&quot;button&quot;
+          pointer
+          rightSection={&lt;Combobox.Chevron /&gt;}
+          rightSectionPointerEvents=&quot;none&quot;
+          onClick={() =&gt; combobox.toggleDropdown()}
+        &gt;
+          {value || &lt;Input.Placeholder&gt;Pick value&lt;/Input.Placeholder&gt;}
+        &lt;/InputBase&gt;
+      &lt;/Combobox.Target&gt;
+
+      &lt;Combobox.Dropdown&gt;
+        &lt;Combobox.Options&gt;
+          &lt;Combobox.Group label=&quot;Fruits&quot;&gt;
+            &lt;Combobox.Option value=&quot;🍎 Apples&quot;&gt;🍎 Apples&lt;/Combobox.Option&gt;
+            &lt;Combobox.Option value=&quot;🍌 Bananas&quot;&gt;🍌 Bananas&lt;/Combobox.Option&gt;
+            &lt;Combobox.Option value=&quot;🍇 Grape&quot;&gt;🍇 Grape&lt;/Combobox.Option&gt;
+          &lt;/Combobox.Group&gt;
+
+          &lt;Combobox.Group label=&quot;Vegetables&quot;&gt;
+            &lt;Combobox.Option value=&quot;🥦 Broccoli&quot;&gt;🥦 Broccoli&lt;/Combobox.Option&gt;
+            &lt;Combobox.Option value=&quot;🥕 Carrots&quot;&gt;🥕 Carrots&lt;/Combobox.Option&gt;
+            &lt;Combobox.Option value=&quot;🥬 Lettuce&quot;&gt;🥬 Lettuce&lt;/Combobox.Option&gt;
+          &lt;/Combobox.Group&gt;
+        &lt;/Combobox.Options&gt;
+      &lt;/Combobox.Dropdown&gt;
+    &lt;/Combobox&gt;
+  );
+}
+</code></pre>
+<h2 id="scrollable-list">Scrollable list</h2>
+<p>Set <code>max-height</code> style on either <code>Combobox.Dropdown</code> or <code>Combobox.Options</code> to make the
+options list scrollable. You can use <code>mah</code> style prop to set
+<code>max-height</code>.</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Input, InputBase, Combobox, useCombobox } from &#39;@mantine/core&#39;;
+
+const groceries = [
+  &#39;🍎 Apples&#39;,
+  &#39;🍌 Bananas&#39;,
+  &#39;🥦 Broccoli&#39;,
+  &#39;🥕 Carrots&#39;,
+  &#39;🍫 Chocolate&#39;,
+  &#39;🍇 Grapes&#39;,
+  &#39;🍋 Lemon&#39;,
+  &#39;🥬 Lettuce&#39;,
+  &#39;🍄 Mushrooms&#39;,
+  &#39;🍊 Oranges&#39;,
+  &#39;🥔 Potatoes&#39;,
+  &#39;🍅 Tomatoes&#39;,
+  &#39;🥚 Eggs&#39;,
+  &#39;🥛 Milk&#39;,
+  &#39;🍞 Bread&#39;,
+  &#39;🍗 Chicken&#39;,
+  &#39;🍔 Hamburger&#39;,
+  &#39;🧀 Cheese&#39;,
+  &#39;🥩 Steak&#39;,
+  &#39;🍟 French Fries&#39;,
+  &#39;🍕 Pizza&#39;,
+  &#39;🥦 Cauliflower&#39;,
+  &#39;🥜 Peanuts&#39;,
+  &#39;🍦 Ice Cream&#39;,
+  &#39;🍯 Honey&#39;,
+  &#39;🥖 Baguette&#39;,
+  &#39;🍣 Sushi&#39;,
+  &#39;🥝 Kiwi&#39;,
+  &#39;🍓 Strawberries&#39;,
+];
+
+function Demo() {
+  const combobox = useCombobox({
+    onDropdownClose: () =&gt; combobox.resetSelectedOption(),
+  });
+
+  const [value, setValue] = useState&lt;string | null&gt;(null);
+
+  const options = groceries.map((item) =&gt; (
+    &lt;Combobox.Option value={item} key={item}&gt;
+      {item}
+    &lt;/Combobox.Option&gt;
+  ));
+
+  return (
+    &lt;Combobox
+      store={combobox}
+      onOptionSubmit={(val) =&gt; {
+        setValue(val);
+        combobox.closeDropdown();
+      }}
+    &gt;
+      &lt;Combobox.Target&gt;
+        &lt;InputBase
+          component=&quot;button&quot;
+          type=&quot;button&quot;
+          pointer
+          rightSection={&lt;Combobox.Chevron /&gt;}
+          rightSectionPointerEvents=&quot;none&quot;
+          onClick={() =&gt; combobox.toggleDropdown()}
+        &gt;
+          {value || &lt;Input.Placeholder&gt;Pick value&lt;/Input.Placeholder&gt;}
+        &lt;/InputBase&gt;
+      &lt;/Combobox.Target&gt;
+
+      &lt;Combobox.Dropdown&gt;
+        &lt;Combobox.Options mah={200} style={{ overflowY: &#39;auto&#39; }}&gt;
+          {options}
+        &lt;/Combobox.Options&gt;
+      &lt;/Combobox.Dropdown&gt;
+    &lt;/Combobox&gt;
+  );
+}
+</code></pre>
+<h2 id="scrollable-list-with-scrollarea">Scrollable list with ScrollArea</h2>
+<p>You can also use ScrollArea or ScrollArea.Autosize components
+instead of native scrollbars:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Input, InputBase, Combobox, useCombobox, ScrollArea } from &#39;@mantine/core&#39;;
+
+const groceries = [
+  &#39;🍎 Apples&#39;,
+  &#39;🍌 Bananas&#39;,
+  &#39;🥦 Broccoli&#39;,
+  &#39;🥕 Carrots&#39;,
+  &#39;🍫 Chocolate&#39;,
+  &#39;🍇 Grapes&#39;,
+  &#39;🍋 Lemon&#39;,
+  &#39;🥬 Lettuce&#39;,
+  &#39;🍄 Mushrooms&#39;,
+  &#39;🍊 Oranges&#39;,
+  &#39;🥔 Potatoes&#39;,
+  &#39;🍅 Tomatoes&#39;,
+  &#39;🥚 Eggs&#39;,
+  &#39;🥛 Milk&#39;,
+  &#39;🍞 Bread&#39;,
+  &#39;🍗 Chicken&#39;,
+  &#39;🍔 Hamburger&#39;,
+  &#39;🧀 Cheese&#39;,
+  &#39;🥩 Steak&#39;,
+  &#39;🍟 French Fries&#39;,
+  &#39;🍕 Pizza&#39;,
+  &#39;🥦 Cauliflower&#39;,
+  &#39;🥜 Peanuts&#39;,
+  &#39;🍦 Ice Cream&#39;,
+  &#39;🍯 Honey&#39;,
+  &#39;🥖 Baguette&#39;,
+  &#39;🍣 Sushi&#39;,
+  &#39;🥝 Kiwi&#39;,
+  &#39;🍓 Strawberries&#39;,
+];
+
+function Demo() {
+  const combobox = useCombobox({
+    onDropdownClose: () =&gt; combobox.resetSelectedOption(),
+  });
+
+  const [value, setValue] = useState&lt;string | null&gt;(null);
+
+  const options = groceries.map((item) =&gt; (
+    &lt;Combobox.Option value={item} key={item}&gt;
+      {item}
+    &lt;/Combobox.Option&gt;
+  ));
+
+  return (
+    &lt;Combobox
+      store={combobox}
+      onOptionSubmit={(val) =&gt; {
+        setValue(val);
+        combobox.closeDropdown();
+      }}
+    &gt;
+      &lt;Combobox.Target&gt;
+        &lt;InputBase
+          component=&quot;button&quot;
+          type=&quot;button&quot;
+          pointer
+          rightSection={&lt;Combobox.Chevron /&gt;}
+          rightSectionPointerEvents=&quot;none&quot;
+          onClick={() =&gt; combobox.toggleDropdown()}
+        &gt;
+          {value || &lt;Input.Placeholder&gt;Pick value&lt;/Input.Placeholder&gt;}
+        &lt;/InputBase&gt;
+      &lt;/Combobox.Target&gt;
+
+      &lt;Combobox.Dropdown&gt;
+        &lt;Combobox.Options&gt;
+          &lt;ScrollArea.Autosize type=&quot;scroll&quot; mah={200}&gt;
+            {options}
+          &lt;/ScrollArea.Autosize&gt;
+        &lt;/Combobox.Options&gt;
+      &lt;/Combobox.Dropdown&gt;
+    &lt;/Combobox&gt;
+  );
+}
+</code></pre>
+<h2 id="hide-dropdown">Hide dropdown</h2>
+<p>Set <code>hidden</code> prop on <code>Combobox.Dropdown</code> to hide the dropdown. For example,
+it can be useful when you want to show the dropdown only when there is at least
+one option available:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Combobox, TextInput, useCombobox } from &#39;@mantine/core&#39;;
+
+const groceries = [&#39;🍎 Apples&#39;, &#39;🍌 Bananas&#39;, &#39;🥦 Broccoli&#39;, &#39;🥕 Carrots&#39;, &#39;🍫 Chocolate&#39;];
+
+function Demo() {
+  const combobox = useCombobox();
+  const [value, setValue] = useState(&#39;&#39;);
+  const shouldFilterOptions = !groceries.some((item) =&gt; item === value);
+  const filteredOptions = shouldFilterOptions
+    ? groceries.filter((item) =&gt; item.toLowerCase().includes(value.toLowerCase().trim()))
+    : groceries;
+
+  const options = filteredOptions.map((item) =&gt; (
+    &lt;Combobox.Option value={item} key={item}&gt;
+      {item}
+    &lt;/Combobox.Option&gt;
+  ));
+
+  return (
+    &lt;Combobox
+      onOptionSubmit={(optionValue) =&gt; {
+        setValue(optionValue);
+        combobox.closeDropdown();
+      }}
+      store={combobox}
+    &gt;
+      &lt;Combobox.Target&gt;
+        &lt;TextInput
+          label=&quot;Pick value or type anything&quot;
+          placeholder=&quot;Pick value or type anything&quot;
+          value={value}
+          onChange={(event) =&gt; {
+            setValue(event.currentTarget.value);
+            combobox.openDropdown();
+          }}
+          onClick={() =&gt; combobox.openDropdown()}
+          onFocus={() =&gt; combobox.openDropdown()}
+          onBlur={() =&gt; combobox.closeDropdown()}
+        /&gt;
+      &lt;/Combobox.Target&gt;
+
+      &lt;Combobox.Dropdown hidden={options.length === 0}&gt;
+        &lt;Combobox.Options&gt;{options}&lt;/Combobox.Options&gt;
+      &lt;/Combobox.Dropdown&gt;
+    &lt;/Combobox&gt;
+  );
+}
+</code></pre>
+<h2 id="control-dropdown-opened-state">Control dropdown opened state</h2>
+<p>To control the dropdown opened state, pass <code>opened</code> to <code>useCombobox</code> hook:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { TextInput, Button, Combobox, useCombobox } from &#39;@mantine/core&#39;;
+
+const groceries = [&#39;🍎 Apples&#39;, &#39;🍌 Bananas&#39;, &#39;🥦 Broccoli&#39;, &#39;🥕 Carrots&#39;, &#39;🍫 Chocolate&#39;];
+
+function Demo() {
+  const [opened, setOpened] = useState(false);
+  const combobox = useCombobox({ opened });
+
+  const options = groceries.map((item) =&gt; (
+    &lt;Combobox.Option value={item} key={item}&gt;
+      {item}
+    &lt;/Combobox.Option&gt;
+  ));
+
+  return (
+    &lt;&gt;
+      &lt;Button mb=&quot;md&quot; onClick={() =&gt; setOpened((o) =&gt; !o)}&gt;
+        Toggle dropdown
+      &lt;/Button&gt;
+
+      &lt;Combobox store={combobox}&gt;
+        &lt;Combobox.Target&gt;
+          &lt;TextInput
+            label=&quot;Autocomplete&quot;
+            description=&quot;Dropdown is opened/closed when button is clicked&quot;
+            placeholder=&quot;Click button to toggle dropdown&quot;
+          /&gt;
+        &lt;/Combobox.Target&gt;
+
+        &lt;Combobox.Dropdown&gt;
+          &lt;Combobox.Options&gt;{options}&lt;/Combobox.Options&gt;
+        &lt;/Combobox.Dropdown&gt;
+      &lt;/Combobox&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="popover-props">Popover props</h2>
+<p><code>Combobox</code> supports most of Popover props. For example,
+you can control dropdown position with <code>position</code> prop and disable Floating UI
+middlewares with <code>middlewares</code> prop:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Input, InputBase, Combobox, useCombobox } from &#39;@mantine/core&#39;;
+
+const groceries = [&#39;🍎 Apples&#39;, &#39;🍌 Bananas&#39;, &#39;🥦 Broccoli&#39;, &#39;🥕 Carrots&#39;, &#39;🍫 Chocolate&#39;];
+
+function Demo() {
+  const combobox = useCombobox({
+    onDropdownClose: () =&gt; combobox.resetSelectedOption(),
+  });
+
+  const [value, setValue] = useState&lt;string | null&gt;(null);
+
+  const options = groceries.map((item) =&gt; (
+    &lt;Combobox.Option value={item} key={item}&gt;
+      {item}
+    &lt;/Combobox.Option&gt;
+  ));
+
+  return (
+    &lt;Combobox
+      store={combobox}
+      position=&quot;bottom&quot;
+      middlewares={{ flip: false, shift: false }}
+      onOptionSubmit={(val) =&gt; {
+        setValue(val);
+        combobox.closeDropdown();
+      }}
+    &gt;
+      &lt;Combobox.Target&gt;
+        &lt;InputBase
+          component=&quot;button&quot;
+          type=&quot;button&quot;
+          pointer
+          rightSection={&lt;Combobox.Chevron /&gt;}
+          rightSectionPointerEvents=&quot;none&quot;
+          onClick={() =&gt; combobox.toggleDropdown()}
+        &gt;
+          {value || &lt;Input.Placeholder&gt;Pick value&lt;/Input.Placeholder&gt;}
+        &lt;/InputBase&gt;
+      &lt;/Combobox.Target&gt;
+
+      &lt;Combobox.Dropdown&gt;
+        &lt;Combobox.Options&gt;{options}&lt;/Combobox.Options&gt;
+      &lt;/Combobox.Dropdown&gt;
+    &lt;/Combobox&gt;
+  );
+}
+</code></pre>
+<h2 id="without-dropdown">Without dropdown</h2>
+<p>You can use <code>Combobox</code> without dropdown. To do so, use <code>Combobox.EventsTarget</code> instead
+of <code>Combobox.Target</code>:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Combobox, TextInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState(&#39;&#39;);
+
+  return (
+    &lt;Combobox onOptionSubmit={setValue}&gt;
+      &lt;Combobox.EventsTarget&gt;
+        &lt;TextInput
+          placeholder=&quot;Pick value&quot;
+          value={value}
+          onChange={(event) =&gt; setValue(event.currentTarget.value)}
+        /&gt;
+      &lt;/Combobox.EventsTarget&gt;
+
+      &lt;Combobox.Options mt=&quot;sm&quot;&gt;
+        &lt;Combobox.Option value=&quot;First&quot;&gt;First&lt;/Combobox.Option&gt;
+        &lt;Combobox.Option value=&quot;Second&quot;&gt;Second&lt;/Combobox.Option&gt;
+        &lt;Combobox.Option value=&quot;Third&quot;&gt;Third&lt;/Combobox.Option&gt;
+      &lt;/Combobox.Options&gt;
+    &lt;/Combobox&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Combobox, TextInput, useCombobox } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const combobox = useCombobox({ opened: true });
+
+  return (
+    &lt;Combobox store={combobox}{{props}}&gt;
+      &lt;Combobox.Target&gt;
+        &lt;TextInput placeholder=&quot;Pick value&quot; /&gt;
+      &lt;/Combobox.Target&gt;
+
+      &lt;Combobox.Dropdown&gt;
+        &lt;Combobox.Header&gt;Combobox header&lt;/Combobox.Header&gt;
+        &lt;Combobox.Search placeholder=&quot;Search input&quot; /&gt;
+
+        &lt;Combobox.Options&gt;
+          &lt;Combobox.Group label=&quot;First group&quot;&gt;
+            &lt;Combobox.Option value=&quot;1&quot;&gt;First&lt;/Combobox.Option&gt;
+            &lt;Combobox.Option value=&quot;2&quot;&gt;Second&lt;/Combobox.Option&gt;
+          &lt;/Combobox.Group&gt;
+
+          &lt;Combobox.Group label=&quot;Second group&quot;&gt;
+            &lt;Combobox.Option value=&quot;3&quot;&gt;Third&lt;/Combobox.Option&gt;
+            &lt;Combobox.Option value=&quot;4&quot;&gt;Fourth&lt;/Combobox.Option&gt;
+          &lt;/Combobox.Group&gt;
+
+          &lt;Combobox.Group label=&quot;Third group&quot;&gt;
+            &lt;Combobox.Empty&gt;Nothing found in this group...&lt;/Combobox.Empty&gt;
+          &lt;/Combobox.Group&gt;
+        &lt;/Combobox.Options&gt;
+
+        &lt;Combobox.Footer&gt;Combobox footer&lt;/Combobox.Footer&gt;
+      &lt;/Combobox.Dropdown&gt;
+    &lt;/Combobox&gt;
+  );
+}
+</code></pre>

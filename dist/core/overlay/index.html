@@ -1,0 +1,75 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>Overlay</code> takes 100% of width and height of parent container or viewport if <code>fixed</code> prop is set.
+Set <code>color</code> and <code>backgroundOpacity</code> props to change <code>Overlay</code> background-color. Note that <code>backgroundOpacity</code> prop
+does not change CSS opacity property, it changes background-color. For example, if you set
+<code>color=&quot;#000&quot;</code> and <code>backgroundOpacity={0.85}</code> background-color will be <code>rgba(0, 0, 0, 0.85)</code>:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Button, Overlay, AspectRatio } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [visible, setVisible] = useState(true);
+  return (
+    &lt;&gt;
+      &lt;AspectRatio ratio={16 / 9} maw={400} mx=&quot;auto&quot; pos=&quot;relative&quot;&gt;
+        &lt;img
+          src=&quot;https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-1.png&quot;
+          alt=&quot;Demo&quot;
+        /&gt;
+        {visible &amp;&amp; &lt;Overlay color=&quot;#000&quot; backgroundOpacity={0.85} /&gt;}
+      &lt;/AspectRatio&gt;
+      &lt;Button onClick={() =&gt; setVisible((v) =&gt; !v)} fullWidth maw={200} mx=&quot;auto&quot; mt=&quot;xl&quot;&gt;
+        Toggle overlay
+      &lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="gradient">Gradient</h2>
+<p>Set <code>gradient</code> prop to use background-image instead of background-color. When <code>gradient</code> prop is set,
+<code>color</code> and <code>backgroundOpacity</code> props are ignored.</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Button, Overlay, AspectRatio } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [visible, setVisible] = useState(true);
+  return (
+    &lt;&gt;
+      &lt;AspectRatio ratio={16 / 9} maw={400} mx=&quot;auto&quot; pos=&quot;relative&quot;&gt;
+        &lt;img
+          src=&quot;https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png&quot;
+          alt=&quot;Demo&quot;
+        /&gt;
+        {visible &amp;&amp; (
+          &lt;Overlay
+            gradient=&quot;linear-gradient(145deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0) 100%)&quot;
+            opacity={0.85}
+          /&gt;
+        )}
+      &lt;/AspectRatio&gt;
+      &lt;Button onClick={() =&gt; setVisible((v) =&gt; !v)} fullWidth maw={200} mx=&quot;auto&quot; mt=&quot;xl&quot;&gt;
+        Toggle overlay
+      &lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="blur">Blur</h2>
+<p>Set <code>blur</code> prop to add <code>backdrop-filter: blur({value})</code> styles.
+Note that <code>backdrop-filter</code> is not supported in all browsers.</p>
+<pre><code>
+import { Overlay, AspectRatio } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;AspectRatio ratio={16 / 9} maw={400} mx=&quot;auto&quot; pos=&quot;relative&quot;&gt;
+      &lt;img
+        src=&quot;https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-3.png&quot;
+        alt=&quot;Demo&quot;
+      /&gt;
+      &lt;Overlay color=&quot;#000&quot; backgroundOpacity={0.35}{{props}} /&gt;
+    &lt;/AspectRatio&gt;
+  );
+}
+</code></pre>

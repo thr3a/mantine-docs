@@ -1,0 +1,44 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p>Mantine does not include typography global styles.
+Use <code>TypographyStylesProvider</code> to add typography styles to your html content:</p>
+<pre><code class="language-tsx">import { TypographyStylesProvider } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;TypographyStylesProvider&gt;
+      &lt;div
+        dangerouslySetInnerHTML={{ __html: &#39;&lt;p&gt;Your html here&lt;/p&gt;&#39; }}
+      /&gt;
+    &lt;/TypographyStylesProvider&gt;
+  );
+}
+</code></pre>
+<h2 id="example">Example</h2>
+<pre><code>
+import { TypographyStylesProvider } from &#39;@mantine/core&#39;;
+
+const html = &#39;...html content here...&#39;;
+
+function Demo() {
+  return (
+    &lt;TypographyStylesProvider&gt;
+      &lt;div dangerouslySetInnerHTML={{ __html: html }} /&gt;
+    &lt;/TypographyStylesProvider&gt;
+  );
+}
+</code></pre>
+<h2 id="all-styles-demo">All styles demo</h2>
+<p><code>TypographyStylesProvider</code> includes styles for:</p>
+<ul>
+<li>paragraphs</li>
+<li>headings</li>
+<li>lists</li>
+<li>blockquotes</li>
+<li>tables</li>
+<li>links</li>
+<li>images</li>
+<li>hr</li>
+<li>kbd</li>
+<li>code and pre</li>
+</ul>
+<pre><code></code></pre>

@@ -1,0 +1,91 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { FileButton, Button, Group, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [file, setFile] = useState&lt;File | null&gt;(null);
+  return (
+    &lt;&gt;
+      &lt;Group justify=&quot;center&quot;&gt;
+        &lt;FileButton onChange={setFile} accept=&quot;image/png,image/jpeg&quot;&gt;
+          {(props) =&gt; &lt;Button {...props}&gt;Upload image&lt;/Button&gt;}
+        &lt;/FileButton&gt;
+      &lt;/Group&gt;
+
+      {file &amp;&amp; (
+        &lt;Text size=&quot;sm&quot; ta=&quot;center&quot; mt=&quot;sm&quot;&gt;
+          Picked file: {file.name}
+        &lt;/Text&gt;
+      )}
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="multiple-files">Multiple files</h2>
+<p>Set <code>multiple</code> prop to allow picking multiple files:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { FileButton, Button, Group, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [files, setFiles] = useState&lt;File[]&gt;([]);
+  return (
+    &lt;&gt;
+      &lt;Group justify=&quot;center&quot;&gt;
+        &lt;FileButton onChange={setFiles} accept=&quot;image/png,image/jpeg&quot; multiple&gt;
+          {(props) =&gt; &lt;Button {...props}&gt;Upload image&lt;/Button&gt;}
+        &lt;/FileButton&gt;
+      &lt;/Group&gt;
+
+      {files.length &gt; 0 &amp;&amp; (
+        &lt;Text size=&quot;sm&quot; mt=&quot;sm&quot;&gt;
+          Picked files:
+        &lt;/Text&gt;
+      )}
+
+      &lt;ul&gt;
+        {files.map((file, index) =&gt; (
+          &lt;li key={index}&gt;{file.name}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="reset-file">Reset file</h2>
+<p><code>resetRef</code> should be used to fix issue with stale value on hidden input element as input type file cannot be controlled.
+Call <code>resetRef</code> when user selection is cleared:</p>
+<pre><code>
+import { useState, useRef } from &#39;react&#39;;
+import { FileButton, Button, Group, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [file, setFile] = useState&lt;File | null&gt;(null);
+  const resetRef = useRef&lt;() =&gt; void&gt;(null);
+
+  const clearFile = () =&gt; {
+    setFile(null);
+    resetRef.current?.();
+  };
+
+  return (
+    &lt;&gt;
+      &lt;Group justify=&quot;center&quot;&gt;
+        &lt;FileButton resetRef={resetRef} onChange={setFile} accept=&quot;image/png,image/jpeg&quot;&gt;
+          {(props) =&gt; &lt;Button {...props}&gt;Upload image&lt;/Button&gt;}
+        &lt;/FileButton&gt;
+        &lt;Button disabled={!file} color=&quot;red&quot; onClick={clearFile}&gt;
+          Reset
+        &lt;/Button&gt;
+      &lt;/Group&gt;
+
+      {file &amp;&amp; (
+        &lt;Text size=&quot;sm&quot; ta=&quot;center&quot; mt=&quot;sm&quot;&gt;
+          Picked file: {file.name}
+        &lt;/Text&gt;
+      )}
+    &lt;/&gt;
+  );
+}
+</code></pre>

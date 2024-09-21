@@ -1,0 +1,77 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>LoadingOverlay</code> renders an overlay with a loader over the parent element with relative position.
+It is usually used to indicate loading state of forms.
+Note that elements under overlay are still focusable with keyboard, remember to add additional logic to handle this case.</p>
+<p><code>LoadingOverlay</code> rendering is controlled by <code>visible</code> prop:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { LoadingOverlay, Button, Group, Box } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [visible, { toggle }] = useDisclosure(false);
+
+  // Note that position: relative is required
+  return (
+    &lt;&gt;
+      &lt;Box pos=&quot;relative&quot;&gt;
+        &lt;LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: &quot;sm&quot;, blur: 2 }} /&gt;
+        {/* ...other content */}
+      &lt;/Box&gt;
+
+      &lt;Group justify=&quot;center&quot;&gt;
+        &lt;Button onClick={toggle}&gt;Toggle overlay&lt;/Button&gt;
+      &lt;/Group&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+<h2 id="loader-props">Loader props</h2>
+<p>You can pass props down to the Loader component with <code>loaderProps</code>:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { LoadingOverlay, Button, Group, Box } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [visible, { toggle }] = useDisclosure(true);
+
+  // Note that position: relative is required
+  return (
+    &lt;&gt;
+      &lt;Box pos=&quot;relative&quot;&gt;
+        &lt;LoadingOverlay
+          visible={visible}
+          zIndex={1000}
+          overlayProps={{ radius: &#39;sm&#39;, blur: 2 }}
+          loaderProps={{ color: &#39;pink&#39;, type: &#39;bars&#39; }}
+        /&gt;
+        {/* ...other content */}
+      &lt;/Box&gt;
+
+      &lt;Group justify=&quot;center&quot;&gt;
+        &lt;Button onClick={toggle}&gt;Toggle overlay&lt;/Button&gt;
+      &lt;/Group&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+<h2 id="custom-inline-loaders">Custom inline loaders</h2>
+<p>To replace default loader with any custom content, set <code>loaderProps={{ children: &lt;div&gt;Your content&lt;/div&gt; }}</code>.
+You can put any React node inside <code>loaderProps.children</code>:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { LoadingOverlay, Button, Group, Box } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [visible, { toggle }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Box pos=&quot;relative&quot;&gt;
+        &lt;LoadingOverlay visible={visible} loaderProps={{ children: &#39;Loading...&#39; }} /&gt;
+        {/* ...other content */}
+      &lt;/Box&gt;
+
+      &lt;Group justify=&quot;center&quot;&gt;
+        &lt;Button onClick={toggle}&gt;Toggle overlay&lt;/Button&gt;
+      &lt;/Group&gt;
+    &lt;/&gt;
+  );
+}</code></pre>

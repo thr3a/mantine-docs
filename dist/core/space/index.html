@@ -1,0 +1,58 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p>Use <code>Space</code> component to add horizontal or vertical spacing between elements:</p>
+<pre><code>
+import { Text, Space } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Text&gt;First line&lt;/Text&gt;
+      &lt;Space{{props}} /&gt;
+      &lt;Text&gt;Second line&lt;/Text&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Text, Space } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;div style={{ display: &#39;flex&#39; }}&gt;
+      &lt;Text&gt;First line&lt;/Text&gt;
+      &lt;Space{{props}} /&gt;
+      &lt;Text&gt;Second line&lt;/Text&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h2 id="where-to-use">Where to use</h2>
+<p>In most cases, you would want to use margin props instead of <code>Space</code> when working with Mantine components:</p>
+<pre><code class="language-tsx">import { Space, Text } from &#39;@mantine/core&#39;;
+
+// Space is not required as the same can be achieved with `mt` prop
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Text&gt;First line&lt;/Text&gt;
+      &lt;Text mt=&quot;md&quot;&gt;Second line&lt;/Text&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<p>But when you work with regular HTML elements you do not have access to <code>theme.spacing</code> and you may want to use
+<code>Space</code> component to skip direct theme subscription:</p>
+<pre><code class="language-tsx">import { Space } from &#39;@mantine/core&#39;;
+
+// Margin props are not available on div,
+// use Space to add spacing from theme
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;div&gt;First line&lt;/div&gt;
+      &lt;Space h=&quot;md&quot; /&gt;
+      &lt;div&gt;Second line&lt;/div&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>

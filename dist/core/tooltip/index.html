@@ -1,0 +1,367 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Tooltip, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tooltip label=&quot;Tooltip&quot;&gt;
+      &lt;Button&gt;Button with tooltip&lt;/Button&gt;
+    &lt;/Tooltip&gt;
+  );
+}
+</code></pre>
+<h2 id="tooltip-children">Tooltip children</h2>
+<p>Tooltip requires an element or a component as a single child –
+strings, fragments, numbers and multiple elements/components are not supported and <strong>will throw error</strong>.
+Custom components must provide a prop to get root element ref,
+all Mantine components support ref out of the box.</p>
+<pre><code class="language-tsx">import { Badge, Tooltip } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Tooltip label=&quot;OK&quot;&gt;
+        &lt;button&gt;Native button – ok&lt;/button&gt;
+      &lt;/Tooltip&gt;
+
+      &lt;Tooltip label=&quot;OK&quot;&gt;
+        &lt;Badge&gt;Mantine component – ok&lt;/Badge&gt;
+      &lt;/Tooltip&gt;
+
+      &lt;Tooltip label=&quot;Throws&quot;&gt;
+        Raw string, NOT OK – will throw error
+      &lt;/Tooltip&gt;
+
+      {/* Number, NOT OK – will throw error */}
+      &lt;Tooltip label=&quot;Throws&quot;&gt;{2}&lt;/Tooltip&gt;
+
+      &lt;Tooltip label=&quot;Throws&quot;&gt;
+        &lt;&gt;Fragment, NOT OK, will throw error&lt;/&gt;
+      &lt;/Tooltip&gt;
+
+      &lt;Tooltip label=&quot;Throws&quot;&gt;
+        &lt;div&gt;More that one node&lt;/div&gt;
+        &lt;div&gt;NOT OK, will throw error&lt;/div&gt;
+      &lt;/Tooltip&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="required-ref-prop">Required ref prop</h2>
+<p>Custom components that are rendered inside <code>Tooltip</code> are required to support <code>ref</code> prop:</p>
+<pre><code class="language-tsx">// Example of code that WILL NOT WORK
+import { Tooltip } from &#39;@mantine/core&#39;;
+
+function MyComponent() {
+  return &lt;div&gt;My component&lt;/div&gt;;
+}
+
+// This will not work – MyComponent does not support ref
+function Demo() {
+  return (
+    &lt;Tooltip label=&quot;Does not work&quot;&gt;
+      &lt;MyComponent /&gt;
+    &lt;/Tooltip&gt;
+  );
+}
+</code></pre>
+<p>Use <code>forwardRef</code> function to forward ref to root element:</p>
+<pre><code class="language-tsx">// Example of code that will work
+import { forwardRef } from &#39;react&#39;;
+import { Tooltip } from &#39;@mantine/core&#39;;
+
+const MyComponent = forwardRef&lt;HTMLDivElement&gt;((props, ref) =&gt; (
+  &lt;div ref={ref} {...props}&gt;
+    My component
+  &lt;/div&gt;
+));
+
+// Works correctly – ref is forwarded
+function Demo() {
+  return (
+    &lt;Tooltip label=&quot;Works fine&quot;&gt;
+      &lt;MyComponent /&gt;
+    &lt;/Tooltip&gt;
+  );
+}
+</code></pre>
+<h2 id="color">Color</h2>
+<pre><code>
+import { Tooltip, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tooltip label=&quot;Tooltip&quot;{{props}}&gt;
+      &lt;Button&gt;With tooltip&lt;/Button&gt;
+    &lt;/Tooltip&gt;
+  );
+}
+</code></pre>
+<h2 id="offset">Offset</h2>
+<p>Set <code>offset</code> prop to a number to change tooltip position relative to the target element.
+This way you can control tooltip offset on main axis only.</p>
+<pre><code>
+import { Tooltip, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tooltip label=&quot;Tooltip&quot; opened{{props}}&gt;
+      &lt;Button&gt;Button with tooltip&lt;/Button&gt;
+    &lt;/Tooltip&gt;
+  );
+}
+</code></pre>
+<p>To control offset on both axis, pass object with <code>mainAxis</code> and <code>crossAxis</code> properties:</p>
+<pre><code>(props) => `
+import { Tooltip, Button } from '@mantine/core';
+
+function Demo() {
+  return (
+    <Tooltip
+      position="${props.position}"
+      opened
+      label="Tooltip"
+      offset={{ mainAxis: ${props.mainAxis}, crossAxis: ${props.crossAxis} }}
+    >
+      <Button>Button with tooltip</Button>
+    </Tooltip>
+  );
+}
+`</code></pre>
+<h2 id="arrow">Arrow</h2>
+<p>Set <code>withArrow</code> prop to add an arrow to the tooltip. Arrow is a <code>div</code> element rotated with <code>transform: rotate(45deg)</code>.</p>
+<p><code>arrowPosition</code> prop determines how arrow is position relative to the target element when <code>position</code> is set to <code>*-start</code> and <code>*-end</code> values on <code>Popover</code> component.
+By default, the value is <code>center</code> – the arrow is positioned in the center of the target element if it is possible.</p>
+<p>If you change <code>arrowPosition</code> to <code>side</code>, then the arrow will be positioned on the side of the target element,
+and you will be able to control arrow offset with <code>arrowOffset</code> prop. Note that when <code>arrowPosition</code> is set to <code>center</code>,
+<code>arrowOffset</code> prop is ignored.</p>
+<pre><code>
+import { Tooltip, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tooltip{{props}} label=&quot;Tooltip&quot; withArrow opened position=&quot;top-start&quot;&gt;
+      &lt;Button&gt;Button with tooltip&lt;/Button&gt;
+    &lt;/Tooltip&gt;
+  );
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Tooltip, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, setOpened] = useState(true);
+
+  return (
+    &lt;Tooltip label=&quot;Ctrl + J&quot; opened={opened}&gt;
+      &lt;Button onClick={() =&gt; setOpened((o) =&gt; !o)}&gt;
+        Toggle color scheme
+      &lt;/Button&gt;
+    &lt;/Tooltip&gt;
+  );
+}</code></pre>
+<h2 id="change-events">Change events</h2>
+<p>Events that trigger tooltip can be changed with <code>events</code> prop, it accepts an object
+with the following properties that determine which events will trigger tooltip:</p>
+<ul>
+<li><code>hover</code> – mouse hover event, <code>true</code> by default</li>
+<li><code>focus</code> – focus/blur events excluding clicks on the target element, <code>false</code> by default</li>
+<li><code>touch</code> – events for touchscreen devices, <code>false</code> by default</li>
+</ul>
+<pre><code class="language-tsx">import { Tooltip } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tooltip
+      label=&quot;Tooltip&quot;
+      events={{ hover: true, focus: true, touch: false }}
+    &gt;
+      &lt;button&gt;target&lt;/button&gt;
+    &lt;/Tooltip&gt;
+  );
+}
+</code></pre>
+<h2 id="multiline">Multiline</h2>
+<p>To enable multiline mode, set <code>multiline</code> prop to enable line breaks and <code>w</code> style prop to set tooltip width:</p>
+<pre><code>
+import { Tooltip, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tooltip
+      multiline
+      w={220}
+      withArrow
+      transitionProps={{ duration: 200 }}
+      label=&quot;Use this button to save this information in your profile, after that you will be able to access it any time and share it via email.&quot;
+    &gt;
+      &lt;Button&gt;Multiline tooltip&lt;/Button&gt;
+    &lt;/Tooltip&gt;
+  );
+}
+</code></pre>
+<h2 id="inline">Inline</h2>
+<p>Set <code>inline</code> prop to use <code>Tooltip</code> with inline elements:</p>
+<pre><code>
+import { Tooltip, Mark, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Text&gt;
+      Stantler’s magnificent antlers were traded at high prices as works of art. As a result, this
+      Pokémon was hunted close to extinction by those who were after the priceless antlers.{&#39; &#39;}
+      &lt;Tooltip inline label=&quot;Inline tooltip&quot;&gt;
+        &lt;Mark&gt;When visiting a junkyard&lt;/Mark&gt;
+      &lt;/Tooltip&gt;
+      , you may catch sight of it having an intense fight with Murkrow over shiny objects.Ho-Oh’s
+      feathers glow in seven colors depending on the angle at which they are struck by light. These
+      feathers are said to bring happiness to the bearers. This Pokémon is said to live at the foot
+      of a rainbow.
+    &lt;/Text&gt;
+  );
+}
+</code></pre>
+<h2 id="change-transition">Change transition</h2>
+<p>Tooltip is built with Transition component, it supports <code>transitionProps</code> props:</p>
+<pre><code class="language-tsx">import { Button, Tooltip } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tooltip
+      label=&quot;Tooltip with custom transition&quot;
+      transitionProps={{ transition: &#39;skew-up&#39;, duration: 300 }}
+    &gt;
+      &lt;Button&gt;Button with tooltip&lt;/Button&gt;
+    &lt;/Tooltip&gt;
+  );
+}
+</code></pre>
+<p>All available premade transitions:</p>
+<pre><code></code></pre>
+<h2 id="close-and-open-delay">Close and open delay</h2>
+<p>You can delay tooltip open/close events by setting <code>openDelay</code> and <code>closeDelay</code> props in ms:</p>
+<pre><code>
+import { Button, Tooltip, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Group justify=&quot;center&quot;&gt;
+      &lt;Tooltip label=&quot;Opened after 500ms&quot; openDelay={500}&gt;
+        &lt;Button&gt;Delay open - 500ms&lt;/Button&gt;
+      &lt;/Tooltip&gt;
+      &lt;Tooltip label=&quot;Closes after 500ms&quot; closeDelay={500}&gt;
+        &lt;Button&gt;Delay close - 500ms&lt;/Button&gt;
+      &lt;/Tooltip&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>
+<h2 id="tooltip-delay-group">Tooltip delay group</h2>
+<p><code>Tooltip.Group</code> component can be used to sync open and close delays for multiple tooltips:</p>
+<pre><code>
+import { Tooltip, Button, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tooltip.Group openDelay={500} closeDelay={100}&gt;
+      &lt;Group justify=&quot;center&quot;&gt;
+        &lt;Tooltip label=&quot;Tooltip 1&quot;&gt;
+          &lt;Button&gt;Button 1&lt;/Button&gt;
+        &lt;/Tooltip&gt;
+        &lt;Tooltip label=&quot;Tooltip 2&quot;&gt;
+          &lt;Button&gt;Button 2&lt;/Button&gt;
+        &lt;/Tooltip&gt;
+        &lt;Tooltip label=&quot;Tooltip 3&quot;&gt;
+          &lt;Button&gt;Button 3&lt;/Button&gt;
+        &lt;/Tooltip&gt;
+      &lt;/Group&gt;
+    &lt;/Tooltip.Group&gt;
+  );
+}
+</code></pre>
+<h2 id="floating-tooltip">Floating tooltip</h2>
+<p><code>Tooltip.Floating</code> component has the same API as Tooltip component but tooltip will follow mouse:</p>
+<pre><code>
+import { Box, Tooltip } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Tooltip.Floating label=&quot;Floating tooltip&quot;&gt;
+      &lt;Box p=&quot;xl&quot; bg=&quot;var(--mantine-color-blue-light)&quot; style={{ cursor: &#39;default&#39; }}&gt;
+        Hover over the box to see tooltip
+      &lt;/Box&gt;
+    &lt;/Tooltip.Floating&gt;
+  );
+}
+</code></pre>
+<h2 id="custom-components-with-tooltip">Custom components with Tooltip</h2>
+<p>If you want to build a component that can be used with Tooltip use
+forwardRef or other prop that will allow to get root element ref.
+This logic is applied to Tooltip and Tooltip.Floating components:</p>
+<pre><code class="language-tsx">import { forwardRef } from &#39;react&#39;;
+import { Tooltip } from &#39;@mantine/core&#39;;
+
+// forwardRef function will allow to get root element ref
+const MyBadge = forwardRef&lt;HTMLDivElement, { color: string }&gt;(
+  ({ color }, ref) =&gt; (
+    &lt;div ref={ref} color={color}&gt;
+      Badge
+    &lt;/div&gt;
+  )
+);
+
+// other props can also be used
+function MyOtherBadge({
+  color,
+  innerRef,
+}: {
+  color: string;
+  innerRef?: React.ForwardedRef&lt;HTMLDivElement&gt;;
+}) {
+  return (
+    &lt;div ref={innerRef} color={color}&gt;
+      Badge
+    &lt;/div&gt;
+  );
+}
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Tooltip label=&quot;Can be used as is&quot;&gt;
+        &lt;MyBadge color=&quot;red&quot; /&gt;
+      &lt;/Tooltip&gt;
+
+      &lt;Tooltip label=&quot;refProp is required&quot; refProp=&quot;innerRef&quot;&gt;
+        &lt;MyOtherBadge color=&quot;orange&quot; /&gt;
+      &lt;/Tooltip&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p>Tooltip follows WAI-ARIA recommendations:</p>
+<ul>
+<li>Tooltip body has <code>role=&quot;tooltip&quot;</code> attribute</li>
+<li>Target element has <code>aria-describedby</code> attribute</li>
+<li><code>Tooltip.Floating</code> is ignored by screen readers</li>
+</ul>
+<p>By default, Tooltip is not triggered by focus events and thus users who use a screen reader
+or navigate with keyboard will not be able to get tooltip content. Set <code>events</code> prop to enable
+focus/blur tooltip events:</p>
+<pre><code class="language-tsx">import { Button, Tooltip } from &#39;@mantine/core&#39;;
+
+// Tooltip will be visible for screen readers
+function Demo() {
+  return (
+    &lt;Tooltip
+      label=&quot;Tooltip&quot;
+      events={{ hover: true, focus: true, touch: false }}
+    &gt;
+      &lt;Button&gt;Button with tooltip&lt;/Button&gt;
+    &lt;/Tooltip&gt;
+  );
+}
+</code></pre>

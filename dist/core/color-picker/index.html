@@ -1,0 +1,158 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { ColorPicker, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, onChange] = useState(&#39;rgba(47, 119, 150, 0.7)&#39;);
+
+  return (
+    &lt;&gt;
+      &lt;ColorPicker format=&quot;rgba&quot; value={value} onChange={onChange} /&gt;
+      &lt;Text&gt;{value}&lt;/Text&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="color-format">Color format</h2>
+<p><code>ColorPicker</code> supports hex, hexa, rgb, rgba, hsl and hsla color formats.
+Slider to change opacity and color preview are displayed only for hexa, rgba and hsla formats:</p>
+<pre><code>
+import { ColorPicker } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;ColorPicker{{props}} /&gt;;
+}
+</code></pre>
+<h2 id="with-swatches">With swatches</h2>
+<p>You can add predefined color swatches with <code>swatches</code> prop:</p>
+<pre><code>
+import { ColorPicker } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;ColorPicker
+      format=&quot;hex&quot;
+      swatches={[&#39;#2e2e2e&#39;, &#39;#868e96&#39;, &#39;#fa5252&#39;, &#39;#e64980&#39;, &#39;#be4bdb&#39;, &#39;#7950f2&#39;, &#39;#4c6ef5&#39;, &#39;#228be6&#39;, &#39;#15aabf&#39;, &#39;#12b886&#39;, &#39;#40c057&#39;, &#39;#82c91e&#39;, &#39;#fab005&#39;, &#39;#fd7e14&#39;]}
+    /&gt;
+  );
+}
+</code></pre>
+<p>By default, <code>ColorPicker</code> will display 7 swatches per row, you can configure it with <code>swatchesPerRow</code> prop:</p>
+<pre><code>
+import { ColorPicker } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;ColorPicker{{props}} format=&quot;hex&quot; swatches={[&#39;#2e2e2e&#39;, &#39;#868e96&#39;, &#39;#fa5252&#39;, &#39;#e64980&#39;, &#39;#be4bdb&#39;, &#39;#7950f2&#39;, &#39;#4c6ef5&#39;, &#39;#228be6&#39;, &#39;#15aabf&#39;, &#39;#12b886&#39;, &#39;#40c057&#39;, &#39;#82c91e&#39;, &#39;#fab005&#39;, &#39;#fd7e14&#39;]} /&gt;
+  );
+}
+</code></pre>
+<p>To display swatches without picker set <code>withPicker={false}</code> and <code>fullWidth</code> props:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { DEFAULT_THEME, ColorPicker, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, onChange] = useState(&#39;#fff&#39;);
+
+  return (
+    &lt;&gt;
+      &lt;ColorPicker
+        format=&quot;hex&quot;
+        value={value}
+        onChange={onChange}
+        withPicker={false}
+        fullWidth
+        swatches={[
+          ...DEFAULT_THEME.colors.red.slice(0, 7),
+          ...DEFAULT_THEME.colors.green.slice(0, 7),
+          ...DEFAULT_THEME.colors.blue.slice(0, 7),
+        ]}
+      /&gt;
+
+      &lt;Text&gt;{value}&lt;/Text&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="size">Size</h2>
+<p><code>ColorPicker</code> has 5 predefined sizes: <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code> and <code>xl</code>:</p>
+<pre><code>
+import { ColorPicker } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;ColorPicker{{props}} /&gt;;
+}
+</code></pre>
+<h2 id="fullwidth">fullWidth</h2>
+<p>Set <code>fullWidth</code> prop to stretch component to 100% of parent width. In this case the picker will not
+have fixed width, but you can still use <code>size</code> prop to control sizes of sliders.</p>
+<pre><code>
+import { ColorPicker } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;ColorPicker fullWidth size=&quot;lg&quot; format=&quot;rgba&quot; /&gt;;
+}
+</code></pre>
+<pre><code>
+import { ColorPicker } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;ColorPicker format=&quot;rgba&quot; size=&quot;lg&quot;{{props}} swatches={[&#39;#25262b&#39;, &#39;#868e96&#39;, &#39;#fa5252&#39;, &#39;#e64980&#39;, &#39;#be4bdb&#39;, &#39;#7950f2&#39;, &#39;#4c6ef5&#39;]} /&gt;
+  );
+}
+</code></pre>
+<h2 id="hueslider-component">HueSlider component</h2>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { HueSlider, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, onChange] = useState(250);
+
+  return (
+    &lt;&gt;
+      &lt;Text&gt;Hue value: {value}&lt;/Text&gt;
+      &lt;HueSlider value={value} onChange={onChange} /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="alphaslider-component">AlphaSlider component</h2>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { AlphaSlider, Text } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, onChange] = useState(0.55);
+
+  return (
+    &lt;&gt;
+      &lt;Text&gt;Alpha value: {value}&lt;/Text&gt;
+      &lt;AlphaSlider color=&quot;#1c7ed6&quot; value={value} onChange={onChange} /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p>ColorPicker component is accessible by default:</p>
+<ul>
+<li>Saturation, hue and alpha sliders are focusable</li>
+<li>When moused is used to interact with the slider, focus is moved to the slider</li>
+<li>All values can be changed with arrows</li>
+</ul>
+<p>To make component accessible for screen readers, set <code>saturationLabel</code>, <code>hueLabel</code> and <code>alphaLabel</code>:</p>
+<pre><code class="language-tsx">import { ColorPicker } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;ColorPicker
+      saturationLabel=&quot;Saturation&quot;
+      hueLabel=&quot;Hue&quot;
+      alphaLabel=&quot;Alpha&quot;
+    /&gt;
+  );
+}
+</code></pre>

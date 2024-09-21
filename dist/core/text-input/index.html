@@ -1,0 +1,97 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { TextInput } from &#39;@mantine/core&#39;;
+
+
+function Demo() {
+  return (
+    &lt;TextInput
+      {{props}}
+      placeholder=&quot;Input placeholder&quot;
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { TextInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState(&#39;&#39;);
+  return (
+    &lt;TextInput
+      value={value}
+      onChange={(event) =&gt; setValue(event.currentTarget.value)}
+    /&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { TextInput, rem } from &#39;@mantine/core&#39;;
+import { IconAt } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  const icon = &lt;IconAt style={{ width: rem(16), height: rem(16) }} /&gt;;
+  return (
+    &lt;&gt;
+      &lt;TextInput
+        leftSectionPointerEvents=&quot;none&quot;
+        leftSection={icon}
+        label=&quot;Your email&quot;
+        placeholder=&quot;Your email&quot;
+      /&gt;
+      &lt;TextInput
+        mt=&quot;md&quot;
+        rightSectionPointerEvents=&quot;none&quot;
+        rightSection={icon}
+        label=&quot;Your email&quot;
+        placeholder=&quot;Your email&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="error-state">Error state</h2>
+<pre><code>
+import { TextInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;TextInput label=&quot;Boolean error&quot; placeholder=&quot;Boolean error&quot; error /&gt;
+      &lt;TextInput
+        mt=&quot;md&quot;
+        label=&quot;With error message&quot;
+        placeholder=&quot;With error message&quot;
+        error=&quot;Invalid name&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled-state">Disabled state</h2>
+<pre><code>
+import { TextInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;TextInput disabled label=&quot;Disabled input&quot; placeholder=&quot;Disabled input&quot; /&gt;;
+}
+</code></pre>
+<pre><code>
+import { IconAt } from &#39;@tabler/icons-react&#39;;
+import { TextInput, rem } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;TextInput
+      label=&quot;Label&quot;
+      placeholder=&quot;TextInput&quot;
+      description=&quot;Description&quot;
+      error=&quot;Error&quot;
+      withAsterisk
+      leftSection={&lt;IconAt style={{ width: rem(18), height: rem(18) }} /&gt;}
+      {{props}}
+    /&gt;
+  );
+}
+</code></pre>

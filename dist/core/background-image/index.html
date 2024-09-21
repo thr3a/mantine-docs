@@ -1,0 +1,23 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { BackgroundImage, Center, Text, Box } from &#39;@mantine/core&#39;;
+
+
+function Demo() {
+  return (
+    &lt;Box maw={300} mx=&quot;auto&quot;&gt;
+      &lt;BackgroundImage
+        src=&quot;https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-6.png&quot;
+        {{props}}
+      &gt;
+        &lt;Center p=&quot;md&quot;&gt;
+          &lt;Text c=&quot;white&quot;&gt;
+            BackgroundImage component can be used to add any content on image. It is useful for hero
+            headers and other similar sections
+          &lt;/Text&gt;
+        &lt;/Center&gt;
+      &lt;/BackgroundImage&gt;
+    &lt;/Box&gt;
+  );
+}
+</code></pre>

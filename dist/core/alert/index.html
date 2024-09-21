@@ -1,0 +1,54 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Alert } from &#39;@mantine/core&#39;;
+import { IconInfoCircle } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  const icon = &lt;IconInfoCircle /&gt;;
+  return (
+    &lt;Alert{{props}} icon={icon}&gt;
+      {{children}}
+    &lt;/Alert&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Alert } from &#39;@mantine/core&#39;;
+import { IconHeart } from &#39;@tabler/icons-react&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+function Demo() {
+  const icon = &lt;IconHeart /&gt;;
+
+  return (
+    &lt;Alert title=&quot;Alert title&quot; icon={icon} withCloseButton{{props}}&gt;
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sunt corporis natus veniam quis
+      cupiditate enim architecto mollitia numquam temporibus, consectetur nam laboriosam voluptates
+      nemo facilis? Exercitationem aut praesentium quibusdam reiciendis.
+    &lt;/Alert&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<ul>
+<li>Root element role set to <code>alert</code></li>
+<li><code>aria-describedby</code> set to body element id, <code>aria-labelledby</code> set to title element id if <code>title</code> is provided</li>
+<li>Set <code>closeButtonLabel</code> prop to make close button accessible</li>
+</ul>
+<pre><code class="language-tsx">import { Alert } from &#39;@mantine/core&#39;;
+
+function Invalid() {
+  // -&gt; not ok
+  return &lt;Alert withCloseButton /&gt;;
+}
+
+function Valid() {
+  // -&gt; ok
+  return &lt;Alert withCloseButton closeButtonLabel=&quot;Dismiss&quot; /&gt;;
+}
+
+function AlsoValid() {
+  // -&gt; ok, without close button, closeButtonLabel is not needed
+  return &lt;Alert /&gt;;
+}
+</code></pre>

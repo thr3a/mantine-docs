@@ -1,0 +1,40 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>Burger</code> component renders open/close menu button.
+Set <code>opened</code> and <code>onClick</code> props to control component state.
+If <code>opened</code> prop is set, cross will be rendered, otherwise – burger.</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Burger } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { toggle }] = useDisclosure();
+  return &lt;Burger{{props}} opened={opened} onClick={toggle} aria-label=&quot;Toggle navigation&quot; /&gt;;
+}
+</code></pre>
+<h2 id="change-lines-size">Change lines size</h2>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Burger } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { toggle }] = useDisclosure();
+  return &lt;Burger{{props}} size=&quot;xl&quot; opened={opened} onClick={toggle} aria-label=&quot;Toggle navigation&quot; /&gt;;
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p>To make <code>Burger</code> accessible for screen readers, you need to either set <code>aria-label</code> or
+use VisuallyHidden component:</p>
+<pre><code class="language-tsx">import { Burger, VisuallyHidden } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;Burger aria-label=&quot;Toggle navigation&quot; /&gt;
+
+      &lt;Burger&gt;
+        &lt;VisuallyHidden&gt;Toggle navigation&lt;/VisuallyHidden&gt;
+      &lt;/Burger&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>

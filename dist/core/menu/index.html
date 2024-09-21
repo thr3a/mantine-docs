@@ -1,0 +1,320 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { Menu, Button, Text, rem } from &#39;@mantine/core&#39;;
+import {
+  IconSettings,
+  IconSearch,
+  IconPhoto,
+  IconMessageCircle,
+  IconTrash,
+  IconArrowsLeftRight,
+} from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;Menu shadow=&quot;md&quot; width={200}&gt;
+      &lt;Menu.Target&gt;
+        &lt;Button&gt;Toggle menu&lt;/Button&gt;
+      &lt;/Menu.Target&gt;
+
+      &lt;Menu.Dropdown&gt;
+        &lt;Menu.Label&gt;Application&lt;/Menu.Label&gt;
+        &lt;Menu.Item leftSection={&lt;IconSettings style={{ width: rem(14), height: rem(14) }} /&gt;}&gt;
+          Settings
+        &lt;/Menu.Item&gt;
+        &lt;Menu.Item leftSection={&lt;IconMessageCircle style={{ width: rem(14), height: rem(14) }} /&gt;}&gt;
+          Messages
+        &lt;/Menu.Item&gt;
+        &lt;Menu.Item leftSection={&lt;IconPhoto style={{ width: rem(14), height: rem(14) }} /&gt;}&gt;
+          Gallery
+        &lt;/Menu.Item&gt;
+        &lt;Menu.Item
+          leftSection={&lt;IconSearch style={{ width: rem(14), height: rem(14) }} /&gt;}
+          rightSection={
+            &lt;Text size=&quot;xs&quot; c=&quot;dimmed&quot;&gt;
+              ⌘K
+            &lt;/Text&gt;
+          }
+        &gt;
+          Search
+        &lt;/Menu.Item&gt;
+
+        &lt;Menu.Divider /&gt;
+
+        &lt;Menu.Label&gt;Danger zone&lt;/Menu.Label&gt;
+        &lt;Menu.Item
+          leftSection={&lt;IconArrowsLeftRight style={{ width: rem(14), height: rem(14) }} /&gt;}
+        &gt;
+          Transfer my data
+        &lt;/Menu.Item&gt;
+        &lt;Menu.Item
+          color=&quot;red&quot;
+          leftSection={&lt;IconTrash style={{ width: rem(14), height: rem(14) }} /&gt;}
+        &gt;
+          Delete my account
+        &lt;/Menu.Item&gt;
+      &lt;/Menu.Dropdown&gt;
+    &lt;/Menu&gt;
+  );
+}
+</code></pre>
+<h2 id="controlled">Controlled</h2>
+<p>Dropdown opened state can be controlled with <code>opened</code> and <code>onChange</code> props:</p>
+<pre><code class="language-tsx">import { useState } from &#39;react&#39;;
+import { Menu } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, setOpened] = useState(false);
+  return (
+    &lt;Menu opened={opened} onChange={setOpened}&gt;
+      {/* Menu content */}
+    &lt;/Menu&gt;
+  );
+}
+</code></pre>
+<h2 id="show-menu-on-hover">Show menu on hover</h2>
+<p>Set <code>trigger=&quot;hover&quot;</code> to reveal dropdown when hovers over menu target and dropdown.
+<code>closeDelay</code> and <code>openDelay</code> props can be used to control open and close delay in ms.
+Note that:</p>
+<ul>
+<li>If you set <code>closeDelay={0}</code> then menu will close before user will reach dropdown, set <code>offset={0}</code> to remove space between target element and dropdown.</li>
+<li>Menu with <code>trigger=&quot;hover&quot;</code> is not accessible – users that navigate with keyboard will not be able to use it. If you need click-hover hover and click triggers, use <code>trigger=&quot;click-hover&quot;</code>.</li>
+</ul>
+<pre><code>
+import { Menu } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Menu trigger=&quot;hover&quot; openDelay={100} closeDelay={400}&gt;
+      {/* ... menu items */}
+    &lt;/Menu&gt;
+  );
+}
+</code></pre>
+<p>To make <code>Menu</code> that is revealed on hover accessible on all devices, use <code>trigger=&quot;click-hover&quot;</code> instead.
+The dropdown will be revealed on hover on desktop and on click on mobile devices.</p>
+<pre><code>
+import { Menu } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Menu trigger=&quot;click-hover&quot; openDelay={100} closeDelay={400}&gt;
+      {/* ... menu items */}
+    &lt;/Menu&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled-items">Disabled items</h2>
+<pre><code>
+import { Menu, Button, rem } from &#39;@mantine/core&#39;;
+import { IconSearch } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;Menu&gt;
+      &lt;Menu.Target&gt;
+        &lt;Button&gt;Toggle menu&lt;/Button&gt;
+      &lt;/Menu.Target&gt;
+
+      &lt;Menu.Dropdown&gt;
+        &lt;Menu.Item
+          leftSection={&lt;IconSearch style={{ width: rem(14), height: rem(14) }} /&gt;}
+          disabled
+        &gt;
+          Search
+        &lt;/Menu.Item&gt;
+
+        {/* Other items ... */}
+      &lt;/Menu.Dropdown&gt;
+    &lt;/Menu&gt;
+  );
+}
+</code></pre>
+<h2 id="dropdown-position">Dropdown position</h2>
+<pre><code>
+import { Menu } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Menu{{props}}&gt;
+      {/* Menu items */}
+    &lt;/Menu&gt;
+  );
+}
+</code></pre>
+<h2 id="transitions">Transitions</h2>
+<p>Menu dropdown can be animated with any of premade transitions from Transition component:</p>
+<pre><code>
+import { Menu } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Menu transitionProps={{ transition: &#39;rotate-right&#39;, duration: 150 }}&gt;
+      {/* Menu content */}
+    &lt;/Menu&gt;
+  );
+}
+</code></pre>
+<h2 id="custom-component-as-menuitem">Custom component as Menu.Item</h2>
+<p>By default, <code>Menu.Item</code> renders as button element, to change that set <code>component</code> prop:</p>
+<pre><code>
+import { Menu, Button, rem } from &#39;@mantine/core&#39;;
+import { IconExternalLink } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;Menu width={200} shadow=&quot;md&quot;&gt;
+      &lt;Menu.Target&gt;
+        &lt;Button&gt;Toggle menu&lt;/Button&gt;
+      &lt;/Menu.Target&gt;
+
+      &lt;Menu.Dropdown&gt;
+        &lt;Menu.Item component=&quot;a&quot; href=&quot;https://mantine.dev&quot;&gt;
+          Mantine website
+        &lt;/Menu.Item&gt;
+        &lt;Menu.Item
+          leftSection={&lt;IconExternalLink style={{ width: rem(14), height: rem(14) }} /&gt;}
+          component=&quot;a&quot;
+          href=&quot;https://mantine.dev&quot;
+          target=&quot;_blank&quot;
+        &gt;
+          External link
+        &lt;/Menu.Item&gt;
+      &lt;/Menu.Dropdown&gt;
+    &lt;/Menu&gt;
+  );
+}
+</code></pre>
+<p>Note that the component you pass to <code>component</code> prop should allow spreading props to its root element:</p>
+<pre><code class="language-tsx">import { Menu } from &#39;@mantine/core&#39;;
+
+// ❌ Will not work with Menu.Item
+function IncorrectItem() {
+  return &lt;button type=&quot;button&quot;&gt;My custom Menu item&lt;/button&gt;;
+}
+
+// ✅ Will work correctly with Menu.Item
+function CorrectItem(
+  props: React.ComponentPropsWithoutRef&lt;&#39;button&#39;&gt;
+) {
+  return (
+    &lt;button type=&quot;button&quot; {...props}&gt;
+      My custom Menu item
+    &lt;/button&gt;
+  );
+}
+
+function Demo() {
+  // ❌ Will not work
+  const incorrect = &lt;Menu.Item component={IncorrectItem} /&gt;;
+
+  // ✅ Will work
+  const correct = &lt;Menu.Item component={CorrectItem} /&gt;;
+}
+</code></pre>
+<h2 id="custom-component-as-target">Custom component as target</h2>
+<pre><code>
+import { forwardRef } from &#39;react&#39;;
+import { IconChevronRight } from &#39;@tabler/icons-react&#39;;
+import { Group, Avatar, Text, Menu, UnstyledButton } from &#39;@mantine/core&#39;;
+
+interface UserButtonProps extends React.ComponentPropsWithoutRef&lt;&#39;button&#39;&gt; {
+  image: string;
+  name: string;
+  email: string;
+  icon?: React.ReactNode;
+}
+
+const UserButton = forwardRef&lt;HTMLButtonElement, UserButtonProps&gt;(
+  ({ image, name, email, icon, ...others }: UserButtonProps, ref) =&gt; (
+    &lt;UnstyledButton
+      ref={ref}
+      style={{
+        padding: &#39;var(--mantine-spacing-md)&#39;,
+        color: &#39;var(--mantine-color-text)&#39;,
+        borderRadius: &#39;var(--mantine-radius-sm)&#39;,
+      }}
+      {...others}
+    &gt;
+      &lt;Group&gt;
+        &lt;Avatar src={image} radius=&quot;xl&quot; /&gt;
+
+        &lt;div style={{ flex: 1 }}&gt;
+          &lt;Text size=&quot;sm&quot; fw={500}&gt;
+            {name}
+          &lt;/Text&gt;
+
+          &lt;Text c=&quot;dimmed&quot; size=&quot;xs&quot;&gt;
+            {email}
+          &lt;/Text&gt;
+        &lt;/div&gt;
+
+        {icon || &lt;IconChevronRight size=&quot;1rem&quot; /&gt;}
+      &lt;/Group&gt;
+    &lt;/UnstyledButton&gt;
+  )
+);
+
+function Demo() {
+  return (
+    &lt;Menu withArrow&gt;
+      &lt;Menu.Target&gt;
+        &lt;UserButton
+          image=&quot;https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png&quot;
+          name=&quot;Harriette Spoonlicker&quot;
+          email=&quot;hspoonlicker@outlook.com&quot;
+        /&gt;
+      &lt;/Menu.Target&gt;
+      {/* ... menu items */}
+    &lt;/Menu&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { Menu } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Menu {...props} opened withArrow position=&quot;left&quot;&gt;
+      {/* ... menu items */}
+    &lt;/Menu&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p>Menu follows WAI-ARIA recommendations:</p>
+<ul>
+<li>Dropdown element has <code>role=&quot;menu&quot;</code> and <code>aria-labelledby=&quot;target-id&quot;</code> attributes</li>
+<li>Target element has <code>aria-haspopup=&quot;menu&quot;</code>, <code>aria-expanded</code>, <code>aria-controls=&quot;dropdown-id&quot;</code> attributes</li>
+<li>Menu item has <code>role=&quot;menuitem&quot;</code> attribute</li>
+</ul>
+<h3 id="supported-target-elements">Supported target elements</h3>
+<p>Uncontrolled Menu with <code>trigger=&quot;click&quot;</code> (default) will be accessible only when used with <code>button</code> element or component that renders it (Button, ActionIcon, etc.).
+Other elements will not support <code>Space</code> and <code>Enter</code> key presses.</p>
+<h3 id="hover-menu">Hover menu</h3>
+<p>Menu with <code>trigger=&quot;hover&quot;</code> is not accessible – it cannot be accessed with keyboard, use it only if you do not care about accessibility. If you need click-hover hover and click triggers, use <code>trigger=&quot;click-hover&quot;</code>.</p>
+<h3 id="navigation">Navigation</h3>
+<p>If you are using the Menu to build a Navigation, you can use the options from the demo below to follow the WAI-ARIA recommendations for navigation.</p>
+<pre><code>
+import { Group, Menu } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const menus = Array(4)
+    .fill(0)
+    .map((e, i) =&gt; (
+      &lt;Menu
+        key={i}
+        trigger=&quot;click-hover&quot;
+        loop={false}
+        withinPortal={false}
+        trapFocus={false}
+        menuItemTabIndex={0}
+      &gt;
+        {/* ... menu items */}
+      &lt;/Menu&gt;
+    ));
+  return &lt;Group&gt;{menus}&lt;/Group&gt;;
+}
+</code></pre>
+<h3 id="keyboard-interactions">Keyboard interactions</h3>
+<p>If you also need to support <code>Tab</code> and <code>Shift + Tab</code> then set <code>menuItemTabIndex={0}</code>.</p>

@@ -1,0 +1,406 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { ActionIcon } from &#39;@mantine/core&#39;;
+import { IconAdjustments } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;ActionIcon{{props}} aria-label=&quot;Settings&quot;&gt;
+      &lt;IconAdjustments style={{ width: &#39;70%&#39;, height: &#39;70%&#39; }} stroke={1.5} /&gt;
+    &lt;/ActionIcon&gt;
+  );
+}
+</code></pre>
+<pre><code>(props) => `
+import { ActionIcon } from '@mantine/core';
+import { IconHeart } from '@tabler/icons-react';
+
+function Demo() {
+  return (
+    <ActionIcon
+      variant="gradient"
+      size="xl"
+      aria-label="Gradient action icon"
+      gradient={{ from: '${props.gradientFrom}', to: '${props.gradientTo}', deg: ${props.gradientDegree} }}
+    >
+      <IconHeart />
+    </ActionIcon>
+  );
+}
+`</code></pre>
+<h2 id="size">Size</h2>
+<p>You can use any valid CSS value in <code>size</code> prop, it is used to set <code>width</code>, <code>min-width</code>, <code>min-height</code> and <code>height</code>
+properties. Note that <code>size</code> prop does not control child icon size, you need to
+set it manually on icon component. When <code>size</code> is a number, the value is treated as <code>px</code> units and
+converted to rem units.</p>
+<pre><code>
+import { ActionIcon, rem } from &#39;@mantine/core&#39;;
+import { IconHeart } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;ActionIcon size={42} variant=&quot;default&quot; aria-label=&quot;ActionIcon with size as a number&quot;&gt;
+      &lt;IconHeart style={{ width: rem(24), height: rem(24) }} /&gt;
+    &lt;/ActionIcon&gt;
+  );
+}
+</code></pre>
+<p>If you want <code>ActionIcon</code> to have the same size as Mantine inputs, use <code>size=&quot;input-sm&quot;</code> prop:</p>
+<pre><code>
+import { ActionIcon, Group, TextInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Group&gt;
+      &lt;TextInput placeholder=&quot;sm size input&quot; size=&quot;sm&quot; /&gt;
+      &lt;ActionIcon size=&quot;input-sm&quot; variant=&quot;default&quot; aria-label=&quot;ActionIcon the same size as inputs&quot;&gt;
+        SM
+      &lt;/ActionIcon&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled-state">Disabled state</h2>
+<p>To make <code>ActionIcon</code> disabled set <code>disabled</code> prop, this will prevent any interactions with the button
+and add disabled styles. If you want the button to just look disabled but still be interactive,
+set <code>data-disabled</code> prop instead. Note that disabled styles are the same for all variants.</p>
+<pre><code>
+import { ActionIcon, Group } from &#39;@mantine/core&#39;;
+import { IconHeart } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;Group justify=&quot;center&quot;&gt;
+      &lt;ActionIcon size=&quot;xl&quot; disabled aria-label=&quot;Disabled and not interactive&quot;&gt;
+        &lt;IconHeart /&gt;
+      &lt;/ActionIcon&gt;
+
+      &lt;ActionIcon size=&quot;xl&quot; data-disabled aria-label=&quot;Has disabled styles but still interactive&quot;&gt;
+        &lt;IconHeart /&gt;
+      &lt;/ActionIcon&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled-state-when-actionicon-is-link">Disabled state when ActionIcon is link</h2>
+<p><code>&lt;a /&gt;</code> element does not support <code>disabled</code> attribute. To make <code>ActionIcon</code> disabled when it is
+rendered as a link, set <code>data-disabled</code> attribute instead and prevent default behavior in
+<code>onClick</code> event handler.</p>
+<pre><code>
+import { ActionIcon } from &#39;@mantine/core&#39;;
+import { IconExternalLink } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;ActionIcon
+      component=&quot;a&quot;
+      href=&quot;https://mantine.dev&quot;
+      data-disabled
+      size=&quot;xl&quot;
+      aria-label=&quot;Open in a new tab&quot;
+      onClick={(event) =&gt; event.preventDefault()}
+    &gt;
+      &lt;IconExternalLink /&gt;
+    &lt;/ActionIcon&gt;
+  );
+}
+</code></pre>
+<h2 id="customize-disabled-styles">Customize disabled styles</h2>
+<p>To customize disabled styles, it is recommended to use both <code>&amp;:disabled</code> and <code>&amp;[data-disabled]</code>
+selectors:</p>
+<ul>
+<li><code>&amp;:disabled</code> is used to style the button when <code>disabled</code> prop is set and
+also when the button is disabled by the parent component (for example, when <code>disabled</code> prop is set on a
+<code>&lt;fieldset /&gt;</code> element which contains <code>ActionIcon</code>).</li>
+<li><code>&amp;[data-disabled]</code> is used to style the button when it is not actually disabled but should look like
+it is (for example, <code>data-disabled</code> should be used if you need to use Tooltip with disabled <code>ActionIcon</code>
+or when <code>ActionIcon</code> is used as a link)</li>
+</ul>
+<pre><code>
+import { ActionIcon } from &#39;@mantine/core&#39;;
+import { IconHeart } from &#39;@tabler/icons-react&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+function Demo() {
+  return (
+    &lt;ActionIcon size=&quot;xl&quot; className={classes.button} disabled aria-label=&quot;Disabled with styles&quot;&gt;
+      &lt;IconHeart /&gt;
+    &lt;/ActionIcon&gt;
+  );
+}
+</code></pre>
+<h2 id="disabled-button-with-tooltip">Disabled button with Tooltip</h2>
+<p><code>onMouseLeave</code> event is not triggered when <code>ActionIcon</code> is disabled, so if you need to use
+Tooltip with disabled <code>ActionIcon</code> you need to set <code>data-disabled</code> prop on <code>ActionIcon</code>
+instead of <code>disabled</code>. Note that it is also required to change <code>onClick</code> event handler to
+<code>(event) =&gt; event.preventDefault()</code> as <code>ActionIcon</code> is not actually disabled and will still trigger
+<code>onClick</code> event.</p>
+<pre><code>
+import { ActionIcon, Tooltip } from &#39;@mantine/core&#39;;
+import { IconHeart } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;Tooltip label=&quot;Tooltip for disabled button&quot;&gt;
+      &lt;ActionIcon size=&quot;xl&quot; data-disabled onClick={(event) =&gt; event.preventDefault()}&gt;
+        &lt;IconHeart /&gt;
+      &lt;/ActionIcon&gt;
+    &lt;/Tooltip&gt;
+  );
+}
+</code></pre>
+<h2 id="loading-state">Loading state</h2>
+<p>When <code>loading</code> prop is set, <code>ActionIcon</code> will be disabled and Loader with overlay will be rendered
+in the center of the button. Loader color depends on <code>ActionIcon</code> variant.</p>
+<pre><code>
+import { ActionIcon, Group, Switch } from &#39;@mantine/core&#39;;
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { IconHeart } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  const [loading, { toggle }] = useDisclosure();
+  return (
+    &lt;&gt;
+      &lt;Group&gt;
+        &lt;ActionIcon loading={loading}&gt;
+          &lt;IconHeart size={18} stroke={1.5} /&gt;
+        &lt;/ActionIcon&gt;
+        &lt;ActionIcon variant=&quot;light&quot; loading={loading}&gt;
+          &lt;IconHeart size={18} stroke={1.5} /&gt;
+        &lt;/ActionIcon&gt;
+        &lt;ActionIcon variant=&quot;outline&quot; loading={loading}&gt;
+          &lt;IconHeart size={18} stroke={1.5} /&gt;
+        &lt;/ActionIcon&gt;
+      &lt;/Group&gt;
+
+      &lt;Switch checked={loading} onChange={toggle} label=&quot;Loading state&quot; mt=&quot;md&quot; /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="loader-props">Loader props</h2>
+<p>You can customize Loader with <code>loaderProps</code> prop, it accepts all props that
+Loader component has:</p>
+<pre><code>
+import { ActionIcon } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;ActionIcon size=&quot;xl&quot; loading loaderProps={{ type: &#39;dots&#39; }} /&gt;;
+}
+</code></pre>
+<h2 id="add-custom-variants">Add custom variants</h2>
+<p>To add new <code>ActionIcon</code> variants, use data-variant attribute.
+Usually new variants are added on theme, this way they are
+available in all <code>ActionIcon</code> components in your application.</p>
+<pre><code>
+import { Group, ActionIcon, MantineProvider, createTheme } from &#39;@mantine/core&#39;;
+import { IconHeart } from &#39;@tabler/icons-react&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+const theme = createTheme({
+  components: {
+    ActionIcon: ActionIcon.extend({
+      classNames: classes,
+    }),
+  },
+});
+
+function Demo() {
+  return (
+    &lt;MantineProvider theme={theme}&gt;
+      &lt;Group justify=&quot;center&quot;&gt;
+        &lt;ActionIcon size=&quot;xl&quot; variant=&quot;danger&quot; aria-label=&quot;Danger variant&quot;&gt;
+          &lt;IconHeart /&gt;
+        &lt;/ActionIcon&gt;
+        &lt;ActionIcon size=&quot;xl&quot; variant=&quot;primary&quot; aria-label=&quot;Primary variant&quot;&gt;
+          &lt;IconHeart /&gt;
+        &lt;/ActionIcon&gt;
+      &lt;/Group&gt;
+    &lt;/MantineProvider&gt;
+  );
+}
+</code></pre>
+<h2 id="customize-variants-colors">Customize variants colors</h2>
+<p>You can customize colors for <code>ActionIcon</code> and other components variants by adding
+variantColorResolver to your theme.</p>
+<pre><code>
+import { IconPhoto, IconFingerprint, IconError404 } from &#39;@tabler/icons-react&#39;;
+import {
+  ActionIcon,
+  Group,
+  MantineProvider,
+  defaultVariantColorsResolver,
+  VariantColorsResolver,
+  parseThemeColor,
+  rem,
+  rgba,
+  darken,
+} from &#39;@mantine/core&#39;;
+
+const variantColorResolver: VariantColorsResolver = (input) =&gt; {
+  const defaultResolvedColors = defaultVariantColorsResolver(input);
+  const parsedColor = parseThemeColor({
+    color: input.color || input.theme.primaryColor,
+    theme: input.theme,
+  });
+
+  // Override some properties for variant
+  if (parsedColor.isThemeColor &amp;&amp; parsedColor.color === &#39;lime&#39; &amp;&amp; input.variant === &#39;filled&#39;) {
+    return {
+      ...defaultResolvedColors,
+      color: &#39;var(--mantine-color-black)&#39;,
+      hoverColor: &#39;var(--mantine-color-black)&#39;,
+    };
+  }
+
+  // Completely override variant
+  if (input.variant === &#39;light&#39;) {
+    return {
+      background: rgba(parsedColor.value, 0.1),
+      hover: rgba(parsedColor.value, 0.15),
+      border: `${rem(1)} solid ${parsedColor.value}`,
+      color: darken(parsedColor.value, 0.1),
+    };
+  }
+
+  // Add new variants support
+  if (input.variant === &#39;danger&#39;) {
+    return {
+      background: &#39;var(--mantine-color-red-9)&#39;,
+      hover: &#39;var(--mantine-color-red-8)&#39;,
+      color: &#39;var(--mantine-color-white)&#39;,
+      border: &#39;none&#39;,
+    };
+  }
+
+  return defaultResolvedColors;
+};
+
+function Demo() {
+  return (
+    &lt;MantineProvider theme={{ variantColorResolver }}&gt;
+      &lt;Group&gt;
+        &lt;ActionIcon color=&quot;lime.4&quot; variant=&quot;filled&quot;&gt;
+          &lt;IconPhoto size={20} /&gt;
+        &lt;/ActionIcon&gt;
+
+        &lt;ActionIcon color=&quot;orange&quot; variant=&quot;light&quot;&gt;
+          &lt;IconFingerprint size={20} /&gt;
+        &lt;/ActionIcon&gt;
+
+        &lt;ActionIcon variant=&quot;danger&quot;&gt;
+          &lt;IconError404 size={20} /&gt;
+        &lt;/ActionIcon&gt;
+      &lt;/Group&gt;
+    &lt;/MantineProvider&gt;
+  );
+}
+</code></pre>
+<pre><code>
+import { IconFingerprint } from &#39;@tabler/icons-react&#39;;
+import { ActionIcon, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Group&gt;
+      &lt;ActionIcon aria-label=&quot;default action icon&quot; size=&quot;lg&quot; color=&quot;lime.4&quot;&gt;
+        &lt;IconFingerprint size={20} /&gt;
+      &lt;/ActionIcon&gt;
+      &lt;ActionIcon autoContrast aria-label=&quot;autoContrast action icon&quot; size=&quot;lg&quot; color=&quot;lime.4&quot;&gt;
+        &lt;IconFingerprint size={20} /&gt;
+      &lt;/ActionIcon&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>
+<h2 id="add-custom-sizes">Add custom sizes</h2>
+<p><code>ActionIcon</code> sizes are defined by <code>--ai-size-{x}</code> CSS variables. The easiest way to add new sizes is to
+define additional <code>--ai-size-{x}</code> variables on the <code>root</code> element:</p>
+<pre><code>
+import { ActionIcon, createTheme, Group, MantineThemeProvider, rem } from &#39;@mantine/core&#39;;
+import { IconHeart } from &#39;@tabler/icons-react&#39;;
+import classes from &#39;./Demo.module.css&#39;;
+
+const theme = createTheme({
+  components: {
+    ActionIcon: ActionIcon.extend({
+      classNames: classes,
+    }),
+  },
+});
+
+function Demo() {
+  return (
+    &lt;MantineThemeProvider theme={theme}&gt;
+      &lt;Group justify=&quot;center&quot;&gt;
+        &lt;ActionIcon size=&quot;xxs&quot; aria-label=&quot;Custom xxs size&quot;&gt;
+          &lt;IconHeart style={{ width: rem(10), height: rem(10) }} /&gt;
+        &lt;/ActionIcon&gt;
+
+        &lt;ActionIcon size=&quot;xxl&quot; aria-label=&quot;Custom xxl size&quot;&gt;
+          &lt;IconHeart style={{ width: rem(32), height: rem(32) }} /&gt;
+        &lt;/ActionIcon&gt;
+      &lt;/Group&gt;
+    &lt;/MantineThemeProvider&gt;
+  );
+}
+</code></pre>
+<h2 id="actionicongroup">ActionIcon.Group</h2>
+<pre><code>
+import { ActionIcon, rem } from &#39;@mantine/core&#39;;
+import { IconPhoto, IconSettings, IconHeart } from &#39;@tabler/icons-react&#39;;
+
+function Demo() {
+  return (
+    &lt;ActionIcon.Group{{props}}&gt;
+      &lt;ActionIcon variant=&quot;default&quot; size=&quot;lg&quot; aria-label=&quot;Gallery&quot;&gt;
+        &lt;IconPhoto style={{ width: rem(20) }} stroke={1.5} /&gt;
+      &lt;/ActionIcon&gt;
+
+      &lt;ActionIcon variant=&quot;default&quot; size=&quot;lg&quot; aria-label=&quot;Settings&quot;&gt;
+        &lt;IconSettings style={{ width: rem(20) }} stroke={1.5} /&gt;
+      &lt;/ActionIcon&gt;
+
+      &lt;ActionIcon variant=&quot;default&quot; size=&quot;lg&quot; aria-label=&quot;Likes&quot;&gt;
+        &lt;IconHeart style={{ width: rem(20) }} stroke={1.5} /&gt;
+      &lt;/ActionIcon&gt;
+    &lt;/ActionIcon.Group&gt;
+  );
+}
+</code></pre>
+<p>Note that you must not wrap child <code>ActionIcon</code> components with any additional elements:</p>
+<pre><code class="language-tsx">import { ActionIcon } from &#39;@mantine/core&#39;;
+
+// Will not work correctly
+function Demo() {
+  return (
+    &lt;ActionIcon.Group&gt;
+      &lt;div&gt;
+        &lt;ActionIcon&gt;This will not work&lt;/ActionIcon&gt;
+      &lt;/div&gt;
+      &lt;ActionIcon&gt;ActionIcons will have incorrect borders&lt;/ActionIcon&gt;
+    &lt;/ActionIcon.Group&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p>To make <code>ActionIcon</code> accessible for screen readers, you need to either set <code>aria-label</code> or
+use VisuallyHidden component:</p>
+<pre><code class="language-tsx">import { IconHeart } from &#39;@tabler/icons-react&#39;;
+import { ActionIcon, VisuallyHidden } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;ActionIcon aria-label=&quot;Like post&quot;&gt;
+        &lt;IconHeart /&gt;
+      &lt;/ActionIcon&gt;
+
+      &lt;ActionIcon&gt;
+        &lt;VisuallyHidden&gt;Like post&lt;/VisuallyHidden&gt;
+        &lt;IconHeart /&gt;
+      &lt;/ActionIcon&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>

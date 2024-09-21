@@ -1,0 +1,60 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { SemiCircleProgress } from &#39;@mantine/core&#39;;
+
+
+function Demo() {
+  return (
+    &lt;SemiCircleProgress
+      {{props}}
+      label=&quot;Label&quot;
+    /&gt;
+  );
+}
+</code></pre>
+<h2 id="change-empty-segment-color">Change empty segment color</h2>
+<p>Use <code>emptySegmentColor</code> prop to change color of empty segment,
+it accepts key of <code>theme.colors</code> or any valid CSS color value:</p>
+<pre><code>
+import { SemiCircleProgress } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;SemiCircleProgress value={30} emptySegmentColor=&quot;var(--mantine-color-dimmed)&quot; /&gt;;
+}
+</code></pre>
+<h2 id="change-label-position">Change label position</h2>
+<p>By default, the label is displayed at the bottom of the component,
+you can change its position to <code>center</code> by using <code>labelPosition</code> prop:</p>
+<pre><code>
+import { SemiCircleProgress } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;SemiCircleProgress value={30} label=&quot;Bottom&quot; mb=&quot;xl&quot; /&gt;
+      &lt;SemiCircleProgress value={30} label=&quot;Center&quot; labelPosition=&quot;center&quot; /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="filled-segment-transition">Filled segment transition</h2>
+<p>By default, transitions are disabled, to enable them, set <code>transitionDuration</code> prop
+to a number of milliseconds:</p>
+<pre><code>
+import { useState } from &#39;react&#39;;
+import { Button, SemiCircleProgress } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [value, setValue] = useState(30);
+
+  return (
+    &lt;&gt;
+      &lt;SemiCircleProgress value={value} transitionDuration={250} label={`${value}%`} /&gt;
+
+      &lt;Button onClick={() =&gt; setValue(Math.floor(Math.random() * 100))} mt=&quot;xl&quot; fullWidth&gt;
+        Set random value
+      &lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>

@@ -1,0 +1,370 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Drawer, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Drawer opened={opened} onClose={close} title=&quot;Authentication&quot;&gt;
+        {/* Drawer content */}
+      &lt;/Drawer&gt;
+
+      &lt;Button onClick={open}&gt;Open Drawer&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="position">Position</h2>
+<p>Drawer can be placed on <code>left</code> (default), <code>top</code>, <code>right</code> and <code>bottom</code>. Control drawer position with <code>position</code> prop,
+for example <code>&lt;Drawer position=&quot;top&quot; /&gt;</code>.</p>
+<pre><code></code></pre>
+<h2 id="offset">Offset</h2>
+<p>Set <code>offset</code> prop to change drawer offset from the edge of the viewport:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Drawer, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Drawer offset={8} radius=&quot;md&quot; opened={opened} onClose={close} title=&quot;Authentication&quot;&gt;
+        {/* Drawer content */}
+      &lt;/Drawer&gt;
+
+      &lt;Button onClick={open}&gt;Open Drawer&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="customize-overlay">Customize overlay</h2>
+<p><code>Drawer</code> uses Overlay component, you can set any props that Overlay
+supports with <code>overlayProps</code>:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Drawer, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Drawer
+        opened={opened}
+        onClose={close}
+        title=&quot;Authentication&quot;
+        overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+      &gt;
+        {/* Drawer content */}
+      &lt;/Drawer&gt;
+
+      &lt;Button onClick={open}&gt;Open drawer&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="sizes">Sizes</h2>
+<p>You can change drawer width/height (depends on <code>position</code>) by setting <code>size</code> prop to predefined size or any valid width,
+for example, <code>size=&quot;55%&quot;</code> or <code>size={200}</code>:</p>
+<pre><code class="language-tsx">import { Drawer } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Drawer position=&quot;right&quot; size=&quot;xl&quot; opened onClose={() =&gt; {}}&gt;
+      {/* Drawer content */}
+    &lt;/Drawer&gt;
+  );
+}
+</code></pre>
+<pre><code></code></pre>
+<h2 id="remove-header">Remove header</h2>
+<p>To remove header set <code>withCloseButton={false}</code></p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Drawer, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Drawer opened={opened} onClose={close} withCloseButton={false}&gt;
+        Drawer without header, press escape or click on overlay to close
+      &lt;/Drawer&gt;
+
+      &lt;Button onClick={open}&gt;Open drawer&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+
+</code></pre>
+<h2 id="drawer-with-scroll">Drawer with scroll</h2>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Drawer, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  const content = Array(100)
+    .fill(0)
+    .map((_, index) =&gt; &lt;p key={index}&gt;Drawer with scroll&lt;/p&gt;);
+
+  return (
+    &lt;&gt;
+      &lt;Drawer opened={opened} onClose={close} title=&quot;Header is sticky&quot;&gt;
+        {content}
+      &lt;/Drawer&gt;
+
+      &lt;Button onClick={open}&gt;Open drawer&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="usage-with-scrollarea">Usage with ScrollArea</h2>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Drawer, Button, ScrollArea } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  const content = Array(100)
+    .fill(0)
+    .map((_, index) =&gt; &lt;p key={index}&gt;Drawer with scroll&lt;/p&gt;);
+
+  return (
+    &lt;&gt;
+      &lt;Drawer
+        opened={opened}
+        onClose={close}
+        title=&quot;Header is sticky&quot;
+        scrollAreaComponent={ScrollArea.Autosize}
+      &gt;
+        {content}
+      &lt;/Drawer&gt;
+
+      &lt;Button onClick={open}&gt;Open drawer&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="change-transition">Change transition</h2>
+<p><code>Drawer</code> is built with Transition component. Use <code>transitionProps</code>
+prop to customize any Transition properties:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Drawer, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Drawer
+        opened={opened}
+        onClose={close}
+        title=&quot;Authentication&quot;
+        transitionProps={{ transition: &#39;rotate-left&#39;, duration: 150, timingFunction: &#39;linear&#39; }}
+      &gt;
+        {/* Drawer content */}
+      &lt;/Drawer&gt;
+
+      &lt;Button onClick={open}&gt;Open Drawer&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+
+</code></pre>
+<h2 id="initial-focus">Initial focus</h2>
+<p><code>Drawer</code> uses FocusTrap to trap focus. Add <code>data-autofocus</code>
+attribute to the element that should receive initial focus.</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Drawer, Button, TextInput } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Drawer opened={opened} onClose={close} title=&quot;Focus demo&quot;&gt;
+        &lt;TextInput label=&quot;First input&quot; placeholder=&quot;First input&quot; /&gt;
+        &lt;TextInput
+          data-autofocus
+          label=&quot;Input with initial focus&quot;
+          placeholder=&quot;It has data-autofocus attribute&quot;
+          mt=&quot;md&quot;
+        /&gt;
+      &lt;/Drawer&gt;
+
+      &lt;Button onClick={open}&gt;Open drawer&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<p>If you do not want to focus any elements when the drawer is opened, use <code>FocusTrap.InitialFocus</code>
+component to create a visually hidden element that will receive initial focus:</p>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Drawer, Button, TextInput, FocusTrap } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Drawer opened={opened} onClose={close} title=&quot;Focus demo&quot;&gt;
+        &lt;FocusTrap.InitialFocus /&gt;
+        &lt;TextInput label=&quot;First input&quot; placeholder=&quot;First input&quot; /&gt;
+        &lt;TextInput
+          data-autofocus
+          label=&quot;Input with initial focus&quot;
+          placeholder=&quot;It has data-autofocus attribute&quot;
+          mt=&quot;md&quot;
+        /&gt;
+      &lt;/Drawer&gt;
+
+      &lt;Button onClick={open}&gt;Open drawer&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<p>If you do not add <code>data-autofocus</code> attribute and do not use <code>FocusTrap.InitialFocus</code>,
+drawer will focus the first focusable element inside it which is usually the close button.</p>
+<h2 id="control-behavior">Control behavior</h2>
+<p>The following props can be used to control <code>Drawer</code> behavior.
+In most cases it is not recommended to turn these features off –
+it will make the component less accessible.</p>
+<ul>
+<li><code>trapFocus</code> – determines whether focus should be trapped inside drawer</li>
+<li><code>closeOnEscape</code> – determines whether the drawer should be closed when <code>Escape</code> key is pressed</li>
+<li><code>closeOnClickOutside</code> – determines whether the drawer should be closed when user clicks on the overlay</li>
+<li><code>returnFocus</code> – determines whether focus should be returned to the element that was focused before the drawer was opened</li>
+</ul>
+<h2 id="react-remove-scroll-settings">react-remove-scroll settings</h2>
+<p><code>Drawer</code> uses react-remove-scroll
+package to lock scroll. You can pass props down to the <code>RemoveScroll</code> component
+with <code>removeScrollProps</code>:</p>
+<pre><code class="language-tsx">import { Drawer } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Drawer
+      removeScrollProps={{ allowPinchZoom: true }}
+      opened
+      onClose={() =&gt; {}}
+    &gt;
+      {/* Drawer content */}
+    &lt;/Drawer&gt;
+  );
+}
+</code></pre>
+<h2 id="change-close-icon">Change close icon</h2>
+<p>Use <code>closeButtonProps</code> to customize close button:</p>
+<pre><code>
+import { IconXboxX } from &#39;@tabler/icons-react&#39;;
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Drawer, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Drawer
+        opened={opened}
+        onClose={close}
+        title=&quot;Authentication&quot;
+        closeButtonProps={{
+          icon: &lt;IconXboxX size={20} stroke={1.5} /&gt;,
+        }}
+      &gt;
+        {/* Drawer content */}
+      &lt;/Drawer&gt;
+
+      &lt;Button onClick={open}&gt;Open Drawer&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="compound-components">Compound components</h2>
+<p>You can use the following compound components to have full control over the <code>Drawer</code> rendering:</p>
+<ul>
+<li><code>Drawer.Root</code> – context provider</li>
+<li><code>Drawer.Overlay</code> – render Overlay</li>
+<li><code>Drawer.Content</code> – main drawer element, should include all drawer content</li>
+<li><code>Drawer.Header</code> – sticky header, usually contains <code>Drawer.Title</code> and <code>Drawer.CloseButton</code></li>
+<li><code>Drawer.Title</code> – <code>h2</code> element, <code>aria-labelledby</code> of <code>Drawer.Content</code> is pointing to this element, usually is rendered inside <code>Drawer.Header</code></li>
+<li><code>Drawer.CloseButton</code> – close button, usually rendered inside <code>Drawer.Header</code></li>
+<li><code>Drawer.Body</code> – a place for main content, <code>aria-describedby</code> of <code>Drawer.Content</code> is pointing to this element</li>
+</ul>
+<pre><code>
+import { useDisclosure } from &#39;@mantine/hooks&#39;;
+import { Drawer, Button } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    &lt;&gt;
+      &lt;Drawer.Root opened={opened} onClose={close}&gt;
+        &lt;Drawer.Overlay /&gt;
+        &lt;Drawer.Content&gt;
+          &lt;Drawer.Header&gt;
+            &lt;Drawer.Title&gt;Drawer title&lt;/Drawer.Title&gt;
+            &lt;Drawer.CloseButton /&gt;
+          &lt;/Drawer.Header&gt;
+          &lt;Drawer.Body&gt;Drawer content&lt;/Drawer.Body&gt;
+        &lt;/Drawer.Content&gt;
+      &lt;/Drawer.Root&gt;
+
+      &lt;Button onClick={open}&gt;Open drawer&lt;/Button&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="fixed-elements-offset">Fixed elements offset</h2>
+<p><code>Drawer</code> component uses react-remove-scroll
+package to lock scroll. To properly size these <code>elements</code> add a <code>className</code> to them (documentation):</p>
+<pre><code class="language-tsx">import { RemoveScroll } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;div className={RemoveScroll.classNames.fullWidth}&gt;
+        width: 100%
+      &lt;/div&gt;
+      &lt;div className={RemoveScroll.classNames.zeroRight}&gt;
+        right: 0
+      &lt;/div&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p><code>Drawer</code> component follows WAI-ARIA recommendations on accessibility.</p>
+<p>Set <code>title</code> props to make component accessible, will add <code>aria-labelledby</code> to the content element:</p>
+<pre><code class="language-tsx">import { Drawer } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;Drawer title=&quot;Drawer label&quot; opened onClose={() =&gt; {}} /&gt;;
+}
+</code></pre>
+<p>To set close button <code>aria-label</code> use <code>closeButtonProps</code>:</p>
+<pre><code class="language-tsx">import { Drawer } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Drawer
+      closeButtonProps={{ &#39;aria-label&#39;: &#39;Close modal&#39; }}
+      opened
+      onClose={() =&gt; {}}
+    /&gt;
+  );
+}
+</code></pre>

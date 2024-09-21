@@ -1,0 +1,105 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<pre><code>
+import { HoverCard, Button, Text, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Group justify=&quot;center&quot;&gt;
+      &lt;HoverCard width={280} shadow=&quot;md&quot;&gt;
+        &lt;HoverCard.Target&gt;
+          &lt;Button&gt;Hover to reveal the card&lt;/Button&gt;
+        &lt;/HoverCard.Target&gt;
+        &lt;HoverCard.Dropdown&gt;
+          &lt;Text size=&quot;sm&quot;&gt;
+            Hover card is revealed when user hovers over target element, it will be hidden once
+            mouse is not over both target and dropdown elements
+          &lt;/Text&gt;
+        &lt;/HoverCard.Dropdown&gt;
+      &lt;/HoverCard&gt;
+    &lt;/Group&gt;
+  );
+}
+
+</code></pre>
+<h2 id="delays">Delays</h2>
+<p>Set open and close delays in ms with <code>openDelay</code> and <code>closeDelay</code> props:</p>
+<pre><code>
+import { HoverCard, Button, Text, Group } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Group justify=&quot;center&quot;&gt;
+      &lt;HoverCard shadow=&quot;md&quot; openDelay={1000}&gt;
+        &lt;HoverCard.Target&gt;
+          &lt;Button&gt;1000ms open delay&lt;/Button&gt;
+        &lt;/HoverCard.Target&gt;
+        &lt;HoverCard.Dropdown&gt;
+          &lt;Text size=&quot;sm&quot;&gt;Opened with 1000ms delay&lt;/Text&gt;
+        &lt;/HoverCard.Dropdown&gt;
+      &lt;/HoverCard&gt;
+
+      &lt;HoverCard shadow=&quot;md&quot; closeDelay={1000}&gt;
+        &lt;HoverCard.Target&gt;
+          &lt;Button&gt;1000ms close delay&lt;/Button&gt;
+        &lt;/HoverCard.Target&gt;
+        &lt;HoverCard.Dropdown&gt;
+          &lt;Text size=&quot;sm&quot;&gt;Will close with 1000ms delay&lt;/Text&gt;
+        &lt;/HoverCard.Dropdown&gt;
+      &lt;/HoverCard&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>
+<h2 id="with-interactive-elements">With interactive elements</h2>
+<p><code>HoverCard</code> is displayed only when the mouse is over the target element or dropdown,
+you can use anchors and buttons within dropdowns, using inputs is not recommended:</p>
+<pre><code>
+import { HoverCard, Avatar, Text, Group, Anchor, Stack } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;Group justify=&quot;center&quot;&gt;
+      &lt;HoverCard width={320} shadow=&quot;md&quot; withArrow openDelay={200} closeDelay={400}&gt;
+        &lt;HoverCard.Target&gt;
+          &lt;Avatar src=&quot;https://avatars.githubusercontent.com/u/79146003?s=200&amp;v=4&quot; radius=&quot;xl&quot; /&gt;
+        &lt;/HoverCard.Target&gt;
+        &lt;HoverCard.Dropdown&gt;
+          &lt;Group&gt;
+            &lt;Avatar src=&quot;https://avatars.githubusercontent.com/u/79146003?s=200&amp;v=4&quot; radius=&quot;xl&quot; /&gt;
+            &lt;Stack gap={5}&gt;
+              &lt;Text size=&quot;sm&quot; fw={700} style={{ lineHeight: 1 }}&gt;
+                Mantine
+              &lt;/Text&gt;
+              &lt;Anchor
+                href=&quot;https://twitter.com/mantinedev&quot;
+                c=&quot;dimmed&quot;
+                size=&quot;xs&quot;
+                style={{ lineHeight: 1 }}
+              &gt;
+                @mantinedev
+              &lt;/Anchor&gt;
+            &lt;/Stack&gt;
+          &lt;/Group&gt;
+
+          &lt;Text size=&quot;sm&quot; mt=&quot;md&quot;&gt;
+            Customizable React components and hooks library with focus on usability, accessibility
+            and developer experience
+          &lt;/Text&gt;
+
+          &lt;Group mt=&quot;md&quot; gap=&quot;xl&quot;&gt;
+            &lt;Text size=&quot;sm&quot;&gt;
+              &lt;b&gt;0&lt;/b&gt; Following
+            &lt;/Text&gt;
+            &lt;Text size=&quot;sm&quot;&gt;
+              &lt;b&gt;1,174&lt;/b&gt; Followers
+            &lt;/Text&gt;
+          &lt;/Group&gt;
+        &lt;/HoverCard.Dropdown&gt;
+      &lt;/HoverCard&gt;
+    &lt;/Group&gt;
+  );
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p><code>HoverCard</code> is ignored by screen readers and cannot be activated with keyboard, use it to display only additional information
+that is not required to understand the context.</p>

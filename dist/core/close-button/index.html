@@ -1,0 +1,40 @@
+<!DOCTYPE html><h2 id="usage">Usage</h2>
+<p><code>CloseButton</code> renders a button with <code>X</code> icon inside. It is used in other Mantine components like Drawer or Modal.</p>
+<pre><code>
+import { CloseButton } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;CloseButton{{props}} /&gt;;
+}
+</code></pre>
+<h2 id="change-icon">Change icon</h2>
+<p>You can change icon by passing any react node to the <code>icon</code> prop.
+It is useful when <code>CloseButton</code> is used as a part of other components,
+for example, in Drawer or Modal.
+Note that if you use <code>icon</code> prop, <code>iconSize</code> prop is ignored –
+you will have to set icon size manually.</p>
+<pre><code>
+import { IconXboxX } from &#39;@tabler/icons-react&#39;;
+import { CloseButton } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return &lt;CloseButton icon={&lt;IconXboxX size={18} stroke={1.5} /&gt;} /&gt;;
+}
+</code></pre>
+<h2 id="accessibility">Accessibility</h2>
+<p>To make <code>CloseButton</code> accessible for screen readers, you need to either set <code>aria-label</code> or
+use VisuallyHidden component:</p>
+<pre><code class="language-tsx">import { CloseButton, VisuallyHidden } from &#39;@mantine/core&#39;;
+
+function Demo() {
+  return (
+    &lt;&gt;
+      &lt;CloseButton aria-label=&quot;Close modal&quot; /&gt;
+
+      &lt;CloseButton&gt;
+        &lt;VisuallyHidden&gt;Close modal&lt;/VisuallyHidden&gt;
+      &lt;/CloseButton&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
