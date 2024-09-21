@@ -16,6 +16,9 @@ jobs:
           repository: mantinedev/mantine
           path: mantine
 
+      - name: debug
+        run: pwd && ls -l
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
