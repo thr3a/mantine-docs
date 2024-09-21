@@ -43,14 +43,11 @@ jobs:
         working-directory: ${{ github.workspace }}/mantine/apps/mantine.dev
         run: find ./src/pages -mindepth 1 -maxdepth 1 ! -name core -exec rm -rf {} +
 
-      - name: Copy convert.ts
-        run: cp ${{ github.workspace }}/convert.ts ${{ github.workspace }}/mantine/apps/mantine.dev/src/convert.ts
-
-      - name: Copy hoge.ts
-        run: cp ${{ github.workspace }}/hoge.ts ${{ github.workspace }}/mantine/apps/mantine.dev/src/pages/hoge.ts
-
-      - name: Copy astro.config.mjs
-        run: cp ${{ github.workspace }}/astro.config.mjs ${{ github.workspace }}/mantine/apps/mantine.dev/astro.config.mjs
+      - name: Copy necessary files
+        run: |
+          cp ${{ github.workspace }}/convert.ts ${{ github.workspace }}/mantine/apps/mantine.dev/src/convert.ts
+          cp ${{ github.workspace }}/hoge.ts ${{ github.workspace }}/mantine/apps/mantine.dev/src/pages/hoge.ts
+          cp ${{ github.workspace }}/astro.config.mjs ${{ github.workspace }}/mantine/apps/mantine.dev/astro.config.mjs
 
       - name: Install additional dependencies
         working-directory: ${{ github.workspace }}/mantine/apps/mantine.dev
@@ -64,7 +61,7 @@ jobs:
         working-directory: ${{ github.workspace }}/mantine/apps/mantine.dev
         run: npx astro build
 
-      - name: Copy output to dist
+      - name: Copy build output to dist
         run: cp -r ${{ github.workspace }}/mantine/apps/mantine.dev/out/* ${{ github.workspace }}/dist/
 
       - name: Commit and push changes
